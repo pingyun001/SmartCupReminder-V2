@@ -29,12 +29,10 @@
 *.dylib
 
 # Executables
-*.exe
 *.out
 *.app
 *.i*86
 *.x86_64
-*.hex
 
 # Debug files
 *.dSYM/
@@ -51,5 +49,14 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# debug information files
+# debug information files & others
 *.dwo
+*.dbgconf
+SOFTWARE/F405_CUP_MAT_V2/MDK-ARM/F405_CUP_MAT_V2/
+SOFTWARE/F405_CUP_MAT_V2/MDK-ARM/RTE/
+.vscode
+.codemap/main-panel.json
+
+# user
+*.Lime
+*.21154
