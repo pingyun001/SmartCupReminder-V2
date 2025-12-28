@@ -25,6 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "Lime_USB_Uart.h"
 #include "usbd_cdc_if.h"
 /* USER CODE END Includes */
 
@@ -68,8 +69,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-//	while(1)
-//		;
+	while(1)
+		;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -98,9 +99,18 @@ int main(void)
 	printf("ESP Downloader Start!\n");
 	printf("Compile Time:%s,%s\n", __DATE__, __TIME__);
 	
-	HAL_UART_Receive_IT(&huart2, (uint8_t*)&uart2RecvData, 1);
-	
 	HAL_GPIO_WritePin(ESP8266_EN_GPIO_Port, ESP8266_EN_Pin, GPIO_PIN_SET);
+	
+	// UART2 DMA初始化
+	UART2_DMA_Init();
+	
+	// 启动UART2 DMA接收
+	UART2_Start_Receive();
+	
+	printf("USB转UART2模块启动完成\n");
+	printf("UART2配置: 波特率%d, 数据位%d, 校验位%d, 停止位%d\n", 
+					 huart2.Init.BaudRate, huart2.Init.WordLength,
+					 huart2.Init.Parity, huart2.Init.StopBits);
 	
   /* USER CODE END 2 */
 
@@ -110,7 +120,7 @@ int main(void)
   {
 //		CDC_Transmit_FS("HelloYQY USB\n", 13);
 //		
-//		HAL_Delay(1000);
+		HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

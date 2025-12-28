@@ -37,13 +37,10 @@ void Lime_USB_UART_RetransUSB_handle(uint8_t chr);  //放串口接收中断里
 //xinde
 /* 线路编码结构体 */
 #include "usbd_cdc.h"
-//typedef struct
-//{
-//  uint32_t bitrate;
-//  uint8_t  format;
-//  uint8_t  paritytype;
-//  uint8_t  datatype;
-//} USBD_CDC_LineCodingTypeDef;
+
+/* 缓冲区定义 */
+#define UART2_RX_BUF_SIZE  1024
+#define UART2_TX_BUF_SIZE  1024
 
 /* 函数声明 */
 void CDC_SetLineCoding(USBD_CDC_LineCodingTypeDef *line_coding);
@@ -54,6 +51,10 @@ void CDC_ControlLineState(uint8_t* pbuf);
 extern USBD_CDC_LineCodingTypeDef LineCoding;
 extern UART_HandleTypeDef huart1;
 extern uint8_t uart_rx_buffer[64];
+
+void UART2_DMA_Init(void);
+void UART2_Start_Receive(void);
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size);
 
 #endif    //__LIME_USB_UART_H
 

@@ -265,10 +265,22 @@ int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-	Lime_USB_UART_RetransUART_handle(Buf,Len);
+	printf("USB收到数据，长度: %d\n", *Len);
+    
+	// 通过UART2 DMA发送数据
+	if (HAL_UART_Transmit_DMA(&huart2, Buf, *Len) == HAL_OK)
+	{
+			printf("UART2 DMA发送启动，长度: %d\n", *Len);
+	}
+	else
+	{
+			printf("UART2 DMA发送失败\n");
+	}
+    
+	// 准备下一次USB接收
+	USBD_CDC_SetRxBuffer(&hUsbDeviceFS, Buf);
+	USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 	
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
-  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
   return (USBD_OK);
   /* USER CODE END 6 */
 }

@@ -307,65 +307,111 @@ void CDC_ControlLineState(uint8_t* pbuf)
   if (control_line_state & 0x01) 
   {
     DEBUG_LOG("DTR 1\n");
+		HAL_GPIO_WritePin(SIM_UART_DTR_GPIO_Port, SIM_UART_DTR_Pin, GPIO_PIN_SET);
   } 
   else 
   {
     DEBUG_LOG("DTR 0\n");
+		HAL_GPIO_WritePin(SIM_UART_DTR_GPIO_Port, SIM_UART_DTR_Pin, GPIO_PIN_RESET);
   }
   
   // RTS信号 (bit1)
   if (control_line_state & 0x02) 
   {
     DEBUG_LOG("RTS 1\n");
+		HAL_GPIO_WritePin(SIM_UART_RTS_GPIO_Port, SIM_UART_RTS_Pin, GPIO_PIN_SET);
   } 
   else 
   {
     DEBUG_LOG("RTS 0\n");
+		HAL_GPIO_WritePin(SIM_UART_RTS_GPIO_Port, SIM_UART_RTS_Pin, GPIO_PIN_RESET);
   }
 }
 
 /* USB数据发送 */
-//int8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
-//{
-//  uint8_t result = USBD_OK;
-//  USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
-//  
-//  if(hcdc->TxState == 0)
-//  {
-//    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
-//    result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
-//  }
-//  else
-//  {
-//    result = USBD_BUSY;
-//  }
-//  
-//  return result;
-//}
+/* UART2 DMA缓冲区 */
+uint8_t uart2_rx_buf[UART2_RX_BUF_SIZE];
+uint8_t uart2_tx_buf[UART2_TX_BUF_SIZE];
+volatile uint16_t uart2_rx_size = 0;
+volatile uint8_t uart2_dma_receiving = 0;
 
-///* USB数据接收回调 */
-//static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
-//{
-//  // USB数据转发到UART
-//  HAL_UART_Transmit(&huart2, Buf, *Len, 1000);
-//  
-//  // 准备下一次接收
-//  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, Buf);
-//  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-//  
-//  return USBD_OK;
-//}
+void UART2_DMA_Init(void)
+{
+    // 清零缓冲区
+    memset(uart2_rx_buf, 0, UART2_RX_BUF_SIZE);
+    memset(uart2_tx_buf, 0, UART2_TX_BUF_SIZE);
+    uart2_rx_size = 0;
+    uart2_dma_receiving = 0;
+    
+    DEBUG_LOG("UART2 DMA初始化完成\n");
+}
+void UART2_Start_Receive(void)
+{
+    if (HAL_UARTEx_ReceiveToIdle_DMA(&huart2, uart2_rx_buf, UART2_RX_BUF_SIZE) == HAL_OK)
+    {
+        uart2_dma_receiving = 1;
+        DEBUG_LOG("UART2 DMA接收启动，缓冲区大小: %d\n", UART2_RX_BUF_SIZE);
+    }
+    else
+    {
+        uart2_dma_receiving = 0;
+        DEBUG_LOG("UART2 DMA接收启动失败\n");
+    }
+}
 
-///* UART接收完成回调 */
-//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-//{
-//  if(huart->Instance == USART1)
-//  {
-//    // UART数据转发到USB
-//    CDC_Transmit_FS(uart_rx_buffer, sizeof(uart_rx_buffer));
-//    
-//    // 重新启动UART接收
-//    HAL_UART_Receive_IT(huart, uart_rx_buffer, sizeof(uart_rx_buffer));
-//  }
-//}
+/* UART2接收完成回调函数（IDLE中断） */
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+    if (huart->Instance == USART2)  // 根据你的UART2实例修改
+    {
+        DEBUG_LOG("UART2 IDLE中断，接收数据长度: %d\n", Size);
+        
+        if (Size > 0 && Size <= UART2_RX_BUF_SIZE)
+        {
+            // 保存接收到的数据长度
+            uart2_rx_size = Size;
+            
+            // 通过USB CDC发送接收到的数据
+            if (CDC_Transmit_FS(uart2_rx_buf, Size) == USBD_OK)
+            {
+                DEBUG_LOG("UART2数据通过USB发送成功，长度: %d\n", Size);
+                
+                // 调试：打印前几个字节
+                if (Size > 0) {
+                    DEBUG_LOG("数据前4字节: ");
+                    for (int i = 0; i < (Size < 4 ? Size : 4); i++) {
+                        DEBUG_LOG("0x%02X ", uart2_rx_buf[i]);
+                    }
+                    DEBUG_LOG("\n");
+                }
+            }
+            else
+            {
+                DEBUG_LOG("USB发送繁忙，数据丢失\n");
+            }
+            
+            // 清零接收长度
+            uart2_rx_size = 0;
+        }
+        
+        // 重新启动DMA接收
+        UART2_Start_Receive();
+    }
+}
 
+/* UART错误回调 */
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART2)
+    {
+        DEBUG_LOG("UART2错误: 0x%08lX\n", huart->ErrorCode);
+        
+        // 重新启动接收
+        if (huart->ErrorCode != HAL_UART_ERROR_NONE)
+        {
+            HAL_UART_AbortReceive(&huart2);
+            uart2_dma_receiving = 0;
+            UART2_Start_Receive();
+        }
+    }
+}

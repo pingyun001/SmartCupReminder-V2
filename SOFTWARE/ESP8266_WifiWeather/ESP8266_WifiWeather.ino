@@ -12,6 +12,15 @@
 
 void setup() {
   Serial.begin(115200);
+
+  uint8_t count = 0;
+  while(1)
+  {
+    Serial.print("Hello World");
+    Serial.print(count++);
+    Serial.print("\n");
+    delay(1000);
+  }
   
   // 连接WiFi
   WiFi.begin(WIFI_SSID, WIFI_PASS);

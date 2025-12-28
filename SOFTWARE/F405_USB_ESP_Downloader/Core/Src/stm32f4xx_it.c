@@ -258,15 +258,15 @@ void OTG_FS_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-#include "Lime_USB_Uart.h"
-#include "usart.h"
-extern uint8_t uart2RecvData;
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  if(huart ->Instance == USART2)
-  {
-    Lime_USB_UART_RetransUSB_handle(uart2RecvData);
-    HAL_UART_Receive_IT(&huart2, &uart2RecvData, 1);
-  }
-}
+//#include "Lime_USB_Uart.h"
+//#include "usart.h"
+//extern uint8_t uart2RecvData;
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+//{
+//  if(huart ->Instance == USART2)
+//  {
+//    Lime_USB_UART_RetransUSB_handle(uart2RecvData);
+//    HAL_UART_Receive_IT(&huart2, &uart2RecvData, 1);
+//  }
+//}
 /* USER CODE END 1 */

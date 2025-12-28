@@ -59,6 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define ESP8266_EN_Pin GPIO_PIN_1
 #define ESP8266_EN_GPIO_Port GPIOA
+#define SIM_UART_RTS_Pin GPIO_PIN_8
+#define SIM_UART_RTS_GPIO_Port GPIOC
+#define SIM_UART_DTR_Pin GPIO_PIN_9
+#define SIM_UART_DTR_GPIO_Port GPIOC
 
 /* USER CODE BEGIN Private defines */
 #include <stdio.h>
