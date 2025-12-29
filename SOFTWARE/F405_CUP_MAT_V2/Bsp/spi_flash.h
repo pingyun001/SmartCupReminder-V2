@@ -15,8 +15,6 @@
 #define SPI_FLASH_CMD_DATA_READ     0x03
 
 
-
-
 typedef struct
 {
     uint8_t jedec_id[3];
@@ -45,6 +43,9 @@ HAL_StatusTypeDef spi_flash_init(spi_flash_info_t *p_info);
 HAL_StatusTypeDef spi_flash_erase_sector(uint32_t sector_addr);
 HAL_StatusTypeDef spi_flash_write(uint8_t *p_data, uint32_t addr, uint32_t len);
 HAL_StatusTypeDef spi_flash_read(uint8_t *p_data, uint32_t addr, uint32_t len);
+
+uint32_t spi_flash_get_capacity_bytes(void);
+uint32_t spi_flash_get_sector_count(void);
 
 void spi_flash_dma_irq_hook(void);
 

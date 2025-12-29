@@ -36,6 +36,7 @@
 #include "ds18b20.h"
 #include "key.h"
 #include "lcd_init.h"
+#include "FatFsSelfTest.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -142,7 +143,7 @@ int main(void)
 	
 	key_Init();
 	
-	while(DS18B20_Init())
+	while(ds18b20_Init())
 	{
 		printf("ds18b20 init err\n");
 		HAL_Delay(300);
@@ -152,7 +153,8 @@ int main(void)
 	
 	LCD_Fill(0, 0, 428, 142, 0xf800);
 	
-	
+	FatFs_test(0);
+	FatFs_TestHardware(0, 128 * 1024);
 
   /* USER CODE END 2 */
 
@@ -160,7 +162,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//		printf("temp:%.3f\n", (float)DS18B20_Get_Temp() / 10.0f);
+//		printf("temp:%.3f\n", (float)ds18b20_get_temp() / 10.0f);
 		
 		key_status = key_get_press();
 		

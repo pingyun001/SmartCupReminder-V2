@@ -196,6 +196,12 @@ HAL_StatusTypeDef spi_flash_init(spi_flash_info_t *p_info)
 
     /* read UID */
     ret += spi_flash_read_uid(spi_flash_info.uid);
+		
+		/* copy p_info */
+		if(p_info != NULL)
+		{
+			memcpy(p_info, &spi_flash_info, sizeof(spi_flash_info_t));
+		}
 
     printf("JEDEC ID: %02X %02X %02X\n", spi_flash_info.jedec_id[0], spi_flash_info.jedec_id[1], spi_flash_info.jedec_id[2]);
     printf("Capacity: %d MB\n", spi_flash_info.capacity / (1024 * 1024));
@@ -307,6 +313,21 @@ HAL_StatusTypeDef spi_flash_read(uint8_t *p_data, uint32_t addr, uint32_t len)
     }
 
     return HAL_OK;
+}
+
+uint32_t spi_flash_get_capacity_bytes(void)
+{
+	if(spi_flash_info.capacity == 0)
+	{
+		spi_flash_init(NULL);
+	}
+	
+	return spi_flash_info.capacity;
+}
+
+uint32_t spi_flash_get_sector_count(void)
+{
+	return spi_flash_get_capacity_bytes() / 4096;
 }
 
 void spi_flash_dma_irq_hook(void)
