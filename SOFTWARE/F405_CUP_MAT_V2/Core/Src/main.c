@@ -132,8 +132,9 @@ int main(void)
 	MX_USB_DEVICE_Init();
 	
 	HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
+	
 
-  spi_flash_init(NULL);
+//  spi_flash_init(NULL);
 	
 //	W25QFlash_SmallDataCheck();
 	
@@ -158,8 +159,8 @@ int main(void)
 	
 	LCD_Fill(0, 0, 428, 142, 0xf800);
 	
-	FatFs_test(0);
-	FatFs_TestHardware(0, 128 * 1024);
+//	FatFs_test(0);
+//	FatFs_TestHardware(0, 128 * 1024);
 
   /* USER CODE END 2 */
 
