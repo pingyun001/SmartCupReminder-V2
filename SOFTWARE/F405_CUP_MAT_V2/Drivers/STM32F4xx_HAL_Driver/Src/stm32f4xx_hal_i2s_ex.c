@@ -552,7 +552,6 @@ HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_DMA(I2S_HandleTypeDef *hi2s,
 {
   uint32_t *tmp = NULL;
   uint32_t tmp1 = 0U;
-  HAL_StatusTypeDef status;
 
   if (hi2s->State != HAL_I2S_STATE_READY)
   {
@@ -617,14 +616,14 @@ HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_DMA(I2S_HandleTypeDef *hi2s,
   {
     /* Enable the Rx DMA Stream */
     tmp = (uint32_t *)&pRxData;
-    status = HAL_DMA_Start_IT(hi2s->hdmarx, (uint32_t)&I2SxEXT(hi2s->Instance)->DR, *(uint32_t *)tmp, hi2s->RxXferSize);
+    HAL_DMA_Start_IT(hi2s->hdmarx, (uint32_t)&I2SxEXT(hi2s->Instance)->DR, *(uint32_t *)tmp, hi2s->RxXferSize);
 
     /* Enable Rx DMA Request */
     SET_BIT(I2SxEXT(hi2s->Instance)->CR2, SPI_CR2_RXDMAEN);
 
     /* Enable the Tx DMA Stream */
     tmp = (uint32_t *)&pTxData;
-    status = HAL_DMA_Start_IT(hi2s->hdmatx, *(uint32_t *)tmp, (uint32_t)&hi2s->Instance->DR, hi2s->TxXferSize);
+    HAL_DMA_Start_IT(hi2s->hdmatx, *(uint32_t *)tmp, (uint32_t)&hi2s->Instance->DR, hi2s->TxXferSize);
 
     /* Enable Tx DMA Request */
     SET_BIT(hi2s->Instance->CR2, SPI_CR2_TXDMAEN);
@@ -640,14 +639,14 @@ HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_DMA(I2S_HandleTypeDef *hi2s,
     }
     /* Enable the Tx DMA Stream */
     tmp = (uint32_t *)&pTxData;
-    status = HAL_DMA_Start_IT(hi2s->hdmatx, *(uint32_t *)tmp, (uint32_t)&I2SxEXT(hi2s->Instance)->DR, hi2s->TxXferSize);
+    HAL_DMA_Start_IT(hi2s->hdmatx, *(uint32_t *)tmp, (uint32_t)&I2SxEXT(hi2s->Instance)->DR, hi2s->TxXferSize);
 
     /* Enable Tx DMA Request */
     SET_BIT(I2SxEXT(hi2s->Instance)->CR2, SPI_CR2_TXDMAEN);
 
     /* Enable the Rx DMA Stream */
     tmp = (uint32_t *)&pRxData;
-    status = HAL_DMA_Start_IT(hi2s->hdmarx, (uint32_t)&hi2s->Instance->DR, *(uint32_t *)tmp, hi2s->RxXferSize);
+    HAL_DMA_Start_IT(hi2s->hdmarx, (uint32_t)&hi2s->Instance->DR, *(uint32_t *)tmp, hi2s->RxXferSize);
 
     /* Enable Rx DMA Request */
     SET_BIT(hi2s->Instance->CR2, SPI_CR2_RXDMAEN);
@@ -663,7 +662,7 @@ HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_DMA(I2S_HandleTypeDef *hi2s,
     __HAL_I2S_ENABLE(hi2s);
   }
 
-  return status;
+  return HAL_OK;
 }
 
 /**

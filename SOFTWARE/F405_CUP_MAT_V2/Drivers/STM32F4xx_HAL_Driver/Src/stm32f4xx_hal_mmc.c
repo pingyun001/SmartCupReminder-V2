@@ -1676,30 +1676,24 @@ void HAL_MMC_IRQHandler(MMC_HandleTypeDef *hmmc)
     else if((context & MMC_CONTEXT_DMA) != 0U)
     {
       /* Abort the MMC DMA Streams */
-      if(((context & MMC_CONTEXT_WRITE_SINGLE_BLOCK) != 0U) || ((context & MMC_CONTEXT_WRITE_MULTIPLE_BLOCK) != 0U))
+      if(hmmc->hdmatx != NULL)
       {
-        if(hmmc->hdmatx != NULL)
+        /* Set the DMA Tx abort callback */
+        hmmc->hdmatx->XferAbortCallback = MMC_DMATxAbort;
+        /* Abort DMA in IT mode */
+        if(HAL_DMA_Abort_IT(hmmc->hdmatx) != HAL_OK)
         {
-          /* Set the DMA Tx abort callback */
-          hmmc->hdmatx->XferAbortCallback = MMC_DMATxAbort;
-          /* Abort DMA in IT mode */
-          if(HAL_DMA_Abort_IT(hmmc->hdmatx) != HAL_OK)
-          {
-            MMC_DMATxAbort(hmmc->hdmatx);
-          }
+          MMC_DMATxAbort(hmmc->hdmatx);
         }
       }
-      else if(((context & SD_CONTEXT_READ_SINGLE_BLOCK) != 0U) || ((context & SD_CONTEXT_READ_MULTIPLE_BLOCK) != 0U))
+      else if(hmmc->hdmarx != NULL)
       {
-        if(hmmc->hdmarx != NULL)
+        /* Set the DMA Rx abort callback */
+        hmmc->hdmarx->XferAbortCallback = MMC_DMARxAbort;
+        /* Abort DMA in IT mode */
+        if(HAL_DMA_Abort_IT(hmmc->hdmarx) != HAL_OK)
         {
-          /* Set the DMA Rx abort callback */
-          hmmc->hdmarx->XferAbortCallback = MMC_DMARxAbort;
-          /* Abort DMA in IT mode */
-          if(HAL_DMA_Abort_IT(hmmc->hdmarx) != HAL_OK)
-          {
-            MMC_DMARxAbort(hmmc->hdmarx);
-          }
+          MMC_DMARxAbort(hmmc->hdmarx);
         }
       }
       else
@@ -2383,7 +2377,7 @@ HAL_StatusTypeDef HAL_MMC_ConfigWideBusOperation(MMC_HandleTypeDef *hmmc, uint32
   if(errorstate != HAL_MMC_ERROR_NONE)
   {
     /* Clear all the static flags */
-    __HAL_MMC_CLEAR_FLAG(hmmc, SDIO_STATIC_FLAGS);
+    __HAL_MMC_CLEAR_FLAG(hmmc, SDMMC_STATIC_FLAGS);
     hmmc->ErrorCode |= errorstate;
     return HAL_ERROR;
   }

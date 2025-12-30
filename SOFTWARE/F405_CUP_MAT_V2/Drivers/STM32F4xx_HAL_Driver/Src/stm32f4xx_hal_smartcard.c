@@ -997,33 +997,19 @@ HAL_StatusTypeDef HAL_SMARTCARD_Transmit_DMA(SMARTCARD_HandleTypeDef *hsc, const
 
     /* Enable the SMARTCARD transmit DMA stream */
     tmp = (const uint32_t*)&pData;
-    if (HAL_DMA_Start_IT(hsc->hdmatx, *(const uint32_t*)tmp, (uint32_t)&hsc->Instance->DR, Size) == HAL_OK)
-    {
-      /* Clear the TC flag in the SR register by writing 0 to it */
-      __HAL_SMARTCARD_CLEAR_FLAG(hsc, SMARTCARD_FLAG_TC);
+    HAL_DMA_Start_IT(hsc->hdmatx, *(const uint32_t*)tmp, (uint32_t)&hsc->Instance->DR, Size);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hsc);
+     /* Clear the TC flag in the SR register by writing 0 to it */
+    __HAL_SMARTCARD_CLEAR_FLAG(hsc, SMARTCARD_FLAG_TC);
 
-      /* Enable the DMA transfer for transmit request by setting the DMAT bit
-      in the SMARTCARD CR3 register */
-      SET_BIT(hsc->Instance->CR3, USART_CR3_DMAT);
+    /* Process Unlocked */
+    __HAL_UNLOCK(hsc);
 
-      return HAL_OK;
-    }
-    else
-    {
-      /* Set error code to DMA */
-      hsc->ErrorCode = HAL_SMARTCARD_ERROR_DMA;
+    /* Enable the DMA transfer for transmit request by setting the DMAT bit
+    in the SMARTCARD CR3 register */
+    SET_BIT(hsc->Instance->CR3, USART_CR3_DMAT);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hsc);
-
-      /* Restore hsc->State to ready */
-      hsc->gState = HAL_SMARTCARD_STATE_READY;
-
-      return HAL_ERROR;
-    }
+    return HAL_OK;
   }
   else
   {
@@ -1072,39 +1058,25 @@ HAL_StatusTypeDef HAL_SMARTCARD_Receive_DMA(SMARTCARD_HandleTypeDef *hsc, uint8_
 
     /* Enable the DMA stream */
     tmp = (uint32_t*)&pData;
-    if (HAL_DMA_Start_IT(hsc->hdmarx, (uint32_t)&hsc->Instance->DR, *(uint32_t*)tmp, Size) == HAL_OK)
-    {
-      /* Clear the Overrun flag just before enabling the DMA Rx request: can be mandatory for the second transfer */
-      __HAL_SMARTCARD_CLEAR_OREFLAG(hsc);
+    HAL_DMA_Start_IT(hsc->hdmarx, (uint32_t)&hsc->Instance->DR, *(uint32_t*)tmp, Size);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hsc);
+    /* Clear the Overrun flag just before enabling the DMA Rx request: can be mandatory for the second transfer */
+    __HAL_SMARTCARD_CLEAR_OREFLAG(hsc);
 
-      /* Enable the SMARTCARD Parity Error Interrupt */
-      SET_BIT(hsc->Instance->CR1, USART_CR1_PEIE);
+    /* Process Unlocked */
+    __HAL_UNLOCK(hsc);
 
-      /* Enable the SMARTCARD Error Interrupt: (Frame error, noise error, overrun error) */
-      SET_BIT(hsc->Instance->CR3, USART_CR3_EIE);
+    /* Enable the SMARTCARD Parity Error Interrupt */
+    SET_BIT(hsc->Instance->CR1, USART_CR1_PEIE);
 
-      /* Enable the DMA transfer for the receiver request by setting the DMAR bit
-      in the SMARTCARD CR3 register */
-      SET_BIT(hsc->Instance->CR3, USART_CR3_DMAR);
+    /* Enable the SMARTCARD Error Interrupt: (Frame error, noise error, overrun error) */
+    SET_BIT(hsc->Instance->CR3, USART_CR3_EIE);
 
-      return HAL_OK;
-    }
-    else
-    {
-      /* Set error code to DMA */
-      hsc->ErrorCode = HAL_SMARTCARD_ERROR_DMA;
+    /* Enable the DMA transfer for the receiver request by setting the DMAR bit
+    in the SMARTCARD CR3 register */
+    SET_BIT(hsc->Instance->CR3, USART_CR3_DMAR);
 
-      /* Process Unlocked */
-      __HAL_UNLOCK(hsc);
-
-      /* Restore hsc->State to ready */
-      hsc->RxState = HAL_SMARTCARD_STATE_READY;
-
-      return HAL_ERROR;
-    }
+    return HAL_OK;
   }
   else
   {

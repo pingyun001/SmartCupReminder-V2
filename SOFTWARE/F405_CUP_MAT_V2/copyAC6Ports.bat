@@ -1,0 +1,2 @@
+copy .\BackupAC6Ports\port.c .\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\port.c
+copy .\BackupAC6Ports\portmacro.h .\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h
