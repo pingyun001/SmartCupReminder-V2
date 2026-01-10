@@ -13,14 +13,14 @@
 void setup() {
   Serial.begin(115200);
 
-  uint8_t count = 0;
-  while(1)
-  {
-    Serial.print("Hello World");
-    Serial.print(count++);
-    Serial.print("\n");
-    delay(1000);
-  }
+//  uint8_t count = 0;
+//  while(1)
+//  {
+//    Serial.print("Hello World");
+//    Serial.print(count++);
+//    Serial.print("\n");
+//    delay(1000);
+//  }
   
   // 连接WiFi
   WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -113,8 +113,75 @@ void fetchDailyWeather() {
   if (httpCode == 200) {
     String payload = http.getString();
     
-    DynamicJsonDocument doc(2048); // 需要更大的内存来存储多天数据
+    DynamicJsonDocument doc(2048); // 需要更大的内存来{
+  "results": [
+    {
+      "location": {
+        "id": "WX4FBXXFKE4F",
+        "name": "北京",
+        "country": "CN",
+        "path": "北京,北京,中国",
+        "timezone": "Asia/Shanghai",
+        "timezone_offset": "+08:00"
+      },
+      "daily": [
+        {
+          "date": "2026-01-07",
+          "text_day": "多云",
+          "code_day": "4",
+          "text_night": "晴",
+          "code_night": "1",
+          "high": "4",
+          "low": "-7",
+          "rainfall": "0.00",
+          "precip": "0.00",
+          "wind_direction": "北",
+          "wind_direction_degree": "0",
+          "wind_speed": "23.4",
+          "wind_scale": "4",
+          "humidity": "44"
+        },
+        {
+          "date": "2026-01-08",
+          "text_day": "晴",
+          "code_day": "0",
+          "text_night": "多云",
+          "code_night": "4",
+          "high": "5",
+          "low": "-7",
+          "rainfall": "0.00",
+          "precip": "0.00",
+          "wind_direction": "西南",
+          "wind_direction_degree": "225",
+          "wind_speed": "8.4",
+          "wind_scale": "2",
+          "humidity": "46"
+        },
+        {
+          "date": "2026-01-09",
+          "text_day": "多云",
+          "code_day": "4",
+          "text_night": "晴",
+          "code_night": "1",
+          "high": "7",
+          "low": "-5",
+          "rainfall": "0.00",
+          "precip": "0.00",
+          "wind_direction": "西北",
+          "wind_direction_degree": "315",
+          "wind_speed": "3.0",
+          "wind_scale": "1",
+          "humidity": "59"
+        }
+      ],
+      "last_update": "2026-01-07T08:00:00+08:00"
+    }
+  ]
+}存储多天数据
     DeserializationError error = deserializeJson(doc, payload);
+
+    Serial.println("Debug Payload:");
+    Serial.println(payload);
     
     if (!error) {
       JsonArray daily = doc["results"][0]["daily"];
