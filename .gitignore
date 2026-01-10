@@ -59,6 +59,21 @@ SOFTWARE/F405_CUP_MAT_V2/MDK-ARM/RTE/
 SOFTWARE/F405_CUP_MAT_V2/MDK-ARM/JLinkLog.txt
 SOFTWARE/F405_CUP_MAT_V2/MDK-ARM/JLinkSettings.ini
 SOFTWARE/F405_CUP_MAT_V2/MDK-ARM/EventRecorderStub.scvd
+SOFTWARE/LvglSimulationV3_LV93/.codemap
+SOFTWARE/LvglSimulationV3_LV93/bin
+SOFTWARE/LvglSimulationV3_LV93/build
+SOFTWARE/LvglSimulationV3_LV93/config
+SOFTWARE/LvglSimulationV3_LV93/FreeRTOS
+SOFTWARE/LvglSimulationV3_LV93/lvgl
+SOFTWARE/LvglSimulationV3_LV93/main
+SOFTWARE/LvglSimulationV3_LV93/.gitignore
+SOFTWARE/LvglSimulationV3_LV93/.gitmodules
+SOFTWARE/LvglSimulationV3_LV93/CMakeLists.txt
+SOFTWARE/LvglSimulationV3_LV93/licence.txt
+SOFTWARE/LvglSimulationV3_LV93/lv_conf.h
+SOFTWARE/LvglSimulationV3_LV93/manifest.json
+SOFTWARE/LvglSimulationV3_LV93/README.md
+SOFTWARE/LvglSimulationV3_LV93/simulator.*
 
 # user
 *.Lime
