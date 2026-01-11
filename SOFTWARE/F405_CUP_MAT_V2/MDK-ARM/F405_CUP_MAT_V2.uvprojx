@@ -3698,6 +3698,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_SimFiveKey.c</FilePath>
             </File>
+            <File>
+              <FileName>Lime_HeadBar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_HeadBar.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3742,6 +3747,31 @@
               <FileName>Lime_MessageBox_TitleFont.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\Lime_MessageBox_TitleFont.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_img_moon.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_moon.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_img_weatherlogo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_weatherlogo.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_img_wificonn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_wificonn.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_img_wifidisconn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_wifidisconn.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_font_headbar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_headbar.c</FilePath>
             </File>
           </Files>
         </Group>

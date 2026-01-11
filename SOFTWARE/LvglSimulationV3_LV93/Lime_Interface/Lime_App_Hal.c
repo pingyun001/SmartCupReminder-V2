@@ -4,7 +4,12 @@
 
 LimeHal_Info_t LimeHal_Info =
 {
+    .workingInfo.totalCountSeconds = 30 * 60,
+    .workingInfo.remainCountSeconds = 30 * 60,
 
+    .senserInfo.isWifiConnected = true,
+    .senserInfo.isWeatherDataValid = true,
+    .senserInfo.homeTemper = 23,
 
 };
 
@@ -12,33 +17,6 @@ LimeHal_Info_t LimeHal_Info =
 LimeHal_Info_t *LimeHAL_GetInfoPin(void)
 {
     return &LimeHal_Info;
-}
-
-int32_t absX(int32_t x)
-{
-    return x < 0? -x : x;
-}
-
-float fmap(float x, float in_min, float in_max, float out_min, float out_max)
-{
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
-float fmapWithLimit(float x, float in_min, float in_max, float out_min, float out_max)
-{
-    float returnVal = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-
-    if(out_min > out_max)
-    {
-        float temp = out_min;
-        out_min = out_max;
-        out_max = temp;
-    }
-
-    returnVal = (returnVal < out_min)? out_min : returnVal;
-    returnVal = (returnVal > out_max)? out_max : returnVal;
-
-    return returnVal;
 }
 
 uint8_t Lime_CalDayInMonth(uint32_t year, uint8_t month)
@@ -125,7 +103,7 @@ void LimeHAL_SetAllKeyToReleased(void)
 
 void LimeHAL_SoftSimHardwareTimer_Init(void)
 {
-    lv_timer_t * timer = lv_timer_create(timer_cb, 500, NULL);
+    lv_timer_create(timer_cb, 100, NULL);
 }
 
 /*typedef struct {
@@ -142,6 +120,37 @@ static void timer_cb(lv_timer_t * timer)
     static uint32_t totalRunCnt = 0;
 
     totalRunCnt++;
+
+    /* sim time */
+    static uint8_t hour = 12, min = 10, sec = 0;
+    sec ++;
+    if(sec == 60)
+    {
+        sec = 0;
+        min ++;
+        if(min == 60)
+        {
+            min = 0;
+            hour ++;
+            if(hour == 24)
+            {
+                hour = 0;
+            }
+        }
+    }
+    LimeHal_Info.senserInfo.hour = hour;
+    LimeHal_Info.senserInfo.minute = min;
+
+    /* sim countdown time */
+    if(LimeHal_Info.workingInfo.remainCountSeconds != 0)
+    {
+        LimeHal_Info.workingInfo.workingStatus = LimeHal_WoringStatus_Countdown;
+        LimeHal_Info.workingInfo.remainCountSeconds --;
+    }
+    else
+    {
+        LimeHal_Info.workingInfo.workingStatus = LimeHal_WoringStatus_CountFinish;
+    }
 
     /*sim Hardware Init sequence*/
     if(totalRunCnt == 1)

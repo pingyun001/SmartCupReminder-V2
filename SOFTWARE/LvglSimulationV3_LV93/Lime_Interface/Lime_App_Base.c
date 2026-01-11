@@ -31,11 +31,38 @@ void lime_base_set_label_string(lv_obj_t * lable_obj, const char *format, ...)
     char *remain_power_showed_str = lv_label_get_text(lable_obj);
 
     /* Compare and update */
-    if(memcmp(remain_power_showed_str, synthesize_str, length) != 0)
+    if(strcmp(remain_power_showed_str, synthesize_str) != 0)
     {
         lv_label_set_text(lable_obj, synthesize_str);
     }
 
     /* free buffer */
     MLV_BASE_FREE(synthesize_str);
+}
+
+int32_t absX(int32_t x)
+{
+    return x < 0? -x : x;
+}
+
+float fmap(float x, float in_min, float in_max, float out_min, float out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+float fmapWithLimit(float x, float in_min, float in_max, float out_min, float out_max)
+{
+    float returnVal = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
+    if(out_min > out_max)
+    {
+        float temp = out_min;
+        out_min = out_max;
+        out_max = temp;
+    }
+
+    returnVal = (returnVal < out_min)? out_min : returnVal;
+    returnVal = (returnVal > out_max)? out_max : returnVal;
+
+    return returnVal;
 }

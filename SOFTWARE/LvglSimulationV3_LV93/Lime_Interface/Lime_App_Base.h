@@ -40,5 +40,8 @@
 #endif
 
 void lime_base_set_label_string(lv_obj_t * lable_obj, const char *format, ...);
+int32_t absX(int32_t x);
+float fmap(float x, float in_min, float in_max, float out_min, float out_max);
+float fmapWithLimit(float x, float in_min, float in_max, float out_min, float out_max);
 
 #endif // __Lime_App_Base_H__

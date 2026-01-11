@@ -4,7 +4,7 @@
 
 #include "Lime_App_Hal.h"
 #include "Lime_CountFace.h"
-
+#include "Lime_HeadBar.h"
 #include "Lime_MessageBox.h"
 
 LV_IMG_DECLARE(lime_mainbg);
@@ -36,10 +36,24 @@ void Lime_LvMainFace_Init(void)
     lv_img_set_src(bg_img, &lime_mainbg);
     lv_obj_align(bg_img, LV_ALIGN_CENTER, 0, 0);
 
+    lv_obj_t* header_shadow_obj = lv_obj_create(mainFaceObj);
+    lv_obj_set_size(header_shadow_obj, 460, 142);
+    lv_obj_set_pos(header_shadow_obj, -224, -118);
+    lv_obj_set_style_bg_opa(header_shadow_obj, LV_OPA_50, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(header_shadow_obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(header_shadow_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(header_shadow_obj, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(header_shadow_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(header_shadow_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(header_shadow_obj, LV_OBJ_FLAG_SCROLLABLE);
+
     lime_countface_create(mainFaceObj);
+    lime_headbar_create(mainFaceObj);
 
     /* start simulator hardware timer */
 #if !USING_LIME_HARDWARE
+    // LimeHAL_SoftSimHardwareTimer_Init();
+#else
     LimeHAL_SoftSimHardwareTimer_Init();
 #endif
 }

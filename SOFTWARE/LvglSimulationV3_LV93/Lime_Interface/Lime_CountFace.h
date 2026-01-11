@@ -9,8 +9,11 @@
 #include "../main/src/main.h"
 #endif
 
+#include "Lime_App_Hal.h"
 
-
+static void lime_countface_update_bar(uint32_t total_second, uint32_t remain_second);
+static void lime_countface_update_main_time(uint32_t total_second, uint32_t remain_second);
+static void lime_countface_update_charactor_img(LimeHal_WoringStatus_e status);
 
 lv_obj_t *lime_countface_create(lv_obj_t* parent);
 

@@ -34,7 +34,8 @@ static void disp_init(void);
 static void disp_flush(lv_display_t * disp, const lv_area_t * area, uint8_t * px_map);
 
 LV_ATTRIBUTE_MEM_ALIGN
-static uint8_t buf_1_1[MY_DISP_HOR_RES * 80 * BYTE_PER_PIXEL]  __attribute__((aligned(4))) = {0};            /*A buffer for 10 rows*/
+static uint8_t buf_1_1[MY_DISP_HOR_RES * 40 * BYTE_PER_PIXEL]  __attribute__((aligned(4))) = {0};            /*A buffer for 10 rows*/
+static uint8_t buf_1_2[MY_DISP_HOR_RES * 40 * BYTE_PER_PIXEL]  __attribute__((aligned(4))) = {0};            /*A buffer for 10 rows*/
 
 void lv_port_disp_init(void)
 {
@@ -45,7 +46,7 @@ void lv_port_disp_init(void)
 
     /* Example 1
      * One buffer for partial rendering*/
-    lv_display_set_buffers(disp, buf_1_1, NULL, sizeof(buf_1_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+    lv_display_set_buffers(disp, buf_1_1, buf_1_2, sizeof(buf_1_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
 
 //    /* Example 2
 //     * Two buffers for partial rendering

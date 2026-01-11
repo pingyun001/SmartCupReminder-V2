@@ -29,12 +29,6 @@ typedef struct
 	uint8_t sw_down;
 }LimeHal_KeyInfo_t;
 
-typedef struct
-{
-	char deletePhotoPath[128];
-	bool isPhotoNeedDelete;
-}LimeHal_PhotoFaceInfo_t;
-
 /* working status */
 //LimeHal_WoringStatus_Init -> LimeHal_WoringStatus_Idle -> LimeHal_WoringStatus_Countdown -> LimeHal_WoringStatus_CountFinish ->(back to LimeHal_WoringStatus_Idle)
 typedef enum
@@ -47,7 +41,42 @@ typedef enum
 typedef struct
 {
 	LimeHal_WoringStatus_e workingStatus;
+	uint16_t remainCountSeconds;
+	uint16_t totalCountSeconds;
+	bool isSleepMode;
+
 }LimeHal_WorkingInfo_t;
+
+
+typedef struct
+{
+	uint8_t month, day;
+	float temperaLow;
+	float temperaHigh;
+	float humidity;
+	uint8_t weatherLogoID;
+}dayWeather_t;
+
+typedef struct
+{
+	/* from adc */
+	float usbVolt;
+
+	/* from ds18b20 */
+	float homeTemper;
+
+	/* from esp time api */
+	uint8_t hour, minute;
+
+	/* from esp weather api */
+	bool isWifiConnected;
+	bool isWeatherDataValid;
+	float nowTemper;
+	float nowHumi;
+	dayWeather_t todayWeather;
+	dayWeather_t tomorrowWeather;
+	dayWeather_t dayAfterTomorrowWeather;
+}LimeHal_SenserInfo_t;
 typedef struct
 {
 	/* hardware online info, used when LimeRC power on, show Hello interface */
@@ -57,12 +86,12 @@ typedef struct
     LimeHal_KeyInfo_t keyInfo;
 
 	/* working info */
+	LimeHal_WorkingInfo_t workingInfo;
 
+	/* weather info */
+	LimeHal_SenserInfo_t senserInfo;
 
 }LimeHal_Info_t;
-
-extern LimeHal_Info_t LimeHal_Info;
-
 
 /*common API*/
 LimeHal_Info_t *LimeHAL_GetInfoPin(void);
