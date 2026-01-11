@@ -3,12 +3,11 @@
 #include "Lime_SimFiveKey.h"
 
 #include "Lime_App_Hal.h"
+#include "Lime_CountFace.h"
 
 #include "Lime_MessageBox.h"
 
-#if USING_LIME_HARDWARE
-
-#endif
+LV_IMG_DECLARE(lime_mainbg);
 
 static lv_obj_t* mainFaceObj = NULL;
 
@@ -30,6 +29,14 @@ void Lime_LvMainFace_Init(void)
     lv_obj_set_style_radius(mainFaceObj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(mainFaceObj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(mainFaceObj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(mainFaceObj, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_center(mainFaceObj);
+
+    lv_obj_t* bg_img = lv_img_create(mainFaceObj);
+    lv_img_set_src(bg_img, &lime_mainbg);
+    lv_obj_align(bg_img, LV_ALIGN_CENTER, 0, 0);
+
+    lime_countface_create(mainFaceObj);
 
     /* start simulator hardware timer */
 #if !USING_LIME_HARDWARE

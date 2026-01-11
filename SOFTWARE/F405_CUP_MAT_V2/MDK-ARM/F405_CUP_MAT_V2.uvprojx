@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-fdebug-macro</MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F405xx,LV_LVGL_H_INCLUDE_SIMPLE</Define>
+              <Define>USE_HAL_DRIVER,STM32F405xx,LV_LVGL_H_INCLUDE_SIMPLE,USING_LIME_HARDWARE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Bsp;../FatFs;../AppLogic;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;../Lvgl/src;../Lvgl/demos;../LvglPorts;../App</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Bsp;../FatFs;../AppLogic;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;../Lvgl/src;../Lvgl/demos;../LvglPorts;../App;..\..\LvglSimulationV3_LV93\Lime_Interface</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -3662,6 +3662,86 @@
               <FileName>sensor_main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\sensor_main.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>LvglInterface</GroupName>
+          <Files>
+            <File>
+              <FileName>Lime_App_Base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_App_Base.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lime_App_Hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_App_Hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lime_CountFace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_CountFace.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lime_LvMainFace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_LvMainFace.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lime_MessageBox.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_MessageBox.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lime_SimFiveKey.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_SimFiveKey.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>LvglResources</GroupName>
+          <Files>
+            <File>
+              <FileName>lime_font_main_remain.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_main_remain.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_font_main_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_main_time.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_img_counting.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_counting.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_img_idle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_idle.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_img_timeout.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_timeout.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_mainbg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_mainbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lime_MessageBox_InfoFont.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\Lime_MessageBox_InfoFont.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lime_MessageBox_TitleFont.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\Lime_MessageBox_TitleFont.c</FilePath>
             </File>
           </Files>
         </Group>

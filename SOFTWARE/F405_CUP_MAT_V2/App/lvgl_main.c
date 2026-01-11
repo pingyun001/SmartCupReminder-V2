@@ -5,6 +5,8 @@
 #include "lv_demos.h"
 #include "lv_port_disp.h"
 
+#include "Lime_LvMainFace.h"
+
 void lvgl_main(void const * argument)
 {
 	DEBUG_LOG("Task %s,start\n", __FUNCTION__);
@@ -14,7 +16,8 @@ void lvgl_main(void const * argument)
 	lv_port_disp_init();
 	
 	/* test */
-	lv_demo_benchmark();
+//	lv_demo_benchmark();
+	Lime_LvMainFace_Init();
 	
 	while(1)
 	{

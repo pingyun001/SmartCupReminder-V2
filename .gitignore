@@ -74,6 +74,7 @@ SOFTWARE/LvglSimulationV3_LV93/lv_conf.h
 SOFTWARE/LvglSimulationV3_LV93/manifest.json
 SOFTWARE/LvglSimulationV3_LV93/README.md
 SOFTWARE/LvglSimulationV3_LV93/simulator.*
+DOC/UI_Design/ImgTool_DitherFmt
 
 # user
 *.Lime
