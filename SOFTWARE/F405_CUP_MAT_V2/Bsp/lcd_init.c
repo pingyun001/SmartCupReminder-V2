@@ -483,8 +483,7 @@ void PY_LCD_ColorFill(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t* 
 	while(HAL_SPI_Transmit_DMA(&hspi1, (uint8_t*)color_p, (x2-x1+1) * (y2-y1+1)) != HAL_OK);
 	
 	
-	
-	while(HAL_SPI_GetState(&hspi1) != HAL_SPI_STATE_READY);
+//	while(HAL_SPI_GetState(&hspi1) != HAL_SPI_STATE_READY);
 	
 //	HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_SET);
 }

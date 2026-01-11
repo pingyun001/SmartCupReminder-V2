@@ -8,7 +8,12 @@ static lv_obj_t *count_shadow_label = NULL;
 static lv_obj_t *remain_slider_bj = NULL;
 static lv_obj_t *remain_slider_minute_bj = NULL;
 static lv_obj_t *remain_slider_second_bj = NULL;
+
 static lv_obj_t *charactor_img = NULL;
+static lv_anim_t *charactor_change_anim = NULL;
+static bool charactor_change_anim_is_out = false;
+static bool charactor_change_anim_running = false;
+static lv_img_dsc_t *tar_charactor_img_dsc = NULL;
 
 LV_FONT_DECLARE(lime_font_main_time);
 LV_FONT_DECLARE(lime_font_main_remain);
@@ -17,6 +22,8 @@ LV_IMG_DECLARE(lime_img_idle);
 LV_IMG_DECLARE(lime_img_timeout);
 
 static void scan_timer_cb(lv_timer_t * timer);
+static void anim_finish_cb(lv_anim_t * anim);
+static void anim_run_xcb(void *obj, int32_t value);
 
 lv_obj_t *lime_countface_create(lv_obj_t* parent)
 {
@@ -95,9 +102,23 @@ lv_obj_t *lime_countface_create(lv_obj_t* parent)
 
     charactor_img = lv_img_create(bj_obj);
     lv_img_set_src(charactor_img, &lime_img_timeout);
+    lv_obj_set_size(charactor_img, 160, 140);
     lv_obj_align(charactor_img, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
 
-    lv_timer_create(scan_timer_cb, 100, NULL);
+    /* add animation */
+    charactor_change_anim = lv_malloc(sizeof(lv_anim_t));
+    MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(charactor_change_anim);
+    lv_anim_init(charactor_change_anim);
+    lv_anim_set_var(charactor_change_anim, charactor_img);
+    lv_anim_set_values(charactor_change_anim, 0, 160);
+    lv_anim_set_time(charactor_change_anim, 500);
+    lv_anim_set_path_cb(charactor_change_anim, lv_anim_path_bounce);
+    lv_anim_set_exec_cb(charactor_change_anim, anim_run_xcb);
+    lv_anim_set_ready_cb(charactor_change_anim, anim_finish_cb);
+
+    /* create timer to scan hal info */
+    lv_timer_t* scan_timer = lv_timer_create(scan_timer_cb, 100, NULL);
+    scan_timer_cb(scan_timer);
 
     return bj_obj;
 }
@@ -144,22 +165,40 @@ static void lime_countface_update_charactor_img(LimeHal_WoringStatus_e status)
 {
     MLV_BASE_OBJ_NULL_CHECK(bj_obj);
 
+    static LimeHal_WoringStatus_e last_status = LimeHal_WoringStatus_Idle;
+    if(status == last_status)
+        return;
+    last_status = status;
+
     switch(status)
     {
         case LimeHal_WoringStatus_Init:
         case LimeHal_WoringStatus_Idle:
-            lv_img_set_src(charactor_img, &lime_img_idle);
+            tar_charactor_img_dsc = (lv_img_dsc_t *)&lime_img_idle;
             break;
         case LimeHal_WoringStatus_Countdown:
-            lv_img_set_src(charactor_img, &lime_img_counting);
+            tar_charactor_img_dsc = (lv_img_dsc_t *)&lime_img_counting;
             break;
         case LimeHal_WoringStatus_CountFinish:
-            lv_img_set_src(charactor_img, &lime_img_timeout);
+            tar_charactor_img_dsc = (lv_img_dsc_t *)&lime_img_timeout;
             break;
         default:
             LV_LOG_ERROR("Invalid work status: %d", status);
             break;
     }
+
+    /* start animation */
+    lv_obj_update_layout(charactor_img);
+    int32_t pic_width = lv_obj_get_width(charactor_img);
+    int32_t start_x = lv_obj_get_x(charactor_img) + pic_width - 428;
+    int32_t distance = 160 - start_x;
+    int32_t elaps_time = fmapWithLimit(distance, 0, 160, 1, 500);
+    LV_LOG_USER("x:%d, start_x:%d, elaps_time:%d", lv_obj_get_x(charactor_img), start_x, elaps_time);
+    lv_anim_set_values(charactor_change_anim, start_x, pic_width);
+    lv_anim_set_time(charactor_change_anim, elaps_time);
+    charactor_change_anim_is_out = true;
+    charactor_change_anim_running = true;
+    lv_anim_start(charactor_change_anim);
 }
 
 static void scan_timer_cb(lv_timer_t * timer)
@@ -178,4 +217,36 @@ static void scan_timer_cb(lv_timer_t * timer)
     lime_countface_update_bar(total_second, remain_second);
     lime_countface_update_main_time(total_second, remain_second);
     lime_countface_update_charactor_img(info->workingInfo.workingStatus);
+}
+
+static void anim_finish_cb(lv_anim_t * anim)
+{
+    // LV_LOG_USER("anim_finish_cb");
+
+    /* half of animation is done, change charactor image */
+    if(charactor_change_anim_is_out)
+    {
+        charactor_change_anim_is_out = false;
+
+        /* change img */
+        MLV_BASE_OBJ_NULL_CHECK(tar_charactor_img_dsc);
+        lv_img_set_src(charactor_img, tar_charactor_img_dsc);
+
+        /* start reverse animation */
+        lv_anim_set_values(charactor_change_anim, 160, 0);
+        lv_anim_set_time(charactor_change_anim, 500);
+        lv_anim_start(charactor_change_anim);
+    }
+
+    /* animation is done */
+    else
+    {
+        charactor_change_anim_running = false;
+    }
+}
+static void anim_run_xcb(void *obj, int32_t value)
+{
+    // LV_LOG_USER("anim_run_xcb: %d", value);
+
+    lv_obj_align(charactor_img, LV_ALIGN_BOTTOM_RIGHT, value, 0);
 }

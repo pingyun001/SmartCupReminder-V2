@@ -2,10 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#define DEFAULT_COUNT_SECONDS 10
+#define SIMULATION_COUNT_GAP 240
+
 LimeHal_Info_t LimeHal_Info =
 {
-    .workingInfo.totalCountSeconds = 30 * 60,
-    .workingInfo.remainCountSeconds = 30 * 60,
+    .workingInfo.totalCountSeconds = DEFAULT_COUNT_SECONDS,
+    .workingInfo.remainCountSeconds = DEFAULT_COUNT_SECONDS,
 
     .senserInfo.isWifiConnected = true,
     .senserInfo.isWeatherDataValid = true,
@@ -103,7 +106,7 @@ void LimeHAL_SetAllKeyToReleased(void)
 
 void LimeHAL_SoftSimHardwareTimer_Init(void)
 {
-    lv_timer_create(timer_cb, 100, NULL);
+    lv_timer_create(timer_cb, SIMULATION_COUNT_GAP, NULL);
 }
 
 /*typedef struct {
@@ -142,6 +145,7 @@ static void timer_cb(lv_timer_t * timer)
     LimeHal_Info.senserInfo.minute = min;
 
     /* sim countdown time */
+    static uint32_t delay_count = 0;
     if(LimeHal_Info.workingInfo.remainCountSeconds != 0)
     {
         LimeHal_Info.workingInfo.workingStatus = LimeHal_WoringStatus_Countdown;
@@ -149,8 +153,23 @@ static void timer_cb(lv_timer_t * timer)
     }
     else
     {
-        LimeHal_Info.workingInfo.workingStatus = LimeHal_WoringStatus_CountFinish;
+        if(delay_count == 0)
+        {
+            LimeHal_Info.workingInfo.workingStatus = LimeHal_WoringStatus_CountFinish;
+        }
+
+        if(delay_count ++ > 10)
+        {
+            delay_count = 0;
+            LimeHal_Info.workingInfo.remainCountSeconds = LimeHal_Info.workingInfo.totalCountSeconds;
+        }
+
+        if(delay_count == 5)
+        {
+            LimeHal_Info.workingInfo.workingStatus = LimeHal_WoringStatus_Idle;
+        }
     }
+    LV_LOG_USER("delay_count:%d, remain_second:%d", delay_count, LimeHal_Info.workingInfo.remainCountSeconds);
 
     /*sim Hardware Init sequence*/
     if(totalRunCnt == 1)

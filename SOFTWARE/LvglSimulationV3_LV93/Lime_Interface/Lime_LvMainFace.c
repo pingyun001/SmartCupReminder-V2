@@ -52,7 +52,7 @@ void Lime_LvMainFace_Init(void)
 
     /* start simulator hardware timer */
 #if !USING_LIME_HARDWARE
-    // LimeHAL_SoftSimHardwareTimer_Init();
+    LimeHAL_SoftSimHardwareTimer_Init();
 #else
     LimeHAL_SoftSimHardwareTimer_Init();
 #endif
