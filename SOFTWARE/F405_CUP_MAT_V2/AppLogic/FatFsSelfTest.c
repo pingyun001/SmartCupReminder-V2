@@ -45,7 +45,7 @@ void FatFs_test(uint8_t diskID)
 			DEBUG_LOG("Mount failed twice with error code: %d\n", fr);
 			return;
 		}
-	} 
+	}
 	else 
 	{
 			DEBUG_LOG("File system mounted successfully.\n");

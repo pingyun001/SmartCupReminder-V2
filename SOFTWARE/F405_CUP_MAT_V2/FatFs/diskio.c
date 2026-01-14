@@ -28,8 +28,8 @@
 
 
 
-#if 0
-#define DEBUG_PRINTF(...)		LEprintf(__VA_ARGS__)
+#if 1
+#define DEBUG_PRINTF(...)		printf(__VA_ARGS__)
 #else
 #define DEBUG_PRINTF(...)
 #endif
@@ -80,15 +80,15 @@ DSTATUS disk_initialize (
 	{
 		case QSPI_FLASH:
 		{
-			spi_flash_info_t info = {0};
-			if(spi_flash_init(&info) != HAL_OK)
-			{
-				return STA_NOINIT;
-			}
-			if(info.capacity == 0)
-			{
-				return STA_NOINIT;
-			}
+//			spi_flash_info_t info = {0};
+//			if(spi_flash_init(&info) != HAL_OK)
+//			{
+//				return STA_NOINIT;
+//			}
+//			if(info.capacity == 0)
+//			{
+//				return STA_NOINIT;
+//			}
 			
 			return 0;
 		}

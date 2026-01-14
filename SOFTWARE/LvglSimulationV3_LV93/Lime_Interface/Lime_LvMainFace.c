@@ -6,6 +6,7 @@
 #include "Lime_CountFace.h"
 #include "Lime_HeadBar.h"
 #include "Lime_MessageBox.h"
+#include "Lime_WeatherFace.h"
 
 LV_IMG_DECLARE(lime_mainbg);
 
@@ -47,8 +48,9 @@ void Lime_LvMainFace_Init(void)
     lv_obj_set_style_border_width(header_shadow_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_clear_flag(header_shadow_obj, LV_OBJ_FLAG_SCROLLABLE);
 
-    lime_countface_create(mainFaceObj);
+    // lime_countface_create(mainFaceObj);
     lime_headbar_create(mainFaceObj);
+    lime_weatherface_create(mainFaceObj);
 
     /* start simulator hardware timer */
 #if !USING_LIME_HARDWARE

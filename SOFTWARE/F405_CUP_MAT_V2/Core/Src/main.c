@@ -129,19 +129,30 @@ int main(void)
 	DEBUG_LOG("CUP_MAT_V2 Start!\n");
 	DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
 	
-	MX_USB_DEVICE_Init();
+//	MX_USB_DEVICE_Init();
 	
-	HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
 	
-
 //  spi_flash_init(NULL);
-	
+//	spi_flash_init(NULL);
+//	spi_flash_init(NULL);
+//	spi_flash_init(NULL);
+//	spi_flash_init(NULL);
+//	
 //	W25QFlash_SmallDataCheck();
+	spi_flash_init(NULL);
+	
+//	W25QFlash_FullChipCheck(1 * 1024 * 1024);
+	
+	FatFs_test(0);
+	
+	while(1)
+		;
 	
 //	W25QFlash_FullChipCheck(8 * 1024 * 1024);
 	
-	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)gkhs_wave, 10080, DAC_ALIGN_8B_R);
-	HAL_TIM_Base_Start(&htim7);
+//	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)gkhs_wave, 10080, DAC_ALIGN_8B_R);
+//	HAL_TIM_Base_Start(&htim7);
 	HAL_Delay(5);
 	__NOP();
 	
@@ -154,6 +165,23 @@ int main(void)
 		printf("ds18b20 init err\n");
 		HAL_Delay(300);
 	}
+	
+	/* fatfs test */
+	FatFs_test(0);
+	
+	/* mount fatfs */
+	static FATFS fs;
+	FRESULT fr = f_mount(&fs, "0:", 1);
+	if (fr != FR_OK) 
+	{
+		printf("file system mount failed\n");
+		while(1)
+			;
+	}
+	printf("file system mount success\n");
+	
+	while(1)
+		;
 	
 	LCD_Init();
 	

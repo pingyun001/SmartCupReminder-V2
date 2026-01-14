@@ -169,7 +169,7 @@ static void timer_cb(lv_timer_t * timer)
             LimeHal_Info.workingInfo.workingStatus = LimeHal_WoringStatus_Idle;
         }
     }
-    LV_LOG_USER("delay_count:%d, remain_second:%d", delay_count, LimeHal_Info.workingInfo.remainCountSeconds);
+    // LV_LOG_USER("delay_count:%d, remain_second:%d", delay_count, LimeHal_Info.workingInfo.remainCountSeconds);
 
     /*sim Hardware Init sequence*/
     if(totalRunCnt == 1)

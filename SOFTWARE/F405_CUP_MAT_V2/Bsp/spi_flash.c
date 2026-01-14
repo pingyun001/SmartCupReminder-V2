@@ -41,7 +41,10 @@ HAL_StatusTypeDef spi_flash_do_cmd(spi_flash_do_cmd_t *p_cmd)
     }
 
     /* fill DUMMY */
+		while(hspi2.State!= HAL_SPI_STATE_READY)
+        ;
     first_len += p_cmd->dummy_len;
+//		printf("first_len:%d, total_len:%d\n", first_len, p_cmd->data_len);
     HAL_SPI_TransmitReceive_DMA(&hspi2, cmd_tx_buf, cmd_rx_buf, first_len);
 
     while(hspi2.State!= HAL_SPI_STATE_READY)

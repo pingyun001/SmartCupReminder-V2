@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>5</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -340,7 +340,7 @@
               <MiscControls>-fdebug-macro</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F405xx,LV_LVGL_H_INCLUDE_SIMPLE,USING_LIME_HARDWARE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Bsp;../FatFs;../AppLogic;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;../Lvgl/src;../Lvgl/demos;../LvglPorts;../App;..\..\LvglSimulationV3_LV93\Lime_Interface</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Bsp;../FatFs;../AppLogic;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;../Lvgl/src;../Lvgl/demos;../LvglPorts;../App;../../LvglSimulationV3_LV93/Lime_Interface</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -3703,6 +3703,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_HeadBar.c</FilePath>
             </File>
+            <File>
+              <FileName>Lime_WeatherFace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_WeatherFace.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3772,6 +3777,11 @@
               <FileName>lime_font_headbar.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_headbar.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_img_pos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_pos.c</FilePath>
             </File>
           </Files>
         </Group>
