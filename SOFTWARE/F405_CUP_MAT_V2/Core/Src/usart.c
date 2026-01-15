@@ -77,6 +77,13 @@ int fputc(int ch, FILE *f){
 }
 #endif	//(COMPILER_IS_V5)
 
+#include "lvgl.h"
+#include <string.h>
+void lime_lvgl_print(lv_log_level_t level, const char * buf)
+{
+	printf("%d,%s", level, buf);
+}
+
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;

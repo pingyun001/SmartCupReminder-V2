@@ -13,8 +13,12 @@ static lv_obj_t *today_weather_widget = NULL;
 static lv_obj_t *tomorrow_weather_widget = NULL;
 static lv_obj_t *day_after_tomorrow_weather_widget = NULL;
 
+static bool is_init = false;
+static void timer_cb(lv_timer_t * timer);
 
 LV_IMG_DECLARE(lime_img_pos);
+LV_FONT_DECLARE(lime_font_weather_num);
+LV_FONT_DECLARE(lime_font_weather_title);
 
 lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
 {
@@ -22,9 +26,6 @@ lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
 
     lv_font_t * weather_font = lime_weather_make_big_font();
     MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(weather_font);
-
-    lv_font_t * weather_small_font = lime_weather_make_small_font();
-    MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(weather_small_font);
 
     bj_obj = lv_obj_create(parent);
     lv_obj_set_size(bj_obj, 428, 142);
@@ -50,7 +51,7 @@ lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
     lv_obj_set_pos(temper_label, 14, 93);
     lv_obj_set_size(temper_label, 40, 15);
     lv_label_set_text(temper_label, "温度:");
-    lv_obj_set_style_text_font(temper_label, weather_font, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(temper_label, &lime_font_weather_title, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(temper_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(temper_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -58,7 +59,7 @@ lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
     lv_obj_set_pos(humidity_label, 14, 110);
     lv_obj_set_size(humidity_label, 40, 15);
     lv_label_set_text(humidity_label, "湿度:");
-    lv_obj_set_style_text_font(humidity_label, weather_font, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(humidity_label, &lime_font_weather_title, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(humidity_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(humidity_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -69,20 +70,21 @@ lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
     lv_obj_set_style_text_font(now_city_name_label, weather_font, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(now_city_name_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(now_city_name_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
 
     now_temper_label = lv_label_create(parent);
-    lv_obj_set_pos(now_temper_label, 46, 93);
+    lv_obj_set_pos(now_temper_label, 46, 95);
     lv_obj_set_size(now_temper_label, 74, 15);
     lv_label_set_text(now_temper_label, "25℃");
-    lv_obj_set_style_text_font(now_temper_label, weather_small_font, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(now_temper_label, &lime_font_weather_num, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(now_temper_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(now_temper_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     now_humidity_label = lv_label_create(parent);
-    lv_obj_set_pos(now_humidity_label, 46, 110);
+    lv_obj_set_pos(now_humidity_label, 46, 112);
     lv_obj_set_size(now_humidity_label, 74, 15);
     lv_label_set_text(now_humidity_label, "50\%");
-    lv_obj_set_style_text_font(now_humidity_label, weather_small_font, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(now_humidity_label, &lime_font_weather_num, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(now_humidity_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(now_humidity_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -97,30 +99,75 @@ lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
     lv_obj_clear_flag(gap_line_obj, LV_OBJ_FLAG_SCROLLABLE);
 
     today_weather_widget = lime_weather_widget_create(bj_obj);
-    lv_obj_set_pos(today_weather_widget, 146, 23);
+    lv_obj_set_pos(today_weather_widget, 146, 26);
     lime_weather_widget_set_date(today_weather_widget, 1, 7);
     lime_weather_widget_set_icon(today_weather_widget, 1);
     lime_weather_widget_set_weather_chinese(today_weather_widget, "晴朗");
     lime_weather_widget_set_temperature_range(today_weather_widget, -25, -10);
     lime_weather_widget_set_humidity(today_weather_widget, 50);
+    lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
 
     tomorrow_weather_widget = lime_weather_widget_create(bj_obj);
-    lv_obj_set_pos(tomorrow_weather_widget, 230, 23);
+    lv_obj_set_pos(tomorrow_weather_widget, 230, 26);
     lime_weather_widget_set_date(tomorrow_weather_widget, 1, 8);
     lime_weather_widget_set_icon(tomorrow_weather_widget, 2);
     lime_weather_widget_set_weather_chinese(tomorrow_weather_widget, "小雨");
     lime_weather_widget_set_temperature_range(tomorrow_weather_widget, -10, 3);
     lime_weather_widget_set_humidity(tomorrow_weather_widget, 63);
+    lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
 
     day_after_tomorrow_weather_widget = lime_weather_widget_create(bj_obj);
-    lv_obj_set_pos(day_after_tomorrow_weather_widget, 314, 23);
+    lv_obj_set_pos(day_after_tomorrow_weather_widget, 314, 26);
     lime_weather_widget_set_date(day_after_tomorrow_weather_widget, 12, 31);
     lime_weather_widget_set_icon(day_after_tomorrow_weather_widget, 8);
     lime_weather_widget_set_weather_chinese(day_after_tomorrow_weather_widget, "多云");
     lime_weather_widget_set_temperature_range(day_after_tomorrow_weather_widget, 12, 27);
     lime_weather_widget_set_humidity(day_after_tomorrow_weather_widget, 12);
+    lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+
+    is_init = true;
+    lv_timer_create(timer_cb, 300, NULL);
 
     return bj_obj;
+}
+
+static void timer_cb(lv_timer_t * timer)
+{
+    static uint8_t cnt = 0;
+    if(is_init)
+    {
+        is_init = false;
+        cnt = 0;
+        lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+    }
+
+    switch(cnt)
+    {
+        case 0:
+            lv_obj_remove_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
+            break;
+        case 1:
+            lv_obj_remove_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            break;
+        case 2:
+            lv_obj_remove_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            break;
+        case 3:
+            lv_obj_remove_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            break;
+        case 4:
+            lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            cnt = 0;
+            break;
+        default:
+            break;
+    }
+
+    cnt++;
 }
 
 static lv_font_t *lime_weather_make_big_font(void)
@@ -128,20 +175,14 @@ static lv_font_t *lime_weather_make_big_font(void)
     static lv_font_t * weather_font = NULL;
     if(weather_font == NULL)
     {
+        LV_LOG_USER("Create weather font 1");
+#if !USING_LIME_HARDWARE
         weather_font = lv_tiny_ttf_create_file("D:/LimeLvResources/wryhbold.ttf", 14);
+#else
+        weather_font = lv_tiny_ttf_create_file("D:/wryhbold.ttf", 14);
+#endif
         MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(weather_font);
-    }
-
-    return weather_font;
-}
-
-static lv_font_t *lime_weather_make_small_font(void)
-{
-    static lv_font_t * weather_font = NULL;
-    if(weather_font == NULL)
-    {
-        weather_font = lv_tiny_ttf_create_file("D:/LimeLvResources/wryhbold.ttf", 12);
-        MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(weather_font);
+        LV_LOG_USER("Create weather font 1 success");
     }
 
     return weather_font;
@@ -156,9 +197,6 @@ static lv_obj_t *lime_weather_widget_create(lv_obj_t* parent)
     lv_font_t * weather_font = lime_weather_make_big_font();
     MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(weather_font);
 
-    lv_font_t * weather_small_font = lime_weather_make_small_font();
-    MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(weather_small_font);
-
     lv_obj_t* bj_obj = lv_obj_create(parent);
     lv_obj_set_size(bj_obj, default_width, 104);
     lv_obj_set_style_bg_opa(bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -172,12 +210,16 @@ static lv_obj_t *lime_weather_widget_create(lv_obj_t* parent)
     lv_obj_set_size(date_label, default_width, 15);
     lv_obj_align(date_label, LV_ALIGN_TOP_MID, 0, 4);
     lv_label_set_text(date_label, "1/7");
-    lv_obj_set_style_text_font(date_label, weather_font, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(date_label, &lime_font_weather_num, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(date_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(date_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t *weather_logo_img = lv_img_create(bj_obj);
+#if !USING_LIME_HARDWARE
     lv_img_set_src(weather_logo_img, "D:/LimeLvResources/weather_white/7.bin");
+#else
+    lv_img_set_src(weather_logo_img, "0:/weather_white/7.bin");
+#endif
     lv_obj_set_size(weather_logo_img, 32, 32);
     lv_obj_align_to(weather_logo_img, date_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
 
@@ -193,15 +235,15 @@ static lv_obj_t *lime_weather_widget_create(lv_obj_t* parent)
     lv_obj_set_size(temperature_label, default_width, 15);
     lv_obj_align_to(temperature_label, weather_chinese_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
     lv_label_set_text(temperature_label, "-25℃~-30℃");
-    lv_obj_set_style_text_font(temperature_label, weather_small_font, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(temperature_label, &lime_font_weather_num, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(temperature_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(temperature_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t *humidity_label = lv_label_create(bj_obj);
     lv_obj_set_size(humidity_label, default_width, 15);
     lv_obj_align_to(humidity_label, temperature_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-    lv_label_set_text(humidity_label, "50\%");
-    lv_obj_set_style_text_font(humidity_label, weather_small_font, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_text(humidity_label, "50%%");
+    lv_obj_set_style_text_font(humidity_label, &lime_font_weather_num, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(humidity_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(humidity_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -238,7 +280,11 @@ static void lime_weather_widget_set_icon(lv_obj_t* weather_widget, uint8_t icon_
 
     /* calculate icon path and set it to the image object */
     char icon_path[128] = {0};
+#if !USING_LIME_HARDWARE
     sprintf(icon_path, "D:/LimeLvResources/weather_white/%d.bin", icon_id);
+#else
+    sprintf(icon_path, "0:/weather_white/%d.bin", icon_id);
+#endif
     lv_img_set_src(weather_logo_img, icon_path);
 }
 static void lime_weather_widget_set_weather_chinese(lv_obj_t* weather_widget, const char* weather_chinese)
@@ -288,5 +334,5 @@ static void lime_weather_widget_set_humidity(lv_obj_t* weather_widget, uint8_t h
     lv_obj_t *humidity_label = lv_obj_get_child(weather_widget, 4);
 
     /* set humidity label */
-    lime_base_set_label_string(humidity_label, "%d\%", humidity);
+    lime_base_set_label_string(humidity_label, "%d%%", humidity);
 }

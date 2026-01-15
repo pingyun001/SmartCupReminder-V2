@@ -169,20 +169,18 @@ void LCD_Fill(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye, uint16_t color
  */
 void LCD_Init(void)
 {
-//    LCD_GPIOInit();
-//    BSP_SPIInit();
     LCD_RES_Set();
-    HAL_Delay(50);
+    HAL_Delay(5);
     LCD_RES_Clr();
-    HAL_Delay(50);
+    HAL_Delay(5);
     LCD_RES_Set();
-    HAL_Delay(120);
+    HAL_Delay(12);
     LCD_BLK_Set();
 
     LCD_WR_REG(0x11);
-    HAL_Delay(200);
+    HAL_Delay(20);
 
-   LCD_WR_REG(0xff);
+		LCD_WR_REG(0xff);
     LCD_WR_Byte(0xa5);
     LCD_WR_REG(0x9a);
     LCD_WR_Byte(0x08);
@@ -451,9 +449,9 @@ void LCD_Init(void)
         LCD_WR_Byte(0xA0);
     }
     LCD_WR_REG(0x11);
-    HAL_Delay(200);
+    HAL_Delay(20);
     LCD_WR_REG(0x29);
-    HAL_Delay(150);
+    HAL_Delay(15);
 		
 		/* backlight */
 		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);

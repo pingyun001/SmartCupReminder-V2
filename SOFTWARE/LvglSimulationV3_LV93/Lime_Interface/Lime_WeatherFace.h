@@ -10,7 +10,6 @@
 #endif
 
 static lv_font_t *lime_weather_make_big_font(void);
-static lv_font_t *lime_weather_make_small_font(void);
 
 static lv_obj_t *lime_weather_widget_create(lv_obj_t* parent);
 static void lime_weather_widget_set_date(lv_obj_t* weather_widget, uint8_t month, uint8_t day);

@@ -36,7 +36,7 @@
 #include "ws2812.h"
 #include "ds18b20.h"
 #include "key.h"
-#include "lcd_init.h"
+
 #include "FatFsSelfTest.h"
 
 #include "lvgl.h"
@@ -129,25 +129,14 @@ int main(void)
 	DEBUG_LOG("CUP_MAT_V2 Start!\n");
 	DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
 	
-//	MX_USB_DEVICE_Init();
-	
-//	HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
-	
-//  spi_flash_init(NULL);
-//	spi_flash_init(NULL);
-//	spi_flash_init(NULL);
-//	spi_flash_init(NULL);
-//	spi_flash_init(NULL);
-//	
-//	W25QFlash_SmallDataCheck();
-	spi_flash_init(NULL);
-	
-//	W25QFlash_FullChipCheck(1 * 1024 * 1024);
-	
-	FatFs_test(0);
-	
+	/* for update datas */
+#if 0
+	MX_USB_DEVICE_Init();
 	while(1)
 		;
+#endif
+	
+//	HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
 	
 //	W25QFlash_FullChipCheck(8 * 1024 * 1024);
 	
@@ -166,26 +155,7 @@ int main(void)
 		HAL_Delay(300);
 	}
 	
-	/* fatfs test */
-	FatFs_test(0);
-	
-	/* mount fatfs */
-	static FATFS fs;
-	FRESULT fr = f_mount(&fs, "0:", 1);
-	if (fr != FR_OK) 
-	{
-		printf("file system mount failed\n");
-		while(1)
-			;
-	}
-	printf("file system mount success\n");
-	
-	while(1)
-		;
-	
-	LCD_Init();
-	
-	LCD_Fill(0, 0, 428, 142, 0xf800);
+
 	
 //	FatFs_test(0);
 //	FatFs_TestHardware(0, 128 * 1024);
@@ -287,6 +257,14 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
 	printf("b\n");
 	
 	HAL_TIM_Base_Stop(&htim7);
+}
+void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
+{
+	printf("%s('%s')\n", __FUNCTION__, pcTaskName);
+}
+void vApplicationMallocFailedHook(void)
+{
+	printf("%s()\n", __FUNCTION__);
 }
 
 /* USER CODE END 4 */

@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>5</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -3782,6 +3782,16 @@
               <FileName>lime_img_pos.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_pos.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_font_weather_title.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_title.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_font_weather_num.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_num.c</FilePath>
             </File>
           </Files>
         </Group>

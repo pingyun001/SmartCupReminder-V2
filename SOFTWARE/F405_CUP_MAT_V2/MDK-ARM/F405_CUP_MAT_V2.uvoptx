@@ -1029,7 +1029,7 @@
 
   <Group>
     <GroupName>Drivers/CMSIS</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -4846,6 +4846,30 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_pos.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_pos.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>374</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_title.c</PathWithFileName>
+      <FilenameWithoutPath>lime_font_weather_title.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>375</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_num.c</PathWithFileName>
+      <FilenameWithoutPath>lime_font_weather_num.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -366,7 +366,7 @@
  *-----------*/
 
 /** Enable log module */
-#define LV_USE_LOG 0
+#define LV_USE_LOG 1
 #if LV_USE_LOG
     /** Set value to one of the following levels of logging detail:
      *  - LV_LOG_LEVEL_TRACE    Log detailed information.
@@ -384,7 +384,7 @@
     /** Set callback to print logs.
      *  E.g `my_print`. The prototype should be `void my_print(lv_log_level_t level, const char * buf)`.
      *  Can be overwritten by `lv_log_register_print_cb`. */
-    //#define LV_LOG_PRINT_CB
+    #define LV_LOG_PRINT_CB lime_lvgl_print
 
     /** - 1: Enable printing timestamp;
      *  - 0: Disable printing timestamp. */
@@ -838,7 +838,7 @@
 /** Setting a default driver letter allows skipping the driver prefix in filepaths.
  *  Documentation about how to use the below driver-identifier letters can be found at
  *  https://docs.lvgl.io/master/details/main-modules/fs.html#lv-fs-identifier-letters . */
-#define LV_FS_DEFAULT_DRIVER_LETTER '\0'
+#define LV_FS_DEFAULT_DRIVER_LETTER 'D'
 
 /** API for fopen, fread, etc. */
 #define LV_USE_FS_STDIO 0
@@ -865,11 +865,11 @@
 #endif
 
 /** API for FATFS (needs to be added separately). Uses f_open, f_read, etc. */
-#define LV_USE_FS_FATFS 0
+#define LV_USE_FS_FATFS 1
 #if LV_USE_FS_FATFS
-    #define LV_FS_FATFS_LETTER '\0'     /**< Set an upper-case driver-identifier letter for this driver (e.g. 'A'). */
+		#define LV_FS_FATFS_LETTER 'D'     /**< Set an upper-case driver-identifier letter for this driver (e.g. 'A'). */
     #define LV_FS_FATFS_PATH ""         /**< Set the working directory. File/directory paths will be appended to it. */
-    #define LV_FS_FATFS_CACHE_SIZE 0    /**< >0 to cache this number of bytes in lv_fs_read() */
+    #define LV_FS_FATFS_CACHE_SIZE 512    /**< >0 to cache this number of bytes in lv_fs_read() */
 #endif
 
 /** API for memory-mapped file access. */
@@ -906,7 +906,7 @@
 #endif
 
 /** LODEPNG decoder library */
-#define LV_USE_LODEPNG 0
+#define LV_USE_LODEPNG 1
 
 /** PNG decoder(libpng) library */
 #define LV_USE_LIBPNG 0
@@ -916,7 +916,7 @@
 
 /** JPG + split JPG decoder library.
  *  Split JPG is a custom format optimized for embedded systems. */
-#define LV_USE_TJPGD 0
+#define LV_USE_TJPGD 1
 
 /** libjpeg-turbo decoder library.
  *  - Supports complete JPEG specifications and high-performance JPEG decoding. */
@@ -926,7 +926,7 @@
 #define LV_USE_GIF 0
 #if LV_USE_GIF
     /** GIF decoder accelerate */
-    #define LV_GIF_CACHE_DECODE_DATA 0
+    #define LV_GIF_CACHE_DECODE_DATA 1024
 #endif
 
 
@@ -946,7 +946,7 @@
 #define LV_USE_FREETYPE 0
 #if LV_USE_FREETYPE
     /** Let FreeType use LVGL memory and file porting */
-    #define LV_FREETYPE_USE_LVGL_PORT 0
+    #define LV_FREETYPE_USE_LVGL_PORT 1
 
     /** Cache count of glyphs in FreeType, i.e. number of glyphs that can be cached.
      *  The higher the value, the more memory will be used. */
@@ -1007,7 +1007,7 @@
 #define LV_USE_SNAPSHOT 0
 
 /** 1: Enable system monitor component */
-#define LV_USE_SYSMON   0
+#define LV_USE_SYSMON   1
 #if LV_USE_SYSMON
     /** Get the idle percentage. E.g. uint32_t my_get_idle(void); */
     #define LV_SYSMON_GET_IDLE lv_os_get_idle_percent

@@ -15,6 +15,8 @@ static spi_flash_info_t spi_flash_info = {0};
 
 HAL_StatusTypeDef spi_flash_do_cmd(spi_flash_do_cmd_t *p_cmd)
 {
+    uint32_t start_time = 0;
+	
     if(p_cmd == NULL)
         return HAL_ERROR;
 
@@ -41,14 +43,18 @@ HAL_StatusTypeDef spi_flash_do_cmd(spi_flash_do_cmd_t *p_cmd)
     }
 
     /* fill DUMMY */
-		while(hspi2.State!= HAL_SPI_STATE_READY)
-        ;
     first_len += p_cmd->dummy_len;
-//		printf("first_len:%d, total_len:%d\n", first_len, p_cmd->data_len);
     HAL_SPI_TransmitReceive_DMA(&hspi2, cmd_tx_buf, cmd_rx_buf, first_len);
-
+	
+    start_time = HAL_GetTick();
     while(hspi2.State!= HAL_SPI_STATE_READY)
-        ;
+    {
+			if(HAL_GetTick() - start_time > 1000)
+			{
+				printf("spi flash timeout1...\n");
+				return HAL_ERROR;
+			}
+	}
 
     /* trans DATA */
     if(p_cmd->data_len > 0)
@@ -69,9 +75,17 @@ HAL_StatusTypeDef spi_flash_do_cmd(spi_flash_do_cmd_t *p_cmd)
             printf("err\n");
             return HAL_ERROR;
         }
-
-        while(hspi2.State!= HAL_SPI_STATE_READY)
-            ;
+	
+				start_time = HAL_GetTick();
+				while(hspi2.State!= HAL_SPI_STATE_READY)
+				{
+						if(HAL_GetTick() - start_time > 1000)
+						{
+								printf("for debug:%#x, %#x, %d\n", (uint32_t)p_cmd->tx_data, (uint32_t)p_cmd->rx_data, p_cmd->data_len);
+								printf("spi flash timeout2...\n");
+								return HAL_ERROR;
+						}
+				}
     }
 
     /* let CS High */
@@ -281,6 +295,8 @@ HAL_StatusTypeDef spi_flash_write(uint8_t *p_data, uint32_t addr, uint32_t len)
 
     return HAL_OK;
 }
+
+static uint8_t rx_cache_buf[4096] __attribute__((aligned(4))) = {0};
 HAL_StatusTypeDef spi_flash_read(uint8_t *p_data, uint32_t addr, uint32_t len)
 {
     HAL_StatusTypeDef ret = HAL_OK;
@@ -300,10 +316,13 @@ HAL_StatusTypeDef spi_flash_read(uint8_t *p_data, uint32_t addr, uint32_t len)
             .cmd = SPI_FLASH_CMD_DATA_READ,
             .is_addr_exist = true,
             .addr = addr + total_transfered_size,
-            .rx_data = p_data + total_transfered_size,
+//            .rx_data = p_data + total_transfered_size,
+						.rx_data = rx_cache_buf,
             .data_len = step_size,
         };
         ret += spi_flash_do_cmd(&cmd_read_data);
+				
+				memcpy(p_data + total_transfered_size, rx_cache_buf, step_size);
 
         if(ret != HAL_OK)
             return ret;
