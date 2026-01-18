@@ -26,7 +26,7 @@ void Lime_SimFiveKey_Init(lv_obj_t *father)
     }
 
     keyFace = lv_obj_create(father);
-    lv_obj_set_size(keyFace, 240, 240);
+    lv_obj_set_size(keyFace, 400, 120);
     lv_obj_center(keyFace);
     lv_obj_set_style_pad_all(keyFace, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(keyFace, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -86,15 +86,15 @@ void Lime_SimFiveKey_Init(lv_obj_t *father)
     lv_obj_add_event_cb(keyMiddle, SimKeyCallback, LV_EVENT_PRESSED, NULL);
     lv_obj_add_event_cb(keyMiddle, SimKeyCallback, LV_EVENT_RELEASED, NULL);
 
-    keyReturn = lv_btn_create(keyFace);
-    lv_obj_set_size(keyReturn, 40, 30);
-    lv_obj_align(keyReturn, LV_ALIGN_CENTER, -60, 60);
-    lv_obj_set_style_radius(keyReturn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(keyReturn, lv_color_hex(0x7f434a), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(keyReturn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(keyReturn, KEY_BG_OPA, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_add_event_cb(keyReturn, SimKeyCallback, LV_EVENT_PRESSED, NULL);
-    lv_obj_add_event_cb(keyReturn, SimKeyCallback, LV_EVENT_RELEASED, NULL);
+    // keyReturn = lv_btn_create(keyFace);
+    // lv_obj_set_size(keyReturn, 40, 30);
+    // lv_obj_align(keyReturn, LV_ALIGN_CENTER, -60, 60);
+    // lv_obj_set_style_radius(keyReturn, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    // lv_obj_set_style_bg_color(keyReturn, lv_color_hex(0x7f434a), LV_PART_MAIN | LV_STATE_DEFAULT);
+    // lv_obj_set_style_shadow_width(keyReturn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    // lv_obj_set_style_bg_opa(keyReturn, KEY_BG_OPA, LV_PART_MAIN | LV_STATE_DEFAULT);
+    // lv_obj_add_event_cb(keyReturn, SimKeyCallback, LV_EVENT_PRESSED, NULL);
+    // lv_obj_add_event_cb(keyReturn, SimKeyCallback, LV_EVENT_RELEASED, NULL);
 }
 
 void Lime_SimFiveKey_Destroy(void)

@@ -51,10 +51,12 @@ typedef struct
 typedef struct
 {
 	uint8_t month, day;
+	uint8_t weatherLogoID;
+	char weatherChinese[16];
 	float temperaLow;
 	float temperaHigh;
 	float humidity;
-	uint8_t weatherLogoID;
+
 }dayWeather_t;
 
 typedef struct
@@ -71,6 +73,7 @@ typedef struct
 	/* from esp weather api */
 	bool isWifiConnected;
 	bool isWeatherDataValid;
+	char cityName[32];
 	float nowTemper;
 	float nowHumi;
 	dayWeather_t todayWeather;

@@ -13,8 +13,8 @@ static lv_obj_t *today_weather_widget = NULL;
 static lv_obj_t *tomorrow_weather_widget = NULL;
 static lv_obj_t *day_after_tomorrow_weather_widget = NULL;
 
-static bool is_init = false;
-static void timer_cb(lv_timer_t * timer);
+ bool is_soft_start = false;
+static void scan_weather_timer_cb(lv_timer_t * timer);
 
 LV_IMG_DECLARE(lime_img_pos);
 LV_FONT_DECLARE(lime_font_weather_num);
@@ -100,74 +100,124 @@ lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
 
     today_weather_widget = lime_weather_widget_create(bj_obj);
     lv_obj_set_pos(today_weather_widget, 146, 26);
-    lime_weather_widget_set_date(today_weather_widget, 1, 7);
-    lime_weather_widget_set_icon(today_weather_widget, 1);
-    lime_weather_widget_set_weather_chinese(today_weather_widget, "晴朗");
-    lime_weather_widget_set_temperature_range(today_weather_widget, -25, -10);
-    lime_weather_widget_set_humidity(today_weather_widget, 50);
     lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
 
     tomorrow_weather_widget = lime_weather_widget_create(bj_obj);
     lv_obj_set_pos(tomorrow_weather_widget, 230, 26);
-    lime_weather_widget_set_date(tomorrow_weather_widget, 1, 8);
-    lime_weather_widget_set_icon(tomorrow_weather_widget, 2);
-    lime_weather_widget_set_weather_chinese(tomorrow_weather_widget, "小雨");
-    lime_weather_widget_set_temperature_range(tomorrow_weather_widget, -10, 3);
-    lime_weather_widget_set_humidity(tomorrow_weather_widget, 63);
     lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
 
     day_after_tomorrow_weather_widget = lime_weather_widget_create(bj_obj);
     lv_obj_set_pos(day_after_tomorrow_weather_widget, 314, 26);
-    lime_weather_widget_set_date(day_after_tomorrow_weather_widget, 12, 31);
-    lime_weather_widget_set_icon(day_after_tomorrow_weather_widget, 8);
-    lime_weather_widget_set_weather_chinese(day_after_tomorrow_weather_widget, "多云");
-    lime_weather_widget_set_temperature_range(day_after_tomorrow_weather_widget, 12, 27);
-    lime_weather_widget_set_humidity(day_after_tomorrow_weather_widget, 12);
     lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
 
-    is_init = true;
-    lv_timer_create(timer_cb, 300, NULL);
+    /* create timer to scan weather data */
+    lv_timer_create(scan_weather_timer_cb, 200, NULL);
+
+    /* run immediately to let data update */
+    scan_weather_timer_cb(NULL);
 
     return bj_obj;
 }
 
-static void timer_cb(lv_timer_t * timer)
+static void scan_weather_timer_cb(lv_timer_t * timer)
 {
     static uint8_t cnt = 0;
-    if(is_init)
+    static bool last_soft_start = false;
+    if(is_soft_start && (!last_soft_start))
     {
-        is_init = false;
         cnt = 0;
+        LV_LOG_USER("soft start");
+    }
+    /* just fot debug run */
+    if((!is_soft_start) && last_soft_start)
+    {
+        lv_obj_add_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+        LV_LOG_USER("soft hide");
     }
+    last_soft_start = is_soft_start;
 
     switch(cnt)
     {
         case 0:
-            lv_obj_remove_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
             break;
         case 1:
-            lv_obj_remove_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_remove_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
             break;
         case 2:
-            lv_obj_remove_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_remove_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
             break;
         case 3:
-            lv_obj_remove_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_remove_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
             break;
         case 4:
-            lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
-            lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
-            lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
-            cnt = 0;
+            lv_obj_remove_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
             break;
         default:
+            cnt = 99;
+            // is_soft_start = false;
             break;
     }
 
-    cnt++;
+    if(is_soft_start)
+        cnt++;
+
+
+    /* get hal data */
+    const LimeHal_Info_t *hal_info = LimeHAL_GetInfoPin();
+    MLV_BASE_OBJ_NULL_CHECK(hal_info);
+    const LimeHal_SenserInfo_t *senser_info = &hal_info->senserInfo;
+
+    /* weather data not valid */
+    if( !senser_info->isWeatherDataValid)
+    {
+        lime_base_set_label_string(now_city_name_label, "未知城市");
+        lime_base_set_label_string(now_temper_label, "0℃");
+        lime_base_set_label_string(now_humidity_label, "0\%");
+
+        lime_weather_widget_set_date(today_weather_widget, 0, 0);
+        lime_weather_widget_set_icon(today_weather_widget, 99);
+        lime_weather_widget_set_weather_chinese(today_weather_widget, "无数据");
+        lime_weather_widget_set_temperature_range(today_weather_widget, 0, 0);
+        lime_weather_widget_set_humidity(today_weather_widget, 0);
+        lime_weather_widget_set_date(tomorrow_weather_widget, 0, 0);
+        lime_weather_widget_set_icon(tomorrow_weather_widget, 99);
+        lime_weather_widget_set_weather_chinese(tomorrow_weather_widget, "无数据");
+        lime_weather_widget_set_temperature_range(tomorrow_weather_widget, 0, 0);
+        lime_weather_widget_set_humidity(tomorrow_weather_widget, 0);
+        lime_weather_widget_set_date(day_after_tomorrow_weather_widget, 0, 0);
+        lime_weather_widget_set_icon(day_after_tomorrow_weather_widget, 99);
+        lime_weather_widget_set_weather_chinese(day_after_tomorrow_weather_widget, "无数据");
+        lime_weather_widget_set_temperature_range(day_after_tomorrow_weather_widget, 0, 0);
+        lime_weather_widget_set_humidity(day_after_tomorrow_weather_widget, 0);
+
+        return;
+    }
+
+    lime_base_set_label_string(now_city_name_label, senser_info->cityName);
+    lime_base_set_label_string(now_temper_label, "%.0f℃", senser_info->nowTemper);
+    lime_base_set_label_string(now_humidity_label, "%.0f%%", senser_info->nowHumi);
+
+    lime_weather_widget_set_date(today_weather_widget, senser_info->todayWeather.month, senser_info->todayWeather.day);
+    lime_weather_widget_set_icon(today_weather_widget, senser_info->todayWeather.weatherLogoID);
+    lime_weather_widget_set_weather_chinese(today_weather_widget, senser_info->todayWeather.weatherChinese);
+    lime_weather_widget_set_temperature_range(today_weather_widget, senser_info->todayWeather.temperaLow, senser_info->todayWeather.temperaHigh);
+    lime_weather_widget_set_humidity(today_weather_widget, senser_info->todayWeather.humidity);
+    lime_weather_widget_set_date(tomorrow_weather_widget, senser_info->tomorrowWeather.month, senser_info->tomorrowWeather.day);
+    lime_weather_widget_set_icon(tomorrow_weather_widget, senser_info->tomorrowWeather.weatherLogoID);
+    lime_weather_widget_set_weather_chinese(tomorrow_weather_widget, senser_info->tomorrowWeather.weatherChinese);
+    lime_weather_widget_set_temperature_range(tomorrow_weather_widget, senser_info->tomorrowWeather.temperaLow, senser_info->tomorrowWeather.temperaHigh);
+    lime_weather_widget_set_humidity(tomorrow_weather_widget, senser_info->tomorrowWeather.humidity);
+    lime_weather_widget_set_date(day_after_tomorrow_weather_widget, senser_info->dayAfterTomorrowWeather.month, senser_info->dayAfterTomorrowWeather.day);
+    lime_weather_widget_set_icon(day_after_tomorrow_weather_widget, senser_info->dayAfterTomorrowWeather.weatherLogoID);
+    lime_weather_widget_set_weather_chinese(day_after_tomorrow_weather_widget, senser_info->dayAfterTomorrowWeather.weatherChinese);
+    lime_weather_widget_set_temperature_range(day_after_tomorrow_weather_widget, senser_info->dayAfterTomorrowWeather.temperaLow, senser_info->dayAfterTomorrowWeather.temperaHigh);
+    lime_weather_widget_set_humidity(day_after_tomorrow_weather_widget, senser_info->dayAfterTomorrowWeather.humidity);
+
+
+
 }
 
 static lv_font_t *lime_weather_make_big_font(void)
@@ -285,6 +335,12 @@ static void lime_weather_widget_set_icon(lv_obj_t* weather_widget, uint8_t icon_
 #else
     sprintf(icon_path, "0:/weather_white/%d.bin", icon_id);
 #endif
+    const char *now_path = lv_img_get_src(weather_logo_img);
+    if(now_path != NULL && strcmp(now_path, icon_path) == 0)
+    {
+        return;
+    }
+
     lv_img_set_src(weather_logo_img, icon_path);
 }
 static void lime_weather_widget_set_weather_chinese(lv_obj_t* weather_widget, const char* weather_chinese)
@@ -335,4 +391,20 @@ static void lime_weather_widget_set_humidity(lv_obj_t* weather_widget, uint8_t h
 
     /* set humidity label */
     lime_base_set_label_string(humidity_label, "%d%%", humidity);
+}
+
+void lime_weatherface_soft_start(bool is_start)
+{
+    MLV_BASE_OBJ_NULL_CHECK(bj_obj);
+
+    is_soft_start = is_start;
+
+    if(is_start)
+        return;
+
+    /* hide all child objects */
+    lv_obj_add_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
 }

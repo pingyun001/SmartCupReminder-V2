@@ -51,9 +51,11 @@ void Lime_LvMainFace_Init(void)
     // lime_countface_create(mainFaceObj);
     lime_headbar_create(mainFaceObj);
     lime_weatherface_create(mainFaceObj);
+    lime_weatherface_soft_start(true);
 
     /* start simulator hardware timer */
 #if !USING_LIME_HARDWARE
+    Lime_SimFiveKey_Init(mainFaceObj);
     LimeHAL_SoftSimHardwareTimer_Init();
 #else
     LimeHAL_SoftSimHardwareTimer_Init();

@@ -19,5 +19,6 @@ static void lime_weather_widget_set_temperature_range(lv_obj_t* weather_widget, 
 static void lime_weather_widget_set_humidity(lv_obj_t* weather_widget, uint8_t humidity);
 
 lv_obj_t *lime_weatherface_create(lv_obj_t* parent);
+void lime_weatherface_soft_start(bool is_start);
 
 #endif /* __LIME_WEATHERFACE_H__ */
