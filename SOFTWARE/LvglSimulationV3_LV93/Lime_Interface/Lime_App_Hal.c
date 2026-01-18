@@ -46,6 +46,14 @@ LimeHal_Info_t *LimeHAL_GetInfoPin(void)
     return &LimeHal_Info;
 }
 
+void LimeHAL_SyncKeyInfo(const LimeHal_KeyInfo_t *keyInfo)
+{
+    if(keyInfo == NULL)
+        return;
+        
+    memcpy((uint8_t*)&LimeHal_Info.keyInfo, (uint8_t*)keyInfo, sizeof(LimeHal_KeyInfo_t));
+}
+
 uint8_t Lime_CalDayInMonth(uint32_t year, uint8_t month)
 {
     const uint8_t days_per_month[] = {

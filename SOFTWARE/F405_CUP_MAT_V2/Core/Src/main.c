@@ -33,9 +33,6 @@
 #include "spi_flash.h"
 #include "spi_flash_test.h"
 #include "gkhs_wave.h"
-#include "ws2812.h"
-#include "ds18b20.h"
-#include "key.h"
 
 #include "FatFsSelfTest.h"
 
@@ -72,15 +69,6 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t spiTxBuf[4] = {0x9F, 0x00, 0x00, 0x00};
-uint8_t spiRxBuf[4] = {0x00, 0x00};
-
-uint8_t tx_buf[8192] = {0};
-uint8_t rx_buf[8192] = {0};
-
-uint16_t ws2812Buf[24] = {42,42,42,42,126,126,126,126};
-
-volatile mult_key_e key_status = 0;
 
 /* USER CODE END 0 */
 
@@ -145,15 +133,6 @@ int main(void)
 	HAL_Delay(5);
 	__NOP();
 	
-	ws2812_Init();
-	
-	key_Init();
-	
-	while(ds18b20_Init())
-	{
-		printf("ds18b20 init err\n");
-		HAL_Delay(300);
-	}
 	
 
 	
@@ -176,8 +155,6 @@ int main(void)
   {
 //		printf("temp:%.3f\n", (float)ds18b20_get_temp() / 10.0f);
 		
-		key_status = key_get_press();
-		
 //		uint16_t val = key_get_raw_value();
 //		printf("mult_key:%d:", val);
 //		
@@ -191,7 +168,6 @@ int main(void)
 //		
 //		printf("end\n");
 //		
-		printf("usb Vol:%.2f V\n", key_get_usb_vol());
 		
     HAL_Delay(100);
 		

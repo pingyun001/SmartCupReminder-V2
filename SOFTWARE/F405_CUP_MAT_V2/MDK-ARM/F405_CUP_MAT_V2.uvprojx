@@ -2223,6 +2223,11 @@
               <FileType>1</FileType>
               <FilePath>..\Bsp\lcd_init.c</FilePath>
             </File>
+            <File>
+              <FileName>esp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\esp8266.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3651,21 +3656,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>App</GroupName>
-          <Files>
-            <File>
-              <FileName>lvgl_main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\App\lvgl_main.c</FilePath>
-            </File>
-            <File>
-              <FileName>sensor_main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\App\sensor_main.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>LvglInterface</GroupName>
           <Files>
             <File>
@@ -3792,6 +3782,26 @@
               <FileName>lime_font_weather_num.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_num.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>App</GroupName>
+          <Files>
+            <File>
+              <FileName>lvgl_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\lvgl_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>sensor_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\sensor_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>key_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\key_main.c</FilePath>
             </File>
           </Files>
         </Group>

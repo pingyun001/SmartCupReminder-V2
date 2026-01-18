@@ -7,29 +7,12 @@
 #include "lcd_init.h"
 #include "Lime_LvMainFace.h"
 
-/* just test */
-#include "spi_flash.h"
-#include "spi_flash_test.h"
-#include "FatFsSelfTest.h"
-
 void lvgl_main(void const * argument)
 {
 	DEBUG_LOG("Task %s,start\n", __FUNCTION__);
 	
-	/* test Flash */
-//	spi_flash_init(NULL);
-//	FatFs_test(0);
-	
-	/* mount fatfs */
-	static FATFS fs;
-	FRESULT fr = f_mount(&fs, "D:", 1);
-	if (fr != FR_OK) 
-	{
-		printf("file system mount failed\n");
-		while(1)
-			;
-	}
-	printf("file system mount success\n");
+	/* 临时  后续UI做一下同步（需要等FatFs挂载且校验通过后，启动后续需要文件系统的UI界面） */
+	osDelay(500);
 	
 	/* init screen */
 	LCD_Init();

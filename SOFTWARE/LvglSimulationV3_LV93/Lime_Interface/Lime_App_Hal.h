@@ -98,6 +98,7 @@ typedef struct
 
 /*common API*/
 LimeHal_Info_t *LimeHAL_GetInfoPin(void);
+void LimeHAL_SyncKeyInfo(const LimeHal_KeyInfo_t *keyInfo);
 
 /*VS simulator API*/
 void LimeHAL_SoftSimHardwareTimer_Init(void);
