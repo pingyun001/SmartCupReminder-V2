@@ -254,10 +254,11 @@ void esp8266_sync_handle(void)
         if(HAL_GetTick() - last_scan_time > 5 * 60 * 1000)
         {
             last_scan_time = HAL_GetTick();
-            
-            HAL_UART_Transmit_DMA(&huart2, (uint8_t*)"set_refreshnow", 10);
+					
+            DEBUG_LOG("trigger esp8266\n");
+            HAL_UART_Transmit_DMA(&huart2, (uint8_t*)"set_refreshnow", 14);
 
-            step = 8;
+            step = 5;
         }
     }
 }
