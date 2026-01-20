@@ -53,6 +53,74 @@ void LimeHAL_SyncKeyInfo(const LimeHal_KeyInfo_t *keyInfo)
         
     memcpy((uint8_t*)&LimeHal_Info.keyInfo, (uint8_t*)keyInfo, sizeof(LimeHal_KeyInfo_t));
 }
+void LimeHAL_SyncEspFirmwareVersion(const uint8_t *version)
+{
+    if(version == NULL)
+        return;
+
+    memcpy((uint8_t*)&LimeHal_Info.senserInfo.espFirmwareVersion, (uint8_t*)version, sizeof(LimeHal_Info.senserInfo.espFirmwareVersion));
+}
+void LimeHAL_SetWifiStatus(bool isConnected)
+{
+    LimeHal_Info.senserInfo.isWifiConnected = isConnected;
+}
+void LimeHAL_SetIpAddress(const uint8_t *ip)
+{
+    if(ip == NULL)
+        return;
+    
+    memcpy((uint8_t*)&LimeHal_Info.senserInfo.ipAddress, (uint8_t*)ip, sizeof(LimeHal_Info.senserInfo.ipAddress));
+}
+void LimeHAL_SetTime(uint8_t hour, uint8_t minute)
+{
+    LimeHal_Info.senserInfo.hour = hour;
+    LimeHal_Info.senserInfo.minute = minute;
+}
+void LimeHAL_SetWeatherDataValid(bool isValid)
+{
+    LimeHal_Info.senserInfo.isWeatherDataValid = isValid;
+}
+void LimeHAL_SetCityName(const char *cityName)
+{
+    if(cityName == NULL)
+        return;
+
+    if(strlen(cityName) >= sizeof(LimeHal_Info.senserInfo.cityName))
+        return;
+
+    memset(LimeHal_Info.senserInfo.cityName, 0, sizeof(LimeHal_Info.senserInfo.cityName));
+    memcpy(LimeHal_Info.senserInfo.cityName, cityName, strlen(cityName));
+}
+void LimeHAL_SetNowTemper(float temper)
+{
+    LimeHal_Info.senserInfo.nowTemper = temper;
+}
+void LimeHAL_SetNowHumi(float humi)
+{
+    LimeHal_Info.senserInfo.nowHumi = humi;
+}
+void LimeHAL_SetTodayWeather(const dayWeather_t *weather)
+{
+    if(weather == NULL)
+        return;
+    
+    LimeHAL_SetNowHumi(weather->humidity);
+    memcpy((uint8_t*)&LimeHal_Info.senserInfo.todayWeather, (uint8_t*)weather, sizeof(dayWeather_t));
+}
+void LimeHAL_SetTomorrowWeather(const dayWeather_t *weather)
+{
+    if(weather == NULL)
+        return;
+
+    memcpy((uint8_t*)&LimeHal_Info.senserInfo.tomorrowWeather, (uint8_t*)weather, sizeof(dayWeather_t));
+}
+void LimeHAL_SetDayAfterTomorrowWeather(const dayWeather_t *weather)
+{
+    if(weather == NULL)
+        return;
+
+    memcpy((uint8_t*)&LimeHal_Info.senserInfo.dayAfterTomorrowWeather, (uint8_t*)weather, sizeof(dayWeather_t));
+}
 
 uint8_t Lime_CalDayInMonth(uint32_t year, uint8_t month)
 {

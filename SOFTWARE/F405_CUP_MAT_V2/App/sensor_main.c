@@ -43,7 +43,7 @@ void sensor_main(void const * argument)
 	
 	/* init ESP8266 */
 	esp8266_Init(1000);
-	esp8266_set_position("Huhehaote");
+	esp8266_set_position("Beijing");
 	esp8266_set_wifi_info("ziroom1802", "4001001111");
 	
 	while(1)

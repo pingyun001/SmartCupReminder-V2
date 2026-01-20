@@ -71,7 +71,9 @@ typedef struct
 	uint8_t hour, minute;
 
 	/* from esp weather api */
+	uint8_t espFirmwareVersion[3];
 	bool isWifiConnected;
+	uint8_t ipAddress[4];
 	bool isWeatherDataValid;
 	char cityName[32];
 	float nowTemper;
@@ -99,6 +101,17 @@ typedef struct
 /*common API*/
 LimeHal_Info_t *LimeHAL_GetInfoPin(void);
 void LimeHAL_SyncKeyInfo(const LimeHal_KeyInfo_t *keyInfo);
+void LimeHAL_SyncEspFirmwareVersion(const uint8_t *version);
+void LimeHAL_SetWifiStatus(bool isConnected);
+void LimeHAL_SetIpAddress(const uint8_t *ip);
+void LimeHAL_SetTime(uint8_t hour, uint8_t minute);
+void LimeHAL_SetWeatherDataValid(bool isValid);
+void LimeHAL_SetCityName(const char *cityName);
+void LimeHAL_SetNowTemper(float temper);
+void LimeHAL_SetNowHumi(float humi);
+void LimeHAL_SetTodayWeather(const dayWeather_t *weather);
+void LimeHAL_SetTomorrowWeather(const dayWeather_t *weather);
+void LimeHAL_SetDayAfterTomorrowWeather(const dayWeather_t *weather);
 
 /*VS simulator API*/
 void LimeHAL_SoftSimHardwareTimer_Init(void);
