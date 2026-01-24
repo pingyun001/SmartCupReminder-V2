@@ -21,7 +21,7 @@ static void timer_cb(lv_timer_t * timer)
 
 void Lime_LvMainFace_Init(void)
 {
-    // LV_LOG_USER("CompileTime:%s,%s", __DATE__, __TIME__);
+    LV_LOG_USER("CompileTime:%s,%s", __DATE__, __TIME__);
 
     mainFaceObj = lv_obj_create(lv_scr_act());
     lv_obj_set_size(mainFaceObj, LV_HOR_RES, LV_VER_RES);

@@ -118,7 +118,7 @@ int main(void)
 	DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
 	
 	/* for update datas */
-#if 0
+#if 1
 	MX_USB_DEVICE_Init();
 	while(1)
 		;
