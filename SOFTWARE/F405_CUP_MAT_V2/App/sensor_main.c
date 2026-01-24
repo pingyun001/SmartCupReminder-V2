@@ -12,6 +12,8 @@
 #include "spi_flash_test.h"
 #include "FatFsSelfTest.h"
 
+#include "file_system_logic.h"
+
 void sensor_main(void const * argument)
 {
 	DEBUG_LOG("Task %s,start\n", __FUNCTION__);
@@ -21,6 +23,18 @@ void sensor_main(void const * argument)
 //	FatFs_test(0);
 	
 	/* mount fatfs */
+#if 1
+	if(file_system_Init() != HAL_OK)
+	{
+		DEBUG_LOG("file system init failed\n");
+	}
+	
+	if(file_system_confirm() != HAL_OK)
+	{
+		DEBUG_LOG("resources confirm failed\n");
+	}
+	
+#else
 	static FATFS fs;
 	FRESULT fr = f_mount(&fs, "D:", 1);
 	if (fr != FR_OK)
@@ -30,6 +44,7 @@ void sensor_main(void const * argument)
 			;
 	}
 	printf("file system mount success\n");
+#endif
 	
 	/* init ws2812 */
 	ws2812_Init();

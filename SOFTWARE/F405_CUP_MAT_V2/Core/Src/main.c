@@ -118,7 +118,7 @@ int main(void)
 	DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
 	
 	/* for update datas */
-#if 1
+#if 0
 	MX_USB_DEVICE_Init();
 	while(1)
 		;
@@ -237,10 +237,16 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
 void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
 {
 	printf("%s('%s')\n", __FUNCTION__, pcTaskName);
+	
+	while(1)
+		;
 }
 void vApplicationMallocFailedHook(void)
 {
 	printf("%s()\n", __FUNCTION__);
+	
+	while(1)
+		;
 }
 
 /* USER CODE END 4 */

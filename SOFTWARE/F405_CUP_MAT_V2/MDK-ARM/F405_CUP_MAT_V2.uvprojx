@@ -10,14 +10,14 @@
       <TargetName>F405_CUP_MAT_V2</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6220000::V6.22::ARMCLANG</pCCUsed>
+      <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F405RGTx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F4xx_DFP.3.0.0</PackID>
-          <PackURL>https://www.keil.com/pack/</PackURL>
+          <PackID>Keil.STM32F4xx_DFP.2.9.0</PackID>
+          <PackURL>http://www.keil.com/pack</PackURL>
           <Cpu>IRAM(0x20000000-0x2001BFFF) IRAM2(0x2001C000-0x2001FFFF) IROM(0x8000000-0x80FFFFF)  CLOCK(25000000) FPU2 CPUTYPE("Cortex-M4") TZ</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -2256,16 +2256,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>AppLogic</GroupName>
-          <Files>
-            <File>
-              <FileName>FatFsSelfTest.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\AppLogic\FatFsSelfTest.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Lvgl</GroupName>
           <Files>
             <File>
@@ -3551,6 +3541,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>LvglPorts</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_port_disp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\LvglPorts\lv_port_disp.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>LvglDemos</GroupName>
           <Files>
             <File>
@@ -3642,16 +3642,6 @@
               <FileName>lv_demos.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Lvgl\demos\lv_demos.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>LvglPorts</GroupName>
-          <Files>
-            <File>
-              <FileName>lv_port_disp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\LvglPorts\lv_port_disp.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3782,6 +3772,36 @@
               <FileName>lime_font_weather_num.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_num.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>AppLogic</GroupName>
+          <Files>
+            <File>
+              <FileName>FatFsSelfTest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AppLogic\FatFsSelfTest.c</FilePath>
+            </File>
+            <File>
+              <FileName>exfuns.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AppLogic\exfuns.c</FilePath>
+            </File>
+            <File>
+              <FileName>file_system_logic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AppLogic\file_system_logic.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm_system_io.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AppLogic\stm_system_io.c</FilePath>
+            </File>
+            <File>
+              <FileName>audio_player.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AppLogic\audio_player.c</FilePath>
             </File>
           </Files>
         </Group>
