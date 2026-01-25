@@ -9,6 +9,12 @@
 
 #include "Lime_App_Hal.h"
 
+#if 0
+#define ESP8266_DEBUG_LOG DEBUG_LOG
+#else
+#define ESP8266_DEBUG_LOG(...)
+#endif
+
 esp8266_info_t esp8266_info = 
 {
     .statue = esp8266_statue_init,
@@ -30,11 +36,11 @@ QueueHandle_t rx_queue = NULL;
 
 HAL_StatusTypeDef esp8266_Init(uint32_t timeout)
 {
-		/* create queue to receive message */
-		if(rx_queue == NULL)
-		{
-			rx_queue = xQueueCreate(10, sizeof(rx_message_t));
-		}
+    /* create queue to receive message */
+    if(rx_queue == NULL)
+    {
+        rx_queue = xQueueCreate(10, sizeof(rx_message_t));
+    }
 		
     /* reset the ESP8266 */
     HAL_GPIO_WritePin(ESP8266_EN_GPIO_Port, ESP8266_EN_Pin, GPIO_PIN_RESET);
@@ -92,7 +98,7 @@ void esp8266_recv_hook(void)
             head_confirmed = false;
             head_count = 0;
 
-            // DEBUG_LOG("sss\n");
+            // ESP8266_DEBUG_LOG("sss\n");
         }
         if(find_head)
         {
@@ -107,12 +113,12 @@ void esp8266_recv_hook(void)
             {
                 if(cat_message.buffer[0] == '-' && cat_message.buffer[1] == '-' && cat_message.buffer[2] == '-')
                 {
-                    // DEBUG_LOG("hhh\n");
+                    // ESP8266_DEBUG_LOG("hhh\n");
                     head_confirmed = true;
                 }
                 else
                 {
-                    // DEBUG_LOG("fff\n");
+                    // ESP8266_DEBUG_LOG("fff\n");
                 }
 
                 find_head = false;
@@ -128,14 +134,14 @@ void esp8266_recv_hook(void)
             head_count++;
             if(head_count >= sizeof(cat_message.buffer) - 1)
             {
-                // DEBUG_LOG("ooo\n");
+                // ESP8266_DEBUG_LOG("ooo\n");
                 head_confirmed = false;
                 head_count = 0;
                 goto sync_end;
             }
             if(rx_byte == '\n')
             {
-                // DEBUG_LOG("zzz%d\n", head_count);
+                // ESP8266_DEBUG_LOG("zzz%d\n", head_count);
                 head_count -= 2;
                 cat_message.size = head_count;
                 xQueueSendFromISR(rx_queue, &cat_message, 0);
@@ -230,11 +236,11 @@ void esp8266_sync_handle(void)
         static uint8_t step = 0;
         if(xQueueReceive(rx_queue, &message, pdMS_TO_TICKS(5)) == pdPASS)
         {
-            DEBUG_LOG("threat message, len: %d, data: %s\n", message.size, message.buffer);
+            ESP8266_DEBUG_LOG("threat message, len: %d, data: %s\n", message.size, message.buffer);
 
             if(memcmp(message.buffer, "---Lime ESP8266 wifi weather kit start...", message.size) == 0)
             {
-                DEBUG_LOG("find head\n");
+                ESP8266_DEBUG_LOG("find head\n");
                 step = 0;
             }
             else
@@ -246,7 +252,7 @@ void esp8266_sync_handle(void)
         }
         else
         {
-            // DEBUG_LOG("no threat message\n");
+            // ESP8266_DEBUG_LOG("no threat message\n");
         }
 
         /* scan every 5 minutes */
@@ -255,7 +261,7 @@ void esp8266_sync_handle(void)
         {
             last_scan_time = HAL_GetTick();
 					
-            DEBUG_LOG("trigger esp8266\n");
+            ESP8266_DEBUG_LOG("trigger esp8266\n");
             HAL_UART_Transmit_DMA(&huart2, (uint8_t*)"set_refreshnow", 14);
 
             step = 5;
@@ -274,7 +280,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             uint8_t version[3];
             sscanf(message, "---version:%d.%d.%d", (int*)&version[0], (int*)&version[1], (int*)&version[2]);
-            DEBUG_LOG("decode version: %d.%d.%d\n", version[0], version[1], version[2]);
+            ESP8266_DEBUG_LOG("decode version: %d.%d.%d\n", version[0], version[1], version[2]);
             LimeHAL_SyncEspFirmwareVersion(version);
             break;
         }
@@ -287,7 +293,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
             bool is_wifi_connected = false;
             if(memcmp(message, "---WiFi connected:ok", len) == 0)
                 is_wifi_connected = true;
-            DEBUG_LOG("decode wifi connected: %d\n", is_wifi_connected);
+            ESP8266_DEBUG_LOG("decode wifi connected: %d\n", is_wifi_connected);
             LimeHAL_SetWifiStatus(is_wifi_connected);
             break;
         }
@@ -300,7 +306,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
 
             uint8_t ip_address[4];
             sscanf(message, "---IP address:%d.%d.%d.%d", (int*)&ip_address[0], (int*)&ip_address[1], (int*)&ip_address[2], (int*)&ip_address[3]);
-            DEBUG_LOG("decode ip address: %d.%d.%d.%d\n", ip_address[0], ip_address[1], ip_address[2], ip_address[3]);
+            ESP8266_DEBUG_LOG("decode ip address: %d.%d.%d.%d\n", ip_address[0], ip_address[1], ip_address[2], ip_address[3]);
             LimeHAL_SetIpAddress(ip_address);
             break;
         }
@@ -313,7 +319,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
 
             int8_t rssi = 0;
             sscanf(message, "---Signal strength (RSSI):%ddBm", (int*)&rssi);
-            DEBUG_LOG("decode rssi: %ddBm\n", rssi);
+            ESP8266_DEBUG_LOG("decode rssi: %ddBm\n", rssi);
             // LimeHAL_SetSignalStrength(rssi);
             break;
         }
@@ -323,7 +329,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             uint8_t now_time[3];
             sscanf(message, "---nowtime:%d:%d:%d", (int*)&now_time[0], (int*)&now_time[1], (int*)&now_time[2]);
-            DEBUG_LOG("decode now time: %d:%d:%d\n", now_time[0], now_time[1], now_time[2]);
+            ESP8266_DEBUG_LOG("decode now time: %d:%d:%d\n", now_time[0], now_time[1], now_time[2]);
             LimeHAL_SetTime(now_time[1], now_time[2]);
             break;
         }
@@ -340,7 +346,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
                 break;
 
             sscanf(message, "---City:%s", city);
-            DEBUG_LOG("decode city: %s\n", city);
+            ESP8266_DEBUG_LOG("decode city: %s\n", city);
             LimeHAL_SetCityName(city);
             LimeHAL_SetWeatherDataValid(true);
             break;
@@ -351,7 +357,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             int16_t temperature = 0;
             sscanf(message, "---Temperature:%d", (int*)&temperature);
-            DEBUG_LOG("decode temperature: %d\n", temperature);
+            ESP8266_DEBUG_LOG("decode temperature: %d\n", temperature);
             float now_temperature = temperature;
             LimeHAL_SetNowTemper(now_temperature);
             break;
@@ -364,7 +370,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             int date[3];
             sscanf(message, "---Date: %d-%d-%d", &date[0], &date[1], &date[2]);
-            DEBUG_LOG("decode date: %d-%d-%d\n", date[0], date[1], date[2]);
+            ESP8266_DEBUG_LOG("decode date: %d-%d-%d\n", date[0], date[1], date[2]);
             
             memset(&temp_weather_data, 0, sizeof(temp_weather_data));
             temp_weather_data.month = date[1];
@@ -380,7 +386,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             uint8_t code_day = 0;
             sscanf(message, "---code_day:%d", (int*)&code_day);
-            DEBUG_LOG("decode code_day: %d\n", code_day);
+            ESP8266_DEBUG_LOG("decode code_day: %d\n", code_day);
             
             temp_weather_data.weatherLogoID = code_day;
 
@@ -394,7 +400,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             char day[16];
             sscanf(message, "---Day:%s", day);
-            DEBUG_LOG("decode day: %s\n", day);
+            ESP8266_DEBUG_LOG("decode day: %s\n", day);
             
             strcpy(temp_weather_data.weatherChinese, day);
 
@@ -408,7 +414,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             int16_t temperature_low = 0;
             sscanf(message, "---TemperatureLow:%d", (int*)&temperature_low);
-            DEBUG_LOG("decode temperature_low: %d\n", temperature_low);
+            ESP8266_DEBUG_LOG("decode temperature_low: %d\n", temperature_low);
             
             temp_weather_data.temperaLow = temperature_low;
 
@@ -422,7 +428,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             int16_t temperature_high = 0;
             sscanf(message, "---TemperatureHigh:%d", (int*)&temperature_high);
-            DEBUG_LOG("decode temperature_high: %d\n", temperature_high);
+            ESP8266_DEBUG_LOG("decode temperature_high: %d\n", temperature_high);
             
             temp_weather_data.temperaHigh = temperature_high;
 
@@ -436,7 +442,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         {
             uint8_t humidity = 0;
             sscanf(message, "---Humidity:%d", (int*)&humidity);
-            DEBUG_LOG("decode humidity: %d\n", humidity);
+            ESP8266_DEBUG_LOG("decode humidity: %d\n", humidity);
             
             temp_weather_data.humidity = humidity;
 

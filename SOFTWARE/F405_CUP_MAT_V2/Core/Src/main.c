@@ -35,6 +35,8 @@
 #include "gkhs_wave.h"
 
 #include "FatFsSelfTest.h"
+#include "stm_system_io.h"
+
 
 #include "lvgl.h"
 /* USER CODE END Includes */
@@ -119,22 +121,17 @@ int main(void)
 	
 	/* for update datas */
 #if 0
-	MX_USB_DEVICE_Init();
+	lime_stm_system_enter_u_disk_mode();
+//	MX_USB_DEVICE_Init();
 	while(1)
 		;
 #endif
 	
-//	HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
-	
-//	W25QFlash_FullChipCheck(8 * 1024 * 1024);
+	HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
 	
 //	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)gkhs_wave, 10080, DAC_ALIGN_8B_R);
 //	HAL_TIM_Base_Start(&htim7);
-	HAL_Delay(5);
-	__NOP();
 	
-	
-
 	
 //	FatFs_test(0);
 //	FatFs_TestHardware(0, 128 * 1024);
@@ -224,26 +221,17 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac)
-{
-	printf("a\n");
-}
-void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
-{
-	printf("b\n");
-	
-	HAL_TIM_Base_Stop(&htim7);
-}
+
 void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
 {
-	printf("%s('%s')\n", __FUNCTION__, pcTaskName);
+	printf("\n%s('%s')\n", __FUNCTION__, pcTaskName);
 	
 	while(1)
 		;
 }
 void vApplicationMallocFailedHook(void)
 {
-	printf("%s()\n", __FUNCTION__);
+	printf("\n%s()\n", __FUNCTION__);
 	
 	while(1)
 		;

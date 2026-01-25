@@ -328,4 +328,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     esp8266_recv_hook();
   }
 }
+
+#include "audio_player.h"
+void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac)
+{
+	// printf("a\n");
+  Lime_audio_dma_callback(true);
+}
+void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
+{
+	// printf("b\n");
+  Lime_audio_dma_callback(false);
+	
+}
 /* USER CODE END 1 */

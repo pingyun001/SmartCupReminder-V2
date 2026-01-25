@@ -8,22 +8,15 @@
 #include "esp8266.h"
 
 /* just test */
-#include "spi_flash.h"
-#include "spi_flash_test.h"
-#include "FatFsSelfTest.h"
-
 #include "file_system_logic.h"
+
+#include "audio_player.h"
 
 void sensor_main(void const * argument)
 {
 	DEBUG_LOG("Task %s,start\n", __FUNCTION__);
 	
-	/* test Flash */
-//	spi_flash_init(NULL);
-//	FatFs_test(0);
-	
 	/* mount fatfs */
-#if 1
 	if(file_system_Init() != HAL_OK)
 	{
 		DEBUG_LOG("file system init failed\n");
@@ -34,17 +27,31 @@ void sensor_main(void const * argument)
 		DEBUG_LOG("resources confirm failed\n");
 	}
 	
-#else
-	static FATFS fs;
-	FRESULT fr = f_mount(&fs, "D:", 1);
-	if (fr != FR_OK)
-	{
-		printf("file system mount failed\n");
-		while(1)
-			;
-	}
-	printf("file system mount success\n");
-#endif
+	/* Just test audio player */
+//	while(1)
+//	{
+////		if(Lime_audio_play_get_status() == audiopy_status_idle)
+////		{
+////			osDelay(1000);
+
+////			static uint8_t i = 1;
+////			char file_name[50] = {0};
+////			sprintf(file_name, "D:voice/%d.wav", i);
+////			DEBUG_LOG("play file:%s\n", file_name);
+
+////			Lime_audio_play_start(file_name);
+////			
+////			if(i >= 7)
+////				while(1)
+////					;
+
+////			i = (i >= 7) ? 1 : i + 1;
+////		}
+//		
+
+//		Lime_audio_run_handle();
+//		osDelay(10);
+//	}
 	
 	/* init ws2812 */
 	ws2812_Init();
@@ -64,8 +71,26 @@ void sensor_main(void const * argument)
 	while(1)
 	{
 		// printf("usb Vol:%.2f V\n", key_get_usb_vol());
+		
+		static bool is_cup_deteched_last = false;
+		bool is_cup_deteched = IS_CUP_DETECHED();
+		if(is_cup_deteched && !is_cup_deteched_last)
+		{
+			Lime_audio_play_stop();
+			osDelay(10);
+			Lime_audio_play_start("D:voice/3.wav");
+		}
+		if(!is_cup_deteched && is_cup_deteched_last)
+		{
+			Lime_audio_play_stop();
+			osDelay(10);
+			Lime_audio_play_start("D:voice/4.wav");
+		}
+		is_cup_deteched_last = is_cup_deteched;
 
 		esp8266_sync_handle();
+		
+		Lime_audio_run_handle();
 		
 		osDelay(10);
 	}

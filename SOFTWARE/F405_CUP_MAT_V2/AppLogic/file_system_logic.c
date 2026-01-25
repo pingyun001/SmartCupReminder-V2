@@ -31,9 +31,9 @@ HAL_StatusTypeDef file_system_Init(void)
 	}
 	
 	/* just for test */
-	float sizeKb = 0;
-	Lime_file_system_get_folder_size("D:", &sizeKb);
-	DEBUG_LOG("floader size:%.3fkb\n", sizeKb);
+//	float sizeKb = 0;
+//	Lime_file_system_get_folder_size("D:", &sizeKb);
+//	DEBUG_LOG("floader size:%.3fkb\n", sizeKb);
 	
 	return HAL_OK;
 }
@@ -476,7 +476,7 @@ FRESULT Lime_file_system_get_folder_size(const char *dst_path, float* size_kB)
 			if (fno->fattrib & AM_DIR)
 			{
 				DEBUG_LOG("DIR: %s, no need to scan\n", fno->fname);
-			} 
+			}
 			else 
 			{
 				/* get file size */
