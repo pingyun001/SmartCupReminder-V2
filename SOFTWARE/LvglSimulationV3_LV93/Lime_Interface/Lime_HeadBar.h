@@ -10,5 +10,6 @@
 #endif
 
 lv_obj_t * lime_headbar_create(lv_obj_t *parent);
+void lime_headbar_change_width(bool is_expanded);
 
 #endif /* __Lime_HeadBar_H__ */

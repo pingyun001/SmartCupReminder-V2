@@ -90,7 +90,7 @@ void sensor_main(void const * argument)
 
 		esp8266_sync_handle();
 		
-		Lime_audio_run_handle();
+//		Lime_audio_run_handle();
 		
 		osDelay(10);
 	}

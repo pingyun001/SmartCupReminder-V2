@@ -193,7 +193,7 @@ static void lime_countface_update_charactor_img(LimeHal_WoringStatus_e status)
     int32_t start_x = lv_obj_get_x(charactor_img) + pic_width - 428;
     int32_t distance = 160 - start_x;
     int32_t elaps_time = fmapWithLimit(distance, 0, 160, 1, 500);
-    LV_LOG_USER("x:%d, start_x:%d, elaps_time:%d", lv_obj_get_x(charactor_img), start_x, elaps_time);
+    // LV_LOG_USER("x:%d, start_x:%d, elaps_time:%d", lv_obj_get_x(charactor_img), start_x, elaps_time);
     lv_anim_set_values(charactor_change_anim, start_x, pic_width);
     lv_anim_set_time(charactor_change_anim, elaps_time);
     charactor_change_anim_is_out = true;

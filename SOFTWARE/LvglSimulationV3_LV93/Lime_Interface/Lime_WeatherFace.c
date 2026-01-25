@@ -142,17 +142,19 @@ static void scan_weather_timer_cb(lv_timer_t * timer)
     switch(cnt)
     {
         case 0:
-            break;
         case 1:
-            lv_obj_remove_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
-            break;
         case 2:
-            lv_obj_remove_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
             break;
         case 3:
-            lv_obj_remove_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_remove_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
             break;
         case 4:
+            lv_obj_remove_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            break;
+        case 5:
+            lv_obj_remove_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+            break;
+        case 6:
             lv_obj_remove_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
             break;
         default:

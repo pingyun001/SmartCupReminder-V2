@@ -9,8 +9,11 @@ LimeHal_Info_t LimeHal_Info =
 {
     .workingInfo.totalCountSeconds = DEFAULT_COUNT_SECONDS,
     .workingInfo.remainCountSeconds = DEFAULT_COUNT_SECONDS,
-
+#if USING_LIME_HARDWARE
+    .senserInfo.isWifiConnected = false,
+#else
     .senserInfo.isWifiConnected = true,
+#endif
     .senserInfo.isWeatherDataValid = false,
     .senserInfo.homeTemper = 23,
 
@@ -50,7 +53,7 @@ void LimeHAL_SyncKeyInfo(const LimeHal_KeyInfo_t *keyInfo)
 {
     if(keyInfo == NULL)
         return;
-        
+
     memcpy((uint8_t*)&LimeHal_Info.keyInfo, (uint8_t*)keyInfo, sizeof(LimeHal_KeyInfo_t));
 }
 void LimeHAL_SyncEspFirmwareVersion(const uint8_t *version)
@@ -68,7 +71,7 @@ void LimeHAL_SetIpAddress(const uint8_t *ip)
 {
     if(ip == NULL)
         return;
-    
+
     memcpy((uint8_t*)&LimeHal_Info.senserInfo.ipAddress, (uint8_t*)ip, sizeof(LimeHal_Info.senserInfo.ipAddress));
 }
 void LimeHAL_SetTime(uint8_t hour, uint8_t minute)
@@ -103,7 +106,7 @@ void LimeHAL_SetTodayWeather(const dayWeather_t *weather)
 {
     if(weather == NULL)
         return;
-    
+
     LimeHAL_SetNowHumi(weather->humidity);
     memcpy((uint8_t*)&LimeHal_Info.senserInfo.todayWeather, (uint8_t*)weather, sizeof(dayWeather_t));
 }
@@ -225,7 +228,7 @@ static void timer_cb(lv_timer_t * timer)
     totalRunCnt++;
 
     /* sim time */
-    static uint8_t hour = 12, min = 10, sec = 0;
+    static uint8_t hour = 12, min = 15, sec = 0;
     sec ++;
     if(sec == 60)
     {
