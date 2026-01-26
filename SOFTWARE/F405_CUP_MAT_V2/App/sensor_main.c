@@ -11,6 +11,9 @@
 #include "file_system_logic.h"
 
 #include "audio_player.h"
+#include "Lime_App_Hal.h"
+
+static void ds18b20_scan_handle(void);
 
 void sensor_main(void const * argument)
 {
@@ -90,13 +93,32 @@ void sensor_main(void const * argument)
 
 		esp8266_sync_handle();
 		
+		ds18b20_scan_handle();
+		
 //		Lime_audio_run_handle();
 		
 		osDelay(10);
 	}
 }
 
-
+static void ds18b20_scan_handle(void)
+{
+	/* suspend tasks */
+	vTaskSuspendAll();
+	
+	/* get DS28B20 Temper */
+	int16_t ds18b20_raw = ds18b20_get_temp();
+	float home_temp = ds18b20_raw / 10.0f;
+	
+	/* sync to lvgl hal */
+	LimeHAL_SetHomeTemerSensor(home_temp);
+	
+	/* resume tasks */
+	if( !xTaskResumeAll())
+	{
+		taskYIELD();
+	}
+}
 
 
 

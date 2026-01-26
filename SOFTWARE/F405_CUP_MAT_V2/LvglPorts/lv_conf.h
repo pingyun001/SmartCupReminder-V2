@@ -727,11 +727,11 @@
     #define LV_USE_CALENDAR_CHINESE 0
 #endif  /*LV_USE_CALENDAR*/
 
-#define LV_USE_CANVAS     1
+#define LV_USE_CANVAS     0
 
 #define LV_USE_CHART      0
 
-#define LV_USE_CHECKBOX   1
+#define LV_USE_CHECKBOX   0
 
 #define LV_USE_DROPDOWN   1   /**< Requires: lv_label */
 
@@ -748,15 +748,15 @@
     #define LV_LABEL_WAIT_CHAR_COUNT 3  /**< The count of wait chart */
 #endif
 
-#define LV_USE_LED        1
+#define LV_USE_LED        0
 
 #define LV_USE_LINE       1
 
-#define LV_USE_LIST       1
+#define LV_USE_LIST       0
 
 #define LV_USE_LOTTIE     0  /**< Requires: lv_canvas, thorvg */
 
-#define LV_USE_MENU       1
+#define LV_USE_MENU       0
 
 #define LV_USE_MSGBOX     1
 
@@ -772,24 +772,24 @@
     #define LV_SPAN_SNIPPET_STACK_SIZE 64
 #endif
 
-#define LV_USE_SPINBOX    1
+#define LV_USE_SPINBOX    0
 
-#define LV_USE_SPINNER    1
+#define LV_USE_SPINNER    0
 
-#define LV_USE_SWITCH     1
+#define LV_USE_SWITCH     0
 
 #define LV_USE_TABLE      1
 
 #define LV_USE_TABVIEW    1
 
-#define LV_USE_TEXTAREA   1   /**< Requires: lv_label */
+#define LV_USE_TEXTAREA   0   /**< Requires: lv_label */
 #if LV_USE_TEXTAREA != 0
     #define LV_TEXTAREA_DEF_PWD_SHOW_TIME 1500    /**< [ms] */
 #endif
 
-#define LV_USE_TILEVIEW   1
+#define LV_USE_TILEVIEW   0
 
-#define LV_USE_WIN        1
+#define LV_USE_WIN        0
 
 #define LV_USE_3DTEXTURE  0
 

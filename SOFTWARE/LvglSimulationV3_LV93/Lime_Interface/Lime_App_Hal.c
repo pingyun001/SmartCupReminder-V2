@@ -124,6 +124,18 @@ void LimeHAL_SetDayAfterTomorrowWeather(const dayWeather_t *weather)
 
     memcpy((uint8_t*)&LimeHal_Info.senserInfo.dayAfterTomorrowWeather, (uint8_t*)weather, sizeof(dayWeather_t));
 }
+void LimeHAL_SetUsbLowVolErr(void)
+{
+	LimeHal_Info.workingInfo.isUsbLowPower = true;
+}
+void LimeHAL_SetUsbVoltage(float voltage)
+{
+	LimeHal_Info.senserInfo.usbVolt = voltage;
+}
+void LimeHAL_SetHomeTemerSensor(float homeTemper)
+{
+	LimeHal_Info.senserInfo.homeTemper = homeTemper;
+}
 
 uint8_t Lime_CalDayInMonth(uint32_t year, uint8_t month)
 {

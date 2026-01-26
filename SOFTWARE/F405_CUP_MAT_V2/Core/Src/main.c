@@ -32,7 +32,6 @@
 /* USER CODE BEGIN Includes */
 #include "spi_flash.h"
 #include "spi_flash_test.h"
-#include "gkhs_wave.h"
 
 #include "FatFsSelfTest.h"
 #include "stm_system_io.h"
@@ -126,15 +125,6 @@ int main(void)
 	while(1)
 		;
 #endif
-	
-	HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
-	
-//	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)gkhs_wave, 10080, DAC_ALIGN_8B_R);
-//	HAL_TIM_Base_Start(&htim7);
-	
-	
-//	FatFs_test(0);
-//	FatFs_TestHardware(0, 128 * 1024);
 
   /* USER CODE END 2 */
 
@@ -167,7 +157,7 @@ int main(void)
 //		
 		
     HAL_Delay(100);
-		
+	
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -256,7 +246,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
+  if (htim->Instance == TIM13) {
 	lv_tick_inc(1);
+  }
+	
   /* USER CODE END Callback 1 */
 }
 

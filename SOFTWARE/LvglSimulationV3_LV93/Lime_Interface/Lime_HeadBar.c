@@ -126,7 +126,7 @@ static void scan_timer_cb(lv_timer_t * timer)
     const lv_image_dsc_t *wifi_img_dsc = senser->isWifiConnected ? &lime_img_wificonn : &lime_img_wifidisconn;
     lv_img_set_src(wifistatus_img, wifi_img_dsc);
 
-    /* update temper ui */
+    /* update wifi-weather ui */
     if(senser->isWeatherDataValid)
     {
         lv_obj_remove_flag(weatherlogo_img, LV_OBJ_FLAG_HIDDEN);
@@ -138,6 +138,9 @@ static void scan_timer_cb(lv_timer_t * timer)
 
     /* update time ui */
     lime_base_set_label_string(tim_label, "%02d:%02d", senser->hour, senser->minute);
+	
+	/* uypdate home temper ui */
+	lime_base_set_label_string(temper_label, "%.1f℃", senser->homeTemper);
 
     is_width_expanded_last = is_width_expanded;
 }

@@ -44,6 +44,7 @@ typedef struct
 	uint16_t remainCountSeconds;
 	uint16_t totalCountSeconds;
 	bool isSleepMode;
+	bool isUsbLowPower;
 
 }LimeHal_WorkingInfo_t;
 
@@ -112,6 +113,9 @@ void LimeHAL_SetNowHumi(float humi);
 void LimeHAL_SetTodayWeather(const dayWeather_t *weather);
 void LimeHAL_SetTomorrowWeather(const dayWeather_t *weather);
 void LimeHAL_SetDayAfterTomorrowWeather(const dayWeather_t *weather);
+void LimeHAL_SetUsbLowVolErr(void);
+void LimeHAL_SetUsbVoltage(float voltage);
+void LimeHAL_SetHomeTemerSensor(float homeTemper);
 
 /*VS simulator API*/
 void LimeHAL_SoftSimHardwareTimer_Init(void);
@@ -119,8 +123,6 @@ void LimeHAL_KeyPressed_Hook(uint8_t keyID);
 void LimeHAL_SetAllKeyToReleased(void);
 
 /*LVGL Interface API*/
-void LimeHAL_AppRunInfo_runTake(bool isTake);	//0: give, 1:take
-bool LimeHAL_IsAppFirmwareScheLock(void);
-void LimeHAL_SyncAppRunStatus(int16_t index);
+
 
 #endif // __Lime_App_Hal_H__

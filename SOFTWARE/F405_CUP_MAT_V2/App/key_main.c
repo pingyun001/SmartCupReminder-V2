@@ -7,17 +7,20 @@
 key_info_t key_info = {0};
 
 static void key_scan_handle(void);
+static void usb_scan_handle(void);
 
 void key_main(void const * argument)
 {
-  DEBUG_LOG("Task %s,start\n", __FUNCTION__);
+	DEBUG_LOG("Task %s,start\n", __FUNCTION__);
 
-  /* init key */
+	/* init key */
 	key_Init();
 
 	while (1)
 	{
 		key_scan_handle();
+		
+		usb_scan_handle();
 
 		osDelay(10);
 	}
@@ -27,7 +30,7 @@ static void key_scan_handle(void)
 {
 	mult_key_e now_key = key_get_press();
 	static mult_key_e last_key = MULT_KEY_NO;
-	
+
 	/* scan now status */
 	if(now_key != last_key)
 	{
@@ -35,31 +38,31 @@ static void key_scan_handle(void)
 		{
 			/* no key pressed, release all key */
 			case MULT_KEY_NO:
-					key_info.sw_up += key_info.sw_up % 2;
-					key_info.sw_down += key_info.sw_down % 2;
-					key_info.sw_left += key_info.sw_left % 2;
-					key_info.sw_right += key_info.sw_right % 2;
-					key_info.sw_set += key_info.sw_set % 2;
-					break;
+				key_info.sw_up += key_info.sw_up % 2;
+				key_info.sw_down += key_info.sw_down % 2;
+				key_info.sw_left += key_info.sw_left % 2;
+				key_info.sw_right += key_info.sw_right % 2;
+				key_info.sw_set += key_info.sw_set % 2;
+				break;
 
 			/* key pressed */
 			case MULT_KEY_UP:
-					key_info.sw_up ++;
-					break;
+				key_info.sw_up ++;
+				break;
 			case MULT_KEY_DOWN:
-					key_info.sw_down ++;
-					break;
+				key_info.sw_down ++;
+				break;
 			case MULT_KEY_LEFT:
-					key_info.sw_left ++;
-					break;
+				key_info.sw_left ++;
+				break;
 			case MULT_KEY_RIGHT:
-					key_info.sw_right ++;
-					break;
+				key_info.sw_right ++;
+				break;
 			case MULT_KEY_SET:
-					key_info.sw_set ++;
-					break;
+				key_info.sw_set ++;
+				break;
 			default:
-					break;
+				break;
 		}
 	}
 	
@@ -67,4 +70,35 @@ static void key_scan_handle(void)
 	LimeHAL_SyncKeyInfo((const LimeHal_KeyInfo_t *)&key_info);
 
 	last_key = now_key;
+}
+
+static void usb_scan_handle(void)
+{
+	const float low_level = 4.12f;
+	static uint8_t low_count = 0;
+	static float last_voltage = 0;
+	float now_voltage = key_get_usb_vol();
+	
+	/* low count */
+	if((now_voltage < low_level) && (last_voltage < low_level))
+	{
+		low_count ++;
+	}
+	else
+	{
+		low_count = 0;
+	}
+	
+	/* out of range */
+	if(low_count > 10)
+	{
+		LimeHAL_SetUsbLowVolErr();
+		low_count = 0;
+	}
+	
+	/* sync now voltage */
+	LimeHAL_SetUsbVoltage(now_voltage);
+	
+	/* sync last voltage */
+	last_voltage = now_voltage;
 }

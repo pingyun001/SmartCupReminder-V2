@@ -151,9 +151,9 @@ int16_t ds18b20_get_temp(void)
 				
 	if(TH>7)
 	{
-			TH = ~TH;
-			TL = ~TL; 
-			temp = 0;
+		TH = ~TH;
+		TL = ~TL; 
+		temp = 0;
 	}
 	else 
 		temp=1; 
