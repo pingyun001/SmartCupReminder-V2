@@ -61,11 +61,11 @@ lv_obj_t * lime_headbar_create(lv_obj_t *parent)
     /* right side */
     weatherlogo_img = lv_img_create(bj_obj);
     lv_img_set_src(weatherlogo_img, &lime_img_weatherlogo);
-    lv_obj_align(weatherlogo_img, LV_ALIGN_LEFT_MID, 159, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_align(weatherlogo_img, LV_ALIGN_LEFT_MID, 145, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     temper_label = lv_label_create(bj_obj);
-    lv_label_set_text(temper_label, "25℃");
-    lv_obj_set_size(temper_label, 30, 12);
+    lv_label_set_text(temper_label, "25.1℃");
+    lv_obj_set_size(temper_label, 41, 12);
     lv_obj_align_to(temper_label, weatherlogo_img, LV_ALIGN_OUT_RIGHT_MID, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(temper_label, &lime_font_headbar, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(temper_label, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -111,7 +111,7 @@ static void scan_timer_cb(lv_timer_t * timer)
         uint8_t bg_opa = fmapWithLimit(now_percent, 0, 60, LV_OPA_50, LV_OPA_0);
         lv_obj_set_style_bg_opa(header_shadow_obj, bg_opa, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-        int32_t aligned_x2 = fmapWithLimit(now_percent, 0, 100, 159, 349);
+        int32_t aligned_x2 = fmapWithLimit(now_percent, 0, 100, 145, 331);
         lv_obj_align(weatherlogo_img, LV_ALIGN_LEFT_MID, aligned_x2, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_align_to(temper_label, weatherlogo_img, LV_ALIGN_OUT_RIGHT_MID, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_align_to(wifistatus_img, temper_label, LV_ALIGN_OUT_RIGHT_MID, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -138,7 +138,7 @@ static void scan_timer_cb(lv_timer_t * timer)
 
     /* update time ui */
     lime_base_set_label_string(tim_label, "%02d:%02d", senser->hour, senser->minute);
-	
+
 	/* uypdate home temper ui */
 	lime_base_set_label_string(temper_label, "%.1f℃", senser->homeTemper);
 
