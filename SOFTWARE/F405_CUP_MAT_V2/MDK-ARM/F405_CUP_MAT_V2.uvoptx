@@ -190,6 +190,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>audiopy,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>temp_rd_buf</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
@@ -4663,6 +4668,18 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+    <File>
+      <GroupNumber>15</GroupNumber>
+      <FileNumber>358</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_SettingFace.c</PathWithFileName>
+      <FilenameWithoutPath>Lime_SettingFace.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
   </Group>
 
   <Group>
@@ -4673,7 +4690,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>358</FileNumber>
+      <FileNumber>359</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4685,7 +4702,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>359</FileNumber>
+      <FileNumber>360</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4697,7 +4714,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>360</FileNumber>
+      <FileNumber>361</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4709,7 +4726,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>361</FileNumber>
+      <FileNumber>362</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4721,7 +4738,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>362</FileNumber>
+      <FileNumber>363</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4733,7 +4750,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>363</FileNumber>
+      <FileNumber>364</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4745,7 +4762,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>364</FileNumber>
+      <FileNumber>365</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4757,7 +4774,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>365</FileNumber>
+      <FileNumber>366</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4769,7 +4786,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>366</FileNumber>
+      <FileNumber>367</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4781,7 +4798,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>367</FileNumber>
+      <FileNumber>368</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4793,7 +4810,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>368</FileNumber>
+      <FileNumber>369</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4805,7 +4822,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>369</FileNumber>
+      <FileNumber>370</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4817,7 +4834,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>370</FileNumber>
+      <FileNumber>371</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4829,7 +4846,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>371</FileNumber>
+      <FileNumber>372</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4841,7 +4858,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>372</FileNumber>
+      <FileNumber>373</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4853,13 +4870,73 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>373</FileNumber>
+      <FileNumber>374</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_num.c</PathWithFileName>
       <FilenameWithoutPath>lime_font_weather_num.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>375</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_about.c</PathWithFileName>
+      <FilenameWithoutPath>lime_setting_about.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>376</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_screen.c</PathWithFileName>
+      <FilenameWithoutPath>lime_setting_screen.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>377</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_time.c</PathWithFileName>
+      <FilenameWithoutPath>lime_setting_time.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>378</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_voice.c</PathWithFileName>
+      <FilenameWithoutPath>lime_setting_voice.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>379</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_setting_title.c</PathWithFileName>
+      <FilenameWithoutPath>lime_font_setting_title.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -4873,7 +4950,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>374</FileNumber>
+      <FileNumber>380</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4885,7 +4962,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>375</FileNumber>
+      <FileNumber>381</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4897,7 +4974,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>376</FileNumber>
+      <FileNumber>382</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4909,7 +4986,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>377</FileNumber>
+      <FileNumber>383</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4921,7 +4998,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>378</FileNumber>
+      <FileNumber>384</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4941,7 +5018,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>18</GroupNumber>
-      <FileNumber>379</FileNumber>
+      <FileNumber>385</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4953,7 +5030,7 @@
     </File>
     <File>
       <GroupNumber>18</GroupNumber>
-      <FileNumber>380</FileNumber>
+      <FileNumber>386</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4965,7 +5042,7 @@
     </File>
     <File>
       <GroupNumber>18</GroupNumber>
-      <FileNumber>381</FileNumber>
+      <FileNumber>387</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

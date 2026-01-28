@@ -13,6 +13,7 @@
 audiopy_t audiopy = 
 {
 	.now_status = audiopy_status_idle,
+	.user_setted_volume = 255,
 };
 
 static HAL_StatusTypeDef Lime_file_seek_relative(FIL* fp, FSIZE_t offset) 
@@ -46,10 +47,24 @@ static void Lime_audio_raw_data_cal(uint16_t* data, uint32_t len_bytes)
 	}
 
 	/* wave data */
+#if 1
+	uint32_t attenuation = audiopy.user_setted_volume;
+	attenuation = (attenuation * attenuation) >> 8;  // Æ½·½½üËÆ
+	
+	for(int i = 0; i < len_bytes / 2; i++)
+	{
+			uint32_t value = ((data[i] + 32768) >> 4) & 0x0FFF;
+			
+			uint32_t scaled = (value * attenuation) >> 8;
+			
+			data[i] = scaled & 0x0FFF;
+	}
+#else
 	for(int i = 0; i < len_bytes / 2; i++)
 	{
 		data[i] = ((data[i] + 32768) >> 4 ) & 0x0FFF;
 	}
+#endif
 	
 	/* no used data, set to half of max value */
 	for(int i = len_bytes / 2; i < AUDIO_BUFFER_SIZE / 4; i++)
@@ -122,6 +137,10 @@ static void Lime_audio_read_new_data(void)
 HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 {
 	FRESULT fr;
+	uint8_t retry_cnt;
+	
+	retry_cnt = 2;
+retry_read:
 
 	/* prepare audio player */
 	audiopy.buffer_a = (uint16_t*)audiopy.buffer;
@@ -158,6 +177,7 @@ HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 	if(memcmp(temp_rd_buf + 0, "RIFF", 4) != 0)
 	{
 		AUDIO_DEBUG_LOG("wav head1 error\n");
+		f_close(&audiopy.fil);
 		
 		return HAL_ERROR;
 	}
@@ -166,6 +186,7 @@ HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 	if(memcmp(temp_rd_buf + 8, "WAVE", 4) != 0)
 	{
 		AUDIO_DEBUG_LOG("wav head2 error\n");
+		f_close(&audiopy.fil);
 		
 		return HAL_ERROR;
 	}
@@ -183,11 +204,19 @@ HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 	}
 	memcpy((uint8_t*)chunk_id, temp_rd_buf + 0, 4);
 	memcpy((uint8_t*)&chunk_size, temp_rd_buf + 4, 4);
+	AUDIO_DEBUG_LOG("readed size:%d\n", bytesRead);
 	AUDIO_DEBUG_LOG("chunk_id:%c,%c,%c,%c\n", chunk_id[0], chunk_id[1], chunk_id[2], chunk_id[3]);
 	AUDIO_DEBUG_LOG("chunk_size:%d\n", chunk_size);
 	if(chunk_size > sizeof(temp_rd_buf))
 	{
 		AUDIO_DEBUG_LOG("chunk_size is out of range!\n");
+		f_close(&audiopy.fil);
+		
+		if(retry_cnt)
+		{
+			retry_cnt --;
+			goto retry_read;
+		}
 		
 		return HAL_ERROR;
 	}
@@ -226,14 +255,6 @@ HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 	
 	/* (skip)read data[1] */
 	Lime_file_seek_relative(&audiopy.fil, chunk_size);
-	// fr = f_read(&audiopy.fil, temp_rd_buf, chunk_size, &bytesRead);
-	// if (fr != FR_OK)
-	// {
-	// 	AUDIO_DEBUG_LOG("File read failed with error code: %d\n", fr);
-	// 	f_close(&audiopy.fil);
-		
-	// 	return HAL_ERROR;
-	// }
 
 	/* read data[2] */
 	fr = f_read(&audiopy.fil, temp_rd_buf, 8, &bytesRead);
@@ -252,6 +273,7 @@ HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 	if(memcmp(chunk_id, "data", 4) != 0)
 	{
 		AUDIO_DEBUG_LOG("data chunk error\n");
+		f_close(&audiopy.fil);
 		
 		return HAL_ERROR;
 	}
@@ -268,6 +290,7 @@ HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 	if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
 	{
 		AUDIO_DEBUG_LOG("TIM7 init failed\n");
+		f_close(&audiopy.fil);
 
 		return HAL_ERROR;
 	}

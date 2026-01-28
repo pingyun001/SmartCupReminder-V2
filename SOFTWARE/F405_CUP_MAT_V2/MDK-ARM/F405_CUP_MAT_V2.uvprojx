@@ -3688,6 +3688,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_WeatherFace.c</FilePath>
             </File>
+            <File>
+              <FileName>Lime_SettingFace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_SettingFace.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3772,6 +3777,31 @@
               <FileName>lime_font_weather_num.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_num.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_setting_about.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_about.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_setting_screen.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_screen.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_setting_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_time.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_setting_voice.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_voice.c</FilePath>
+            </File>
+            <File>
+              <FileName>lime_font_setting_title.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_setting_title.c</FilePath>
             </File>
           </Files>
         </Group>
