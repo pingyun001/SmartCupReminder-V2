@@ -91,6 +91,11 @@ void Error_Handler(void);
 #define DEBUG_LOG(...)
 #endif
 
+#define GLOBAL_SETTING_FILE_PATH		"D:/setting.txt"
+#define GLOBAL_DEFAULT_WIFI_NAME		"wifi_name"
+#define GLOBAL_DEFAULT_WIFI_PASSWORD	"wifi_passord"
+#define GLOBAL_DEFAULT_CITY_NAME		"BeiJing"
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

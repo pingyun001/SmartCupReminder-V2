@@ -42,5 +42,14 @@ HAL_StatusTypeDef file_system_ReInit(void);
 /* confirm  */
 HAL_StatusTypeDef file_system_confirm(void);
 
+/* setting info in setting.txt */
+typedef struct
+{
+	char wifi_name[64];
+	char wifi_password[64];
+	char city_name[64];
+}setting_file_info_t;
+
+HAL_StatusTypeDef file_system_read_setting_file(setting_file_info_t *info);
 
 #endif		//__FILE_SYSTEM_LOGIC

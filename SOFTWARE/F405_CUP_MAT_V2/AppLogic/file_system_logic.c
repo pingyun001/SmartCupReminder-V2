@@ -527,3 +527,110 @@ FRESULT Lime_file_delete(const char *dst_path)
 	return f_unlink(dst_path);
 }
 
+HAL_StatusTypeDef file_system_read_setting_file(setting_file_info_t *info)
+{
+    FRESULT res;
+	
+	/* check para */
+	if(info == NULL)
+	{
+		DEBUG_LOG("input is NULL\n");
+		return HAL_ERROR;
+	}
+	
+#define LINE_SIZE 256
+	
+#if LIME_FATFS_DYNAMIC_MEM_MELLOC
+	char *line = LIME_FATFS_MELLOC(LINE_SIZE);
+	if(line == NULL)
+	{
+		DEBUG_LOG("malloc failed\n");
+		return HAL_ERROR;
+	}
+	FIL *file = LIME_FATFS_MELLOC(sizeof(FIL));
+	if(file == NULL)
+	{
+		DEBUG_LOG("malloc failed\n");
+		return HAL_ERROR;
+	}
+#else
+    char line_body[LINE_SIZE] = {0};
+	char *line = line_body;
+	FIL file_body = {0};
+	FIL *file = &file_body;
+#endif
+	
+	
+	
+	memset(line, 0, LINE_SIZE);
+	memset(file, 0, sizeof(FIL));
+
+    /* 打开文件 */
+    res = f_open(file, GLOBAL_SETTING_FILE_PATH, FA_READ);
+    if (res != FR_OK)
+    {
+        goto end;
+    }
+    
+    /* 逐行读取文件 */
+    while (f_gets(line, LINE_SIZE, file) != NULL)
+    {
+        char *colon_pos = strchr(line, ':');
+        if (colon_pos == NULL)
+        {
+			/* 跳过无效行 */
+            continue;  
+        }
+        
+		/* 分割键值 */
+        *colon_pos = '\0';  
+        char *key = line;
+        char *value = colon_pos + 1;
+        
+        /* 去除value末尾的换行符 */
+        char *newline = strchr(value, '\n');
+        if (newline) *newline = '\0';
+        newline = strchr(value, '\r');
+        if (newline) *newline = '\0';
+        
+        /* 去除value前后的空格 */
+        while (*value == ' ') value++;
+        char *end = value + strlen(value) - 1;
+        while (end > value && *end == ' ')
+        {
+            *end = '\0';
+            end--;
+        }
+        
+        /* 根据key复制到对应的字段 */
+        if (strcmp(key, "wifi_name") == 0)
+        {
+            strncpy(info->wifi_name, value, sizeof(info->wifi_name) - 1);
+        }
+        else if (strcmp(key, "wifi_password") == 0)
+        {
+            strncpy(info->wifi_password, value, sizeof(info->wifi_password) - 1);
+        }
+        else if (strcmp(key, "city_name") == 0)
+        {
+            strncpy(info->city_name, value, sizeof(info->city_name) - 1);
+        }
+    }
+    
+    f_close(file);
+	
+end:
+#if LIME_FATFS_DYNAMIC_MEM_MELLOC
+	LIME_FATFS_FREE(line);
+	LIME_FATFS_FREE(file);
+#endif
+    
+    /* 验证必要字段是否都已读取 */
+    if (info->wifi_name[0] && info->wifi_password[0] && info->city_name[0])
+    {
+        return HAL_OK;
+    }
+
+	return HAL_ERROR;
+}
+

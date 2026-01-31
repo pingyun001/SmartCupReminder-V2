@@ -13,6 +13,8 @@
 #include "audio_player.h"
 #include "Lime_App_Hal.h"
 
+static void read_sync_setting_info(void);
+
 static void ds18b20_scan_handle(void);
 
 void sensor_main(void const * argument)
@@ -29,6 +31,9 @@ void sensor_main(void const * argument)
 	{
 		DEBUG_LOG("resources confirm failed\n");
 	}
+	
+	/* read setting.txt */
+	read_sync_setting_info();
 	
 	/* Just test audio player */
 //	while(1)
@@ -68,8 +73,7 @@ void sensor_main(void const * argument)
 	
 	/* init ESP8266 */
 	esp8266_Init(1000);
-	esp8266_set_position("Beijing");
-	esp8266_set_wifi_info("ziroom1802", "4001001111");
+	
 	
 	while(1)
 	{
@@ -120,7 +124,46 @@ static void ds18b20_scan_handle(void)
 	}
 }
 
-
+static void read_sync_setting_info(void)
+{
+	/* malloc buffer */
+	setting_file_info_t *info = pvPortMalloc(sizeof(setting_file_info_t));
+	if(info == NULL)
+	{
+		DEBUG_LOG("malloc Failed\n");
+		
+		goto fill_default;
+	}
+	
+	/* read para from setting.txt */
+	if(file_system_read_setting_file(info) != HAL_OK)
+	{
+		vPortFree(info);
+		
+		goto fill_default;
+	}
+	
+	/* setting para */
+	DEBUG_LOG("readed setting.txt para:");
+	DEBUG_LOG("wifi_name:%s", info->wifi_name);
+	DEBUG_LOG("wifi_password:%s", info->wifi_password);
+	DEBUG_LOG("city_name:%s", info->city_name);
+	esp8266_set_wifi_info(info->wifi_name, info->wifi_password);
+	esp8266_set_position(info->city_name);
+	
+	/* free buffer */
+	vPortFree(info);
+	
+	return;
+	
+fill_default:
+	DEBUG_LOG("fill default para:\n");
+	DEBUG_LOG("wifi_name:%s", GLOBAL_DEFAULT_WIFI_NAME);
+	DEBUG_LOG("wifi_password:%s", GLOBAL_DEFAULT_WIFI_PASSWORD);
+	DEBUG_LOG("city_name:%s", GLOBAL_DEFAULT_CITY_NAME);
+	esp8266_set_wifi_info(GLOBAL_DEFAULT_WIFI_NAME, GLOBAL_DEFAULT_WIFI_PASSWORD);
+	esp8266_set_position(GLOBAL_DEFAULT_CITY_NAME);
+}
 
 
 
