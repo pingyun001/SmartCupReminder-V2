@@ -41,6 +41,8 @@ LimeHal_Info_t LimeHal_Info =
     .senserInfo.dayAfterTomorrowWeather.temperaLow = 5,
     .senserInfo.dayAfterTomorrowWeather.temperaHigh = 15,
     .senserInfo.dayAfterTomorrowWeather.humidity = 40,
+
+    .settingInfo.countDownTimeIndex = 1,
 };
 
 /*common API*/
@@ -217,6 +219,20 @@ void LimeHAL_SetAllKeyToReleased(void)
     LimeHal_Info.keyInfo.sw_left = 0;
     LimeHal_Info.keyInfo.sw_right = 0;
     LimeHal_Info.keyInfo.sw_down = 0;
+}
+
+void LimeHAL_SettingInfo_PlayMusicByIndex(uint8_t index)
+{
+    LimeHal_Info.settingInfo.isNeedPlayMusic = true;
+    LimeHal_Info.settingInfo.playMusicIndex = index;
+}
+void LimeHAL_SettingInfo_EnterUdisk(void)
+{
+    LimeHal_Info.settingInfo.isNeedEnterUdisk = true;
+}
+void LimeHAL_SettingInfo_Restore(void)
+{
+    LimeHal_Info.settingInfo.isNeedRestore = true;
 }
 
 void LimeHAL_SoftSimHardwareTimer_Init(void)

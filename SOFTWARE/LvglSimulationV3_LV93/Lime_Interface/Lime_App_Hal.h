@@ -83,6 +83,23 @@ typedef struct
 	dayWeather_t tomorrowWeather;
 	dayWeather_t dayAfterTomorrowWeather;
 }LimeHal_SenserInfo_t;
+
+typedef struct
+{
+	/* range: 1 ~ 6 */
+	uint8_t countDownTimeIndex;
+
+	/* need play music */
+	bool isNeedPlayMusic;
+	uint8_t playMusicIndex;
+
+	/* need enter u-disk */
+	bool isNeedEnterUdisk;
+
+	/* need restore */
+	bool isNeedRestore;
+
+}LimeHal_SettingInfo_t;
 typedef struct
 {
 	/* hardware online info, used when LimeRC power on, show Hello interface */
@@ -96,6 +113,9 @@ typedef struct
 
 	/* weather info */
 	LimeHal_SenserInfo_t senserInfo;
+
+	/* setting info */
+	LimeHal_SettingInfo_t settingInfo;
 
 }LimeHal_Info_t;
 
@@ -123,6 +143,8 @@ void LimeHAL_KeyPressed_Hook(uint8_t keyID);
 void LimeHAL_SetAllKeyToReleased(void);
 
 /*LVGL Interface API*/
-
+void LimeHAL_SettingInfo_PlayMusicByIndex(uint8_t index);
+void LimeHAL_SettingInfo_EnterUdisk(void);
+void LimeHAL_SettingInfo_Restore(void);
 
 #endif // __Lime_App_Hal_H__

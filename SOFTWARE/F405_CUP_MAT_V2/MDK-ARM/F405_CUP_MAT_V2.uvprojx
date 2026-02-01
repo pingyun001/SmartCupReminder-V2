@@ -3813,6 +3813,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_setting_sub_text.c</FilePath>
             </File>
+            <File>
+              <FileName>lime_setting_checked.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_checked.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
