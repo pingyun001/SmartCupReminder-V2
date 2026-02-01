@@ -6,14 +6,19 @@ static lv_obj_t *title_countdown_obj = NULL;
 static lv_obj_t *title_switch_obj = NULL;
 static lv_obj_t *title_voice_obj = NULL;
 static lv_obj_t *title_about_obj = NULL;
+static lv_obj_t *indicator_obj = NULL;
+static lv_obj_t *mainTabview = NULL;
 
 LV_FONT_DECLARE(lime_font_setting_title);
+LV_FONT_DECLARE(lime_font_setting_sub_text);
 LV_IMG_DECLARE(lime_setting_time);
 LV_IMG_DECLARE(lime_setting_screen);
 LV_IMG_DECLARE(lime_setting_voice);
 LV_IMG_DECLARE(lime_setting_about);
+LV_IMG_DECLARE(lime_setting_checked);
 
 static lv_obj_t *lime_setting_create_title(lv_obj_t * parent, const char * title, const lv_img_dsc_t * img);
+static void main_indicator_change_pos(uint8_t index, bool is_sub_menu_loop);
 
 lv_obj_t *lime_setting_widget_create(lv_obj_t* parent)
 {
@@ -29,6 +34,15 @@ lv_obj_t *lime_setting_widget_create(lv_obj_t* parent)
     lv_obj_set_style_border_width(bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_clear_flag(bj_obj, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_center(bj_obj);
+
+    indicator_obj = lv_obj_create(bj_obj);
+    lv_obj_set_size(indicator_obj, 65, 28);
+    lv_obj_set_style_bg_opa(indicator_obj, LV_OPA_50, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(indicator_obj, lv_color_hex(0x0367fd), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(indicator_obj, 7, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(indicator_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(indicator_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(indicator_obj, LV_OBJ_FLAG_SCROLLABLE);
 
     title_countdown_obj = lime_setting_create_title(bj_obj, "计时", &lime_setting_time);
     lv_obj_set_pos(title_countdown_obj, 16, 25);
@@ -53,6 +67,56 @@ lv_obj_t *lime_setting_widget_create(lv_obj_t* parent)
     lv_obj_set_style_border_width(gap_line_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_clear_flag(gap_line_obj, LV_OBJ_FLAG_SCROLLABLE);
 
+    lv_obj_t *main_descript_bg_obj = lv_obj_create(bj_obj);
+    lv_obj_set_size(main_descript_bg_obj, 158, 114);
+    lv_obj_set_pos(main_descript_bg_obj, 297, 22);
+    lv_obj_set_style_bg_opa(main_descript_bg_obj, LV_OPA_50, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(main_descript_bg_obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(main_descript_bg_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(main_descript_bg_obj, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(main_descript_bg_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(main_descript_bg_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(main_descript_bg_obj, LV_OBJ_FLAG_SCROLLABLE);
+
+    lv_obj_t *main_descript_gap_line_obj = lv_obj_create(main_descript_bg_obj);
+    lv_obj_set_size(main_descript_gap_line_obj, 74, 2);
+    lv_obj_align(main_descript_gap_line_obj, LV_ALIGN_TOP_MID, -10, 34);
+    lv_obj_set_style_bg_opa(main_descript_gap_line_obj, LV_OPA_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(main_descript_gap_line_obj, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(main_descript_gap_line_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(main_descript_gap_line_obj, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(main_descript_gap_line_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(main_descript_gap_line_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(main_descript_gap_line_obj, LV_OBJ_FLAG_SCROLLABLE);
+
+    mainTabview = lv_tabview_create(bj_obj);
+    lv_obj_set_size(mainTabview, 343, 142);
+    lv_tabview_set_tab_bar_position(mainTabview, LV_DIR_RIGHT);
+    lv_tabview_set_tab_bar_size(mainTabview, 0);
+    lv_obj_set_style_bg_opa(mainTabview, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_align(mainTabview, LV_ALIGN_RIGHT_MID, 0, 0);
+
+    lv_obj_t *tab1 = lv_tabview_add_tab(mainTabview, "Tab 1");
+    lv_obj_set_style_bg_opa(tab1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(tab1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_t *tab2 = lv_tabview_add_tab(mainTabview, "Tab 2");
+    lv_obj_set_style_bg_opa(tab2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(tab2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_t *tab3 = lv_tabview_add_tab(mainTabview, "Tab 3");
+    lv_obj_set_style_bg_opa(tab3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(tab3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_t *tab4 = lv_tabview_add_tab(mainTabview, "Tab 4");
+    lv_obj_set_style_bg_opa(tab4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(tab4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_tabview_set_active(mainTabview, 0, LV_ANIM_OFF);
+
+    lv_obj_t *sub_tab1 = lime_sub_setting_countdown_create(tab1);
+    lv_obj_t *sub_tab2 = lime_sub_setting_switch_create(tab2);
+    lv_obj_t *sub_tab3 = lime_sub_setting_preview_create(tab3);
+    lv_obj_t *sub_tab4 = lime_sub_setting_about_create(tab4);
+
+
     return bj_obj;
 }
 
@@ -72,7 +136,6 @@ static lv_obj_t *lime_setting_create_title(lv_obj_t * parent, const char * title
 
     lv_obj_t *img_obj = lv_img_create(sub_bj_obj);
     lv_img_set_src(img_obj, img);
-    // lv_obj_set_size(img_obj, 14, 14);
     lv_obj_align(img_obj, LV_ALIGN_LEFT_MID, 4, 0);
 
     lv_obj_t *title_obj = lv_label_create(sub_bj_obj);
@@ -83,4 +146,307 @@ static lv_obj_t *lime_setting_create_title(lv_obj_t * parent, const char * title
     lv_obj_align(title_obj, LV_ALIGN_RIGHT_MID, -4, 0);
 
     return sub_bj_obj;
+}
+
+static void main_indicator_change_pos(uint8_t index, bool is_sub_menu_loop)
+{
+    switch(index)
+    {
+        case 1:
+            lv_obj_set_pos(indicator_obj, 16, 25);
+            break;
+        case 2:
+            lv_obj_set_pos(indicator_obj, 16, 51);
+            break;
+        case 3:
+            lv_obj_set_pos(indicator_obj, 16, 77);
+            break;
+        case 4:
+            lv_obj_set_pos(indicator_obj, 16, 103);
+            break;
+        default:
+            break;
+    }
+
+    if( !is_sub_menu_loop)
+        lv_obj_set_style_bg_color(indicator_obj, lv_color_hex(0x0367fd), LV_PART_MAIN | LV_STATE_DEFAULT);
+    else
+        lv_obj_set_style_bg_color(indicator_obj, lv_color_hex(0x3f3f3f), LV_PART_MAIN | LV_STATE_DEFAULT);
+}
+
+#define LIME_LV_CREATE_DEFAULT_MENU_LABEL(me, parent, text, x, y, w)    \
+    lv_obj_t *me = lv_label_create(parent);                                \
+    lv_obj_set_pos(me, x, y);                                            \
+    lv_obj_set_size(me, w, 16);                                          \
+    lv_label_set_text(me, text);                                          \
+    lv_obj_set_style_text_color(me, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT); \
+    lv_obj_set_style_text_font(me, &lime_font_setting_title, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+static lv_obj_t *lime_sub_setting_countdown_create(lv_obj_t* parent)
+{
+    MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(parent);
+
+    lv_obj_t *sub_bj_obj = lv_obj_create(parent);
+    lv_obj_set_size(sub_bj_obj, 343, 142);
+    lv_obj_set_style_bg_opa(sub_bj_obj, LV_OPA_0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(sub_bj_obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(sub_bj_obj, LV_OBJ_FLAG_SCROLLABLE);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_label, sub_bj_obj, "1 分钟", 36, 37, 60);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_label, sub_bj_obj, "5 分钟", 36, 65, 60);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_label, sub_bj_obj, "10分钟", 36, 92, 60);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_4_label, sub_bj_obj, "25分钟", 120, 37, 60);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_5_label, sub_bj_obj, "45分钟", 120, 65, 60);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_6_label, sub_bj_obj, "60分钟", 120, 92, 60);
+
+    /* create description title */
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(description_label, sub_bj_obj, "倒计时时间设置", 223, 32, 120);
+
+    lv_obj_t *description_sub_label = lv_label_create(parent);
+    lv_obj_set_size(description_sub_label, 110, 72);
+    lv_obj_set_pos(description_sub_label, 221, 67);
+    lv_label_set_text(description_sub_label, "放下水杯后的倒计时时间");
+    lv_obj_set_style_text_color(description_sub_label, lv_color_hex(0x7F7F7F), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(description_sub_label, &lime_font_setting_sub_text, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_long_mode(description_sub_label, LV_LABEL_LONG_MODE_WRAP);
+    lv_obj_set_style_text_align(description_sub_label, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    return sub_bj_obj;
+}
+static lv_obj_t *lime_sub_setting_switch_create(lv_obj_t* parent)
+{
+    MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(parent);
+
+    lv_obj_t *sub_bj_obj = lv_obj_create(parent);
+    lv_obj_set_size(sub_bj_obj, 343, 142);
+    lv_obj_set_style_bg_opa(sub_bj_obj, LV_OPA_0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(sub_bj_obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(sub_bj_obj, LV_OBJ_FLAG_SCROLLABLE);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_title, sub_bj_obj, "音量", 9, 37, 60);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_title, sub_bj_obj, "光强", 9, 62, 60);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_title, sub_bj_obj, "光效", 9, 86, 60);
+
+    /* create description title */
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(description_label, sub_bj_obj, "交互方式", 251, 32, 65);
+
+    lv_obj_t *description_sub_label = lv_label_create(parent);
+    lv_obj_set_size(description_sub_label, 110, 72);
+    lv_obj_set_pos(description_sub_label, 221, 67);
+    lv_label_set_text(description_sub_label, "音量：调整提示音大小\n光强：调整灯光亮度\n光效：选择灯光渐变类型");
+    lv_obj_set_style_text_color(description_sub_label, lv_color_hex(0x7F7F7F), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(description_sub_label, &lime_font_setting_sub_text, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_long_mode(description_sub_label, LV_LABEL_LONG_MODE_WRAP);
+    lv_obj_set_style_text_align(description_sub_label, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    return sub_bj_obj;
+}
+
+static lv_obj_t *lime_sub_setting_preview_create(lv_obj_t* parent)
+{
+    MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(parent);
+
+    lv_obj_t *sub_bj_obj = lv_obj_create(parent);
+    lv_obj_set_size(sub_bj_obj, 343, 142);
+    lv_obj_set_style_bg_opa(sub_bj_obj, LV_OPA_0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(sub_bj_obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(sub_bj_obj, LV_OBJ_FLAG_SCROLLABLE);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_title, sub_bj_obj, "初次见面", 39, 29, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_title, sub_bj_obj, "放下水杯", 39, 49, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_title, sub_bj_obj, "时间到了", 39, 69, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_4_title, sub_bj_obj, "取走水杯", 39, 89, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_5_title, sub_bj_obj, "阳光很好", 39, 109, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_6_title, sub_bj_obj, "下雨的时候", 120, 29, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_7_title, sub_bj_obj, "下雪的时候", 120, 49, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_8_title, sub_bj_obj, "早上好~", 120, 69, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_9_title, sub_bj_obj, "中午好~", 120, 89, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_10_title, sub_bj_obj, "晚上好~", 120, 109, 80);
+
+    /* create description title */
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(description_label, sub_bj_obj, "音频预览", 251, 32, 65);
+
+    lv_obj_t *description_sub_label = lv_label_create(parent);
+    lv_obj_set_size(description_sub_label, 110, 72);
+    lv_obj_set_pos(description_sub_label, 221, 67);
+    lv_label_set_text(description_sub_label, "预览已存入的音频文件\n若需修改相关文件 请通过U盘模式进行");
+    lv_obj_set_style_text_color(description_sub_label, lv_color_hex(0x7F7F7F), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(description_sub_label, &lime_font_setting_sub_text, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_long_mode(description_sub_label, LV_LABEL_LONG_MODE_WRAP);
+    lv_obj_set_style_text_align(description_sub_label, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    return sub_bj_obj;
+}
+static lv_obj_t *lime_sub_setting_about_create(lv_obj_t* parent)
+{
+    MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(parent);
+
+    lv_obj_t *sub_bj_obj = lv_obj_create(parent);
+    lv_obj_set_size(sub_bj_obj, 343, 142);
+    lv_obj_set_style_bg_opa(sub_bj_obj, LV_OPA_0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(sub_bj_obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(sub_bj_obj, LV_OBJ_FLAG_SCROLLABLE);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_title, sub_bj_obj, "USB电压", 17, 38, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_title, sub_bj_obj, "JEDEC ID", 17, 57, 80);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_title, sub_bj_obj, "WIFI IP", 17, 75, 80);
+
+    lv_obj_t *case_4_title = lv_label_create(parent);
+    lv_obj_set_size(case_4_title, 100, 16);
+    lv_obj_align(case_4_title, LV_ALIGN_TOP_RIGHT, -145, 38);
+    lv_label_set_text(case_4_title, "4.88V");
+    lv_obj_set_style_text_color(case_4_title, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(case_4_title, &lime_font_setting_title, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_long_mode(case_4_title, LV_LABEL_LONG_MODE_CLIP);
+    lv_obj_set_style_text_align(case_4_title, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t *case_5_title = lv_label_create(parent);
+    lv_obj_set_size(case_5_title, 100, 16);
+    lv_obj_align(case_5_title, LV_ALIGN_TOP_RIGHT, -145, 57);
+    lv_label_set_text(case_5_title, "0x4017");
+    lv_obj_set_style_text_color(case_5_title, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(case_5_title, &lime_font_setting_title, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_long_mode(case_5_title, LV_LABEL_LONG_MODE_CLIP);
+    lv_obj_set_style_text_align(case_5_title, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t *case_6_title = lv_label_create(parent);
+    lv_obj_set_size(case_6_title, 100, 16);
+    lv_obj_align(case_6_title, LV_ALIGN_TOP_RIGHT, -145, 75);
+    lv_label_set_text(case_6_title, "192.168.199.100");
+    lv_obj_set_style_text_color(case_6_title, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(case_6_title, &lime_font_setting_title, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_long_mode(case_6_title, LV_LABEL_LONG_MODE_CLIP);
+    lv_obj_set_style_text_align(case_6_title, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t *enter_u_disk_bg = lv_obj_create(parent);
+    lv_obj_set_pos(enter_u_disk_bg, 15, 105);
+    lv_obj_set_size(enter_u_disk_bg, 90, 28);
+    lv_obj_set_style_bg_opa(enter_u_disk_bg, LV_OPA_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(enter_u_disk_bg, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(enter_u_disk_bg, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(enter_u_disk_bg, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(enter_u_disk_bg, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(enter_u_disk_bg, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(enter_u_disk_bg, LV_OBJ_FLAG_SCROLLABLE);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(udisk_title, enter_u_disk_bg, "进入U盘", 0, 0, 65);
+    lv_obj_set_style_text_align(udisk_title, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_align(udisk_title, LV_ALIGN_CENTER, 0, -2);
+
+    lv_obj_t *restore_bg = lv_obj_create(parent);
+    lv_obj_set_pos(restore_bg, 115, 105);
+    lv_obj_set_size(restore_bg, 90, 28);
+    lv_obj_set_style_bg_opa(restore_bg, LV_OPA_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(restore_bg, lv_color_hex(0xe60000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(restore_bg, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(restore_bg, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(restore_bg, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(restore_bg, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(restore_bg, LV_OBJ_FLAG_SCROLLABLE);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(restore_title, restore_bg, "重置设备", 0, 0, 65);
+    lv_obj_set_style_text_align(restore_title, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_align(restore_title, LV_ALIGN_CENTER, 0, -2);
+
+    /* create description title */
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(description_label, sub_bj_obj, "关于杯垫", 251, 32, 65);
+
+    lv_obj_t *description_sub_label = lv_label_create(parent);
+    lv_obj_set_size(description_sub_label, 110, 72);
+    lv_obj_set_pos(description_sub_label, 221, 67);
+    lv_label_set_text(description_sub_label, "软件版本：V2.0\n编译时间：Jan 24 2026\n\n\n由B站 平韵の小窝 开源");
+    lv_obj_set_style_text_color(description_sub_label, lv_color_hex(0x7F7F7F), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(description_sub_label, &lime_font_setting_sub_text, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_long_mode(description_sub_label, LV_LABEL_LONG_MODE_WRAP);
+    lv_obj_set_style_text_align(description_sub_label, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    return sub_bj_obj;
+}
+
+setting_in_out_dir_e lime_setting_run_handler(const LimeHal_KeyInfo_t *keyInfo, setting_in_out_dir_e in_dir)
+{
+    static uint8_t main_index = 0;
+    static LimeHal_KeyInfo_t keyInfoLast = {0};
+    static bool is_sub_menu_loop = false;
+    bool is_press = false;
+
+    if(indicator_obj == NULL)
+    {
+        LV_LOG_ERROR("indicator_obj is NULL");
+        return setting_in_out_dir_none;
+    }
+
+    /* init */
+    if(in_dir != setting_in_out_dir_none)
+    {
+        if(in_dir == setting_in_out_dir_up)
+        {
+            main_index = 1;
+        }
+        else
+        {
+            main_index = 4;
+        }
+
+        is_sub_menu_loop = false;
+
+        is_press = true;
+
+        lv_tabview_set_active(mainTabview, main_index - 1, LV_ANIM_OFF);
+
+        goto refresh_main_indicator;
+    }
+
+    /* judge key action */
+    if((keyInfo->sw_up != keyInfoLast.sw_up) && (keyInfo->sw_up % 2))
+    {
+        is_press = true;
+
+        if(main_index  == 1)
+            return setting_in_out_dir_up;
+
+        main_index--;
+    }
+    if((keyInfo->sw_down != keyInfoLast.sw_down) && (keyInfo->sw_down % 2))
+    {
+        is_press = true;
+
+        if(main_index  == 4)
+            return setting_in_out_dir_down;
+
+        main_index++;
+    }
+    if((keyInfo->sw_set != keyInfoLast.sw_set) && (keyInfo->sw_set % 2))
+    {
+        is_sub_menu_loop = true;
+        is_press = true;
+    }
+
+refresh_main_indicator:
+    if(is_press)
+    {
+        main_indicator_change_pos(main_index, is_sub_menu_loop);
+        lv_tabview_set_active(mainTabview, main_index - 1, LV_ANIM_ON);
+    }
+
+    /* sync last key */
+    memcpy(&keyInfoLast, keyInfo, sizeof(LimeHal_KeyInfo_t));
+
+    return setting_in_out_dir_none;
 }

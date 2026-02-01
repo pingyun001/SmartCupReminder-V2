@@ -144,10 +144,10 @@ static void read_sync_setting_info(void)
 	}
 	
 	/* setting para */
-	DEBUG_LOG("readed setting.txt para:");
-	DEBUG_LOG("wifi_name:%s", info->wifi_name);
-	DEBUG_LOG("wifi_password:%s", info->wifi_password);
-	DEBUG_LOG("city_name:%s", info->city_name);
+	DEBUG_LOG("readed setting.txt para:\n");
+	DEBUG_LOG("wifi_name:%s\n", info->wifi_name);
+	DEBUG_LOG("wifi_password:%s\n", info->wifi_password);
+	DEBUG_LOG("city_name:%s\n", info->city_name);
 	esp8266_set_wifi_info(info->wifi_name, info->wifi_password);
 	esp8266_set_position(info->city_name);
 	
@@ -158,9 +158,9 @@ static void read_sync_setting_info(void)
 	
 fill_default:
 	DEBUG_LOG("fill default para:\n");
-	DEBUG_LOG("wifi_name:%s", GLOBAL_DEFAULT_WIFI_NAME);
-	DEBUG_LOG("wifi_password:%s", GLOBAL_DEFAULT_WIFI_PASSWORD);
-	DEBUG_LOG("city_name:%s", GLOBAL_DEFAULT_CITY_NAME);
+	DEBUG_LOG("wifi_name:%s\n", GLOBAL_DEFAULT_WIFI_NAME);
+	DEBUG_LOG("wifi_password:%s\n", GLOBAL_DEFAULT_WIFI_PASSWORD);
+	DEBUG_LOG("city_name:%s\n", GLOBAL_DEFAULT_CITY_NAME);
 	esp8266_set_wifi_info(GLOBAL_DEFAULT_WIFI_NAME, GLOBAL_DEFAULT_WIFI_PASSWORD);
 	esp8266_set_position(GLOBAL_DEFAULT_CITY_NAME);
 }

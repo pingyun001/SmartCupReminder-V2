@@ -4952,6 +4952,18 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>381</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_setting_sub_text.c</PathWithFileName>
+      <FilenameWithoutPath>lime_font_setting_sub_text.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
   </Group>
 
   <Group>
@@ -4962,7 +4974,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>381</FileNumber>
+      <FileNumber>382</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4974,7 +4986,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>382</FileNumber>
+      <FileNumber>383</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4986,7 +4998,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>383</FileNumber>
+      <FileNumber>384</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4998,7 +5010,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>384</FileNumber>
+      <FileNumber>385</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5010,7 +5022,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>385</FileNumber>
+      <FileNumber>386</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5030,7 +5042,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>18</GroupNumber>
-      <FileNumber>386</FileNumber>
+      <FileNumber>387</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5042,7 +5054,7 @@
     </File>
     <File>
       <GroupNumber>18</GroupNumber>
-      <FileNumber>387</FileNumber>
+      <FileNumber>388</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5054,7 +5066,7 @@
     </File>
     <File>
       <GroupNumber>18</GroupNumber>
-      <FileNumber>388</FileNumber>
+      <FileNumber>389</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

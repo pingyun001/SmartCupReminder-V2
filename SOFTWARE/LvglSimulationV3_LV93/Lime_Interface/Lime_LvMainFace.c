@@ -16,7 +16,7 @@ LV_IMG_DECLARE(lime_mainbg);
 static lv_obj_t* mainFaceObj = NULL;
 static lv_obj_t *mainTabview = NULL;
 
-static const uint8_t default_page = 2;
+static const uint8_t default_page = 1;
 
 static void main_scan_timer_cb(lv_timer_t * timer);
 
@@ -86,6 +86,32 @@ static void main_scan_timer_cb(lv_timer_t * timer)
     const LimeHal_Info_t *info = LimeHAL_GetInfoPin();
     MLV_BASE_OBJ_NULL_CHECK(info);
     const LimeHal_KeyInfo_t *keyInfo = &info->keyInfo;
+    static bool is_in_setting_loop = false;
+
+    if(is_in_setting_loop)
+    {
+        setting_in_out_dir_e out_dir = lime_setting_run_handler(keyInfo, setting_in_out_dir_none);
+        if(out_dir == setting_in_out_dir_none)
+            goto sync_end;
+        else
+        {
+            is_in_setting_loop = false;
+            if(out_dir == setting_in_out_dir_up)
+            {
+                /* out by up direction, go back to main page */
+                is_press = true;
+                now_page = 1;
+            }
+            if(out_dir == setting_in_out_dir_down)
+            {
+                /* out by down direction, go back to weather page */
+                is_press = true;
+                now_page = 0;
+            }
+
+            goto sub_page_switch;
+        }
+    }
 
     if((keyInfo->sw_up != keyInfoLast.sw_up) && (keyInfo->sw_up % 2))
     {
@@ -99,6 +125,8 @@ static void main_scan_timer_cb(lv_timer_t * timer)
         now_page = now_page >= 2 ? 0 : now_page + 1;
     }
 
+
+sub_page_switch:
     if(is_press)
     {
         switch(now_page)
@@ -124,6 +152,12 @@ static void main_scan_timer_cb(lv_timer_t * timer)
                 lime_weatherface_soft_start(false);
                 lime_headbar_change_width(true);
                 lv_tabview_set_active(mainTabview, 2, LV_ANIM_ON);
+
+                /* start setting loop */
+                setting_in_out_dir_e in_dir = (keyInfo->sw_down != keyInfoLast.sw_down) ? setting_in_out_dir_up : setting_in_out_dir_down;
+                lime_setting_run_handler(keyInfo, in_dir);
+                is_in_setting_loop = true;
+
                 break;
             }
         }
@@ -131,6 +165,7 @@ static void main_scan_timer_cb(lv_timer_t * timer)
 
 
     /* sync last key info */
+sync_end:
     keyInfoLast.sw_up = keyInfo->sw_up;
     keyInfoLast.sw_down = keyInfo->sw_down;
     keyInfoLast.sw_left = keyInfo->sw_left;
