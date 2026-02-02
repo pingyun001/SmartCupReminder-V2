@@ -733,7 +733,7 @@
 
 #define LV_USE_CHECKBOX   0
 
-#define LV_USE_DROPDOWN   1   /**< Requires: lv_label */
+#define LV_USE_DROPDOWN   0   /**< Requires: lv_label */
 
 #define LV_USE_IMAGE      1   /**< Requires: lv_label */
 
@@ -760,7 +760,7 @@
 
 #define LV_USE_MSGBOX     1
 
-#define LV_USE_ROLLER     1   /**< Requires: lv_label */
+#define LV_USE_ROLLER     0   /**< Requires: lv_label */
 
 #define LV_USE_SCALE      1
 
@@ -906,7 +906,7 @@
 #endif
 
 /** LODEPNG decoder library */
-#define LV_USE_LODEPNG 1
+#define LV_USE_LODEPNG 0
 
 /** PNG decoder(libpng) library */
 #define LV_USE_LIBPNG 0
@@ -916,7 +916,7 @@
 
 /** JPG + split JPG decoder library.
  *  Split JPG is a custom format optimized for embedded systems. */
-#define LV_USE_TJPGD 1
+#define LV_USE_TJPGD 0
 
 /** libjpeg-turbo decoder library.
  *  - Supports complete JPEG specifications and high-performance JPEG decoding. */

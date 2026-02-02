@@ -64,6 +64,9 @@ typedef struct
 {
 	/* from adc */
 	float usbVolt;
+	
+	/* from flash */
+	uint32_t flashID;
 
 	/* from ds18b20 */
 	float homeTemper;
@@ -121,6 +124,7 @@ typedef struct
 
 /*common API*/
 LimeHal_Info_t *LimeHAL_GetInfoPin(void);
+void LimeHAL_SetInitStep(uint8_t percent, const char* hardwareName);
 void LimeHAL_SyncKeyInfo(const LimeHal_KeyInfo_t *keyInfo);
 void LimeHAL_SyncEspFirmwareVersion(const uint8_t *version);
 void LimeHAL_SetWifiStatus(bool isConnected);
@@ -136,6 +140,10 @@ void LimeHAL_SetDayAfterTomorrowWeather(const dayWeather_t *weather);
 void LimeHAL_SetUsbLowVolErr(void);
 void LimeHAL_SetUsbVoltage(float voltage);
 void LimeHAL_SetHomeTemerSensor(float homeTemper);
+bool LimeHAL_IsSetted_UDiskMode(void);
+bool LimeHAL_IsSetted_RestoreMode(void);
+bool LimeHAL_IsNeed_PlayMusic(void);
+uint8_t LimeHAL_GetPlayMusicIndex(void);
 
 /*VS simulator API*/
 void LimeHAL_SoftSimHardwareTimer_Init(void);

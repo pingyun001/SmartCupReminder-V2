@@ -240,6 +240,28 @@ void LimeHAL_SoftSimHardwareTimer_Init(void)
     lv_timer_create(timer_cb, SIMULATION_COUNT_GAP, NULL);
 }
 
+bool LimeHAL_IsSetted_UDiskMode(void)
+{
+	return LimeHal_Info.settingInfo.isNeedEnterUdisk;
+}
+bool LimeHAL_IsSetted_RestoreMode(void)
+{
+	return LimeHal_Info.settingInfo.isNeedRestore;
+}
+
+bool LimeHAL_IsNeed_PlayMusic(void)
+{
+	bool return_val = LimeHal_Info.settingInfo.playMusicIndex;
+	
+	LimeHal_Info.settingInfo.playMusicIndex = false;
+	
+	return return_val;
+}
+uint8_t LimeHAL_GetPlayMusicIndex(void)
+{
+	return LimeHal_Info.settingInfo.playMusicIndex;
+}
+
 /*typedef struct {
     uint8_t keySubBoard;
     uint8_t eeprom;

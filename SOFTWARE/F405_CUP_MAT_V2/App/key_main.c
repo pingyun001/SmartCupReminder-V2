@@ -2,12 +2,14 @@
 #include "cmsis_os.h"
 
 #include "key.h"
+#include "stm_system_io.h"
 #include "Lime_App_Hal.h"
 
 key_info_t key_info = {0};
 
 static void key_scan_handle(void);
-static void usb_scan_handle(void);
+static void usb_voltage_scan_handle(void);
+static void udisk_mode_deetch(void);
 
 void key_main(void const * argument)
 {
@@ -20,7 +22,9 @@ void key_main(void const * argument)
 	{
 		key_scan_handle();
 		
-		usb_scan_handle();
+		usb_voltage_scan_handle();
+		
+		udisk_mode_deetch();
 
 		osDelay(10);
 	}
@@ -72,7 +76,7 @@ static void key_scan_handle(void)
 	last_key = now_key;
 }
 
-static void usb_scan_handle(void)
+static void usb_voltage_scan_handle(void)
 {
 	const float low_level = 4.12f;
 	static uint8_t low_count = 0;
@@ -101,4 +105,56 @@ static void usb_scan_handle(void)
 	
 	/* sync last voltage */
 	last_voltage = now_voltage;
+}
+
+static void udisk_mode_deetch(void)
+{
+	if( !LimeHAL_IsSetted_UDiskMode())
+		return;
+	
+	DEBUG_LOG("%s()\n", __FUNCTION__);
+	
+	/* wait LVGL refresh UI */
+	osDelay(500);
+	
+	/* suspend tasks */
+	vTaskSuspendAll();
+	
+	/* call system API, Enter USB Mode */
+	lime_stm_system_enter_u_disk_mode();
+	
+	while(1)
+	{
+		HAL_Delay(10);
+		
+		/* scan key status */
+		mult_key_e now_key = key_get_press();
+		
+		/* all key released, break */
+		if(now_key == MULT_KEY_NO)
+			break;
+	}
+	
+	DEBUG_LOG("%s(),press any key to exit UDisk\n", __FUNCTION__);
+	
+	while(1)
+	{
+		HAL_Delay(10);
+		
+		/* scan key status */
+		mult_key_e now_key = key_get_press();
+		
+		/* key press */
+		if(now_key != MULT_KEY_NO)
+			break;
+	}
+	
+	/* call system API, Exit USB Mode */
+	lime_stm_system_exit_u_disk_mode();
+	
+	/* resume tasks */
+	if( !xTaskResumeAll())
+	{
+		taskYIELD();
+	}
 }

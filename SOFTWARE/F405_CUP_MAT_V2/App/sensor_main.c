@@ -13,67 +13,92 @@
 #include "audio_player.h"
 #include "Lime_App_Hal.h"
 
+static void senser_task_error_handle(void);
 static void read_sync_setting_info(void);
-
 static void ds18b20_scan_handle(void);
+static void play_flash_music(void);
 
 void sensor_main(void const * argument)
 {
 	DEBUG_LOG("Task %s,start\n", __FUNCTION__);
 	
 	/* mount fatfs */
+	LimeHAL_SetInitStep(10, "flash");
 	if(file_system_Init() != HAL_OK)
 	{
 		DEBUG_LOG("file system init failed\n");
+		
+		/* show UI */
+		LimeHAL_SetInitStep(11, "flash - failed!");
+		
+		/* enter error handle */
+		senser_task_error_handle();
 	}
 	
+	osDelay(100);
+	
+	/* confirm necessery files */
+	LimeHAL_SetInitStep(20, "file system");
 	if(file_system_confirm() != HAL_OK)
 	{
 		DEBUG_LOG("resources confirm failed\n");
+		
+		/* show UI */
+		LimeHAL_SetInitStep(21, "file system confirm failed!");
+		
+		/* enter error handle */
+		senser_task_error_handle();
 	}
 	
+	osDelay(100);
+	
 	/* read setting.txt */
+	LimeHAL_SetInitStep(30, "file system");
 	read_sync_setting_info();
 	
-	/* Just test audio player */
-//	while(1)
-//	{
-////		if(Lime_audio_play_get_status() == audiopy_status_idle)
-////		{
-////			osDelay(1000);
-
-////			static uint8_t i = 1;
-////			char file_name[50] = {0};
-////			sprintf(file_name, "D:voice/%d.wav", i);
-////			DEBUG_LOG("play file:%s\n", file_name);
-
-////			Lime_audio_play_start(file_name);
-////			
-////			if(i >= 7)
-////				while(1)
-////					;
-
-////			i = (i >= 7) ? 1 : i + 1;
-////		}
-//		
-
-//		Lime_audio_run_handle();
-//		osDelay(10);
-//	}
+	osDelay(100);
 	
 	/* init ws2812 */
+	LimeHAL_SetInitStep(40, "rgb led");
 	ws2812_Init();
 	
 	/* init ds18b20 */
+	LimeHAL_SetInitStep(50, "temperature senser");
 	while(ds18b20_Init())
 	{
+		static uint8_t err_cnt = 0;
 		printf("ds18b20 init err\n");
 		HAL_Delay(300);
+		
+		err_cnt ++;
+		
+		LimeHAL_SetInitStep(50 + err_cnt * 2, "temperature senser");
+		
+		if(err_cnt > 5)
+		{
+			LimeHAL_SetInitStep(59, "temperature senser failed!");
+			osDelay(1000);
+		}
 	}
 	
-	/* init ESP8266 */
-	esp8266_Init(1000);
+	osDelay(100);
 	
+	/* init ESP8266 */
+	LimeHAL_SetInitStep(70, "ESP8266");
+	if(esp8266_Init(1000) != HAL_OK)
+	{
+		DEBUG_LOG("ESP8266 init failed\n");
+		
+		LimeHAL_SetInitStep(71, "ESP8266 offline");
+		
+		osDelay(1000);
+	}
+	
+	osDelay(100);
+	
+	LimeHAL_SetInitStep(100, "finish");
+	
+	osDelay(500);
 	
 	while(1)
 	{
@@ -83,15 +108,18 @@ void sensor_main(void const * argument)
 		bool is_cup_deteched = IS_CUP_DETECHED();
 		if(is_cup_deteched && !is_cup_deteched_last)
 		{
-			Lime_audio_play_stop();
-			osDelay(10);
-			Lime_audio_play_start("D:voice/3.wav");
+			LimeHAL_SettingInfo_PlayMusicByIndex(3);
+			
+//			Lime_audio_play_stop();
+//			osDelay(10);
+//			Lime_audio_play_start("D:voice/3.wav");
 		}
 		if(!is_cup_deteched && is_cup_deteched_last)
 		{
-			Lime_audio_play_stop();
-			osDelay(10);
-			Lime_audio_play_start("D:voice/4.wav");
+//			Lime_audio_play_stop();
+//			osDelay(10);
+//			Lime_audio_play_start("D:voice/4.wav");
+			LimeHAL_SettingInfo_PlayMusicByIndex(4);
 		}
 		is_cup_deteched_last = is_cup_deteched;
 
@@ -99,7 +127,7 @@ void sensor_main(void const * argument)
 		
 		ds18b20_scan_handle();
 		
-//		Lime_audio_run_handle();
+		play_flash_music();
 		
 		osDelay(10);
 	}
@@ -165,6 +193,43 @@ fill_default:
 	esp8266_set_position(GLOBAL_DEFAULT_CITY_NAME);
 }
 
+static void play_flash_music(void)
+{
+	/* no need play music */
+	if( !LimeHAL_IsNeed_PlayMusic())
+		return;
+	
+	/* get music index */
+	uint8_t index = LimeHAL_GetPlayMusicIndex();
+	
+	/* synthesis path */
+	char path[24] = {0};
+	snprintf(path, sizeof(path), "D:voice/%d.wav", index);
+	DEBUG_LOG("%s(), play path:%s\n", __FUNCTION__, path);
+	
+	/* stop play */
+	Lime_audio_play_stop();
+	osDelay(10);
+	
+	/* suspend tasks, be sure file read not break by lvgl */
+	vTaskSuspendAll();
+	
+	/* play new music */
+	Lime_audio_play_start(path);
+	
+	/* resume tasks */
+	if( !xTaskResumeAll())
+	{
+		taskYIELD();
+	}
+}
 
+static void senser_task_error_handle(void)
+{
+	while(1)
+	{
+		osDelay(1000);
+	}
+}
 
 

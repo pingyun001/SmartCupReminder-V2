@@ -782,9 +782,16 @@ static void lime_sub_setting_about_update(lv_obj_t* obj, uint8_t indicator_index
 {
     /* check para */
     MLV_BASE_OBJ_NULL_CHECK(obj);
+	
+	/* get hal data */
+	LimeHal_Info_t *halInfo = LimeHAL_GetInfoPin();
+    LimeHal_SenserInfo_t *senserInfo = &halInfo->senserInfo;
 
     /* get child obj */
     lv_obj_t *sub_indicator_obj = lv_obj_get_child(obj, 0);
+	lv_obj_t *case_4_title = lv_obj_get_child(obj, 4);
+	lv_obj_t *case_5_title = lv_obj_get_child(obj, 5);
+	lv_obj_t *case_6_title = lv_obj_get_child(obj, 6);
     lv_obj_t *enter_u_disk_bg = lv_obj_get_child(obj, 7);
     lv_obj_t *restore_bg = lv_obj_get_child(obj, 8);
 
@@ -808,6 +815,15 @@ static void lime_sub_setting_about_update(lv_obj_t* obj, uint8_t indicator_index
         default:
             break;
     }
+	
+	/* update usb Voltage */
+	lime_base_set_label_string(case_4_title, "%.2fV", senserInfo->usbVolt);
+	
+	/* update flash UID */
+	lime_base_set_label_string(case_5_title, "0x%x", senserInfo->flashID);
+	
+	/* update ip address */
+	lime_base_set_label_string(case_6_title, "%d.%d.%d.%d", senserInfo->ipAddress[0], senserInfo->ipAddress[1], senserInfo->ipAddress[2], senserInfo->ipAddress[3]);
 }
 static void lime_sub_setting_about_event_handler(lv_obj_t* obj, setting_key_option_e key_option, bool *is_sub_exit)
 {
@@ -872,7 +888,10 @@ static void lime_sub_setting_about_event_handler(lv_obj_t* obj, setting_key_opti
                 LV_LOG_USER("restore device");
                 LimeHAL_SettingInfo_Restore();
             }
+			break;
         }
+		default:
+			break;
     }
 
     /* update indicator UI */

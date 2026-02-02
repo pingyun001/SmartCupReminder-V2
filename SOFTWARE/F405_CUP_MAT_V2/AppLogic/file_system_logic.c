@@ -14,10 +14,14 @@ HAL_StatusTypeDef file_system_Init(void)
 	if(f_mount(&fs_flash, "D:", 1) != FR_OK)
 	{
 		DEBUG_LOG("FatFs Flash mount Failed\n");
+		
+		/* mount failed, create file system */
 		if(Lime_file_system_mkfs("D:") != FR_OK)
 		{
 			DEBUG_LOG("Create FileSystem Failed\n");
 		}
+		
+		/* try to mount again */
 		if(f_mount(&fs_flash, "D:", 1) != FR_OK)
 		{
 			DEBUG_LOG("FatFs Flash mount Failed 2\n");
