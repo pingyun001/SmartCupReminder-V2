@@ -356,7 +356,7 @@ uint32_t spi_flash_get_jedec_id(void)
 {
 	uint32_t jedec_id = 0;
 	
-	jedec_id = spi_flash_info.jedec_id[0] | (spi_flash_info.jedec_id[1] << 8) | (spi_flash_info.jedec_id[2] << 16);
+	jedec_id = spi_flash_info.jedec_id[2] | (spi_flash_info.jedec_id[1] << 8) | (spi_flash_info.jedec_id[0] << 16);
 	
 	return jedec_id;
 }

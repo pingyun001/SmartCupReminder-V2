@@ -64,7 +64,7 @@ typedef struct
 {
 	/* from adc */
 	float usbVolt;
-	
+
 	/* from flash */
 	uint32_t flashID;
 
@@ -91,6 +91,11 @@ typedef struct
 {
 	/* range: 1 ~ 6 */
 	uint8_t countDownTimeIndex;
+
+	/* range 0 ~ 3 */
+	uint8_t volume;		//0:off, 1:low, 2:mid, 3:high
+	uint8_t lumen;		//0:off, 1:low, 2:mid, 3:high
+	uint8_t lightMode;	//0:虹,  1:烛,  2:星,  3:白
 
 	/* need play music */
 	bool isNeedPlayMusic;

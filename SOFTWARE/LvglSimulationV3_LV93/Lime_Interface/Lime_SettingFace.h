@@ -31,6 +31,8 @@ static void lime_sub_setting_countdown_update(lv_obj_t* obj, uint8_t indicator_i
 static void lime_sub_setting_countdown_event_handler(lv_obj_t* obj, setting_key_option_e key_option, bool *is_sub_exit);
 
 static lv_obj_t *lime_sub_setting_switch_create(lv_obj_t* parent);
+static void lime_sub_setting_switch_update(lv_obj_t* obj, uint8_t indicator_index, uint8_t volume, uint8_t lumen, uint8_t light_mode);
+static void lime_sub_setting_switch_event_handler(lv_obj_t* obj, setting_key_option_e key_option, bool *is_sub_exit);
 
 static lv_obj_t *lime_sub_setting_preview_create(lv_obj_t* parent);
 static void lime_sub_setting_preview_update(lv_obj_t* obj, uint8_t indicator_index);

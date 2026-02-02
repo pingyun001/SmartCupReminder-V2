@@ -13,6 +13,7 @@ LimeHal_Info_t LimeHal_Info =
     .senserInfo.isWifiConnected = false,
 #else
     .senserInfo.isWifiConnected = true,
+    .senserInfo.ipAddress = {192, 168, 127, 100},
 #endif
     .senserInfo.isWeatherDataValid = false,
     .senserInfo.homeTemper = 23,
@@ -246,19 +247,27 @@ void LimeHAL_SoftSimHardwareTimer_Init(void)
 
 bool LimeHAL_IsSetted_UDiskMode(void)
 {
-	return LimeHal_Info.settingInfo.isNeedEnterUdisk;
+	bool return_val = LimeHal_Info.settingInfo.isNeedEnterUdisk;
+
+	LimeHal_Info.settingInfo.isNeedEnterUdisk = false;
+
+	return return_val;
 }
 bool LimeHAL_IsSetted_RestoreMode(void)
 {
-	return LimeHal_Info.settingInfo.isNeedRestore;
+	bool return_val = LimeHal_Info.settingInfo.isNeedRestore;
+
+	LimeHal_Info.settingInfo.isNeedRestore = false;
+
+	return return_val;
 }
 
 bool LimeHAL_IsNeed_PlayMusic(void)
 {
-	bool return_val = LimeHal_Info.settingInfo.playMusicIndex;
-	
-	LimeHal_Info.settingInfo.playMusicIndex = false;
-	
+	bool return_val = LimeHal_Info.settingInfo.isNeedPlayMusic;
+
+	LimeHal_Info.settingInfo.isNeedPlayMusic = false;
+
 	return return_val;
 }
 uint8_t LimeHAL_GetPlayMusicIndex(void)

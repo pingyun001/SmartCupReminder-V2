@@ -445,9 +445,55 @@ static lv_obj_t *lime_sub_setting_switch_create(lv_obj_t* parent)
     lv_obj_set_style_border_width(sub_bj_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_clear_flag(sub_bj_obj, LV_OBJ_FLAG_SCROLLABLE);
 
+    /* create indicator */
+    lv_obj_t *sub_indicator_obj = lv_obj_create(sub_bj_obj);
+    lv_obj_set_size(sub_indicator_obj, 42, 22);
+    lv_obj_set_style_bg_opa(sub_indicator_obj, LV_OPA_50, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(sub_indicator_obj, lv_color_hex(0x0367fd), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(sub_indicator_obj, 7, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(sub_indicator_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(sub_indicator_obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(sub_indicator_obj, LV_OBJ_FLAG_SCROLLABLE);
+
+    /* create checked pic */
+    lv_obj_t *sub_checked_pic_1_obj = lv_img_create(sub_bj_obj);
+    lv_obj_set_size(sub_checked_pic_1_obj, 12, 12);
+    lv_img_set_src(sub_checked_pic_1_obj, &lime_setting_checked);
+
+    lv_obj_t *sub_checked_pic_2_obj = lv_img_create(sub_bj_obj);
+    lv_obj_set_size(sub_checked_pic_2_obj, 12, 12);
+    lv_img_set_src(sub_checked_pic_2_obj, &lime_setting_checked);
+
+    lv_obj_t *sub_checked_pic_3_obj = lv_img_create(sub_bj_obj);
+    lv_obj_set_size(sub_checked_pic_3_obj, 12, 12);
+    lv_img_set_src(sub_checked_pic_3_obj, &lime_setting_checked);
+
     LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_title, sub_bj_obj, "音量", 9, 37, 60);
     LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_title, sub_bj_obj, "光强", 9, 62, 60);
     LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_title, sub_bj_obj, "光效", 9, 86, 60);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_1_title, sub_bj_obj, "关",  67, 37, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_2_title, sub_bj_obj, "低", 106, 37, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_3_title, sub_bj_obj, "中", 146, 37, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_1_4_title, sub_bj_obj, "高", 184, 37, 20);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_1_title, sub_bj_obj, "关",  67, 62, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_2_title, sub_bj_obj, "低", 106, 62, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_3_title, sub_bj_obj, "中", 146, 62, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_2_4_title, sub_bj_obj, "高", 184, 62, 20);
+
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_1_title, sub_bj_obj, "虹",  67, 86, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_2_title, sub_bj_obj, "烛", 106, 86, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_3_title, sub_bj_obj, "星", 146, 86, 20);
+    LIME_LV_CREATE_DEFAULT_MENU_LABEL(case_3_4_title, sub_bj_obj, "白", 184, 86, 20);
+
+    /* test */
+    // lime_sub_setting_switch_update(sub_bj_obj, 12, 1, 2, 3);
+    // // lv_obj_align_to(sub_checked_pic_1_obj, case_1_1_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+    // // lv_obj_align_to(sub_checked_pic_2_obj, case_2_1_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+    // // lv_obj_align_to(sub_checked_pic_3_obj, case_3_1_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+    // // lv_obj_align_to(sub_indicator_obj, case_3_1_title, LV_ALIGN_RIGHT_MID, 0, 2);
+
 
     /* create description title */
     LIME_LV_CREATE_DEFAULT_MENU_LABEL(description_label, sub_bj_obj, "交互方式", 251, 32, 65);
@@ -462,6 +508,257 @@ static lv_obj_t *lime_sub_setting_switch_create(lv_obj_t* parent)
     lv_obj_set_style_text_align(description_sub_label, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     return sub_bj_obj;
+}
+
+static void lime_sub_setting_switch_update(lv_obj_t* obj, uint8_t indicator_index, uint8_t volume, uint8_t lumen, uint8_t light_mode)
+{
+    /* check para */
+    MLV_BASE_OBJ_NULL_CHECK(obj);
+
+    /* get child obj */
+    lv_obj_t *sub_indicator_obj = lv_obj_get_child(obj, 0);
+    lv_obj_t *sub_checked_pic_1_obj = lv_obj_get_child(obj, 1);
+    lv_obj_t *sub_checked_pic_2_obj = lv_obj_get_child(obj, 2);
+    lv_obj_t *sub_checked_pic_3_obj = lv_obj_get_child(obj, 3);
+    lv_obj_t *case_1_title = lv_obj_get_child(obj, 4);
+    lv_obj_t *case_2_title = lv_obj_get_child(obj, 5);
+    lv_obj_t *case_3_title = lv_obj_get_child(obj, 6);
+    lv_obj_t *case_1_1_title = lv_obj_get_child(obj, 7);
+    lv_obj_t *case_1_2_title = lv_obj_get_child(obj, 8);
+    lv_obj_t *case_1_3_title = lv_obj_get_child(obj, 9);
+    lv_obj_t *case_1_4_title = lv_obj_get_child(obj, 10);
+    lv_obj_t *case_2_1_title = lv_obj_get_child(obj, 11);
+    lv_obj_t *case_2_2_title = lv_obj_get_child(obj, 12);
+    lv_obj_t *case_2_3_title = lv_obj_get_child(obj, 13);
+    lv_obj_t *case_2_4_title = lv_obj_get_child(obj, 14);
+    lv_obj_t *case_3_1_title = lv_obj_get_child(obj, 15);
+    lv_obj_t *case_3_2_title = lv_obj_get_child(obj, 16);
+    lv_obj_t *case_3_3_title = lv_obj_get_child(obj, 17);
+    lv_obj_t *case_3_4_title = lv_obj_get_child(obj, 18);
+
+    /* update indicator */
+    if(indicator_index == 0)
+    {
+        lv_obj_add_flag(sub_indicator_obj, LV_OBJ_FLAG_HIDDEN);
+    }
+    else
+    {
+        lv_obj_remove_flag(sub_indicator_obj, LV_OBJ_FLAG_HIDDEN);
+    }
+    switch(indicator_index)
+    {
+        /*
+        1,  2,  3,  4
+        5,  6,  7,  8
+        9, 10, 11, 12
+        */
+        case 1:
+            lv_obj_align_to(sub_indicator_obj, case_1_1_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 2:
+            lv_obj_align_to(sub_indicator_obj, case_1_2_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 3:
+            lv_obj_align_to(sub_indicator_obj, case_1_3_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 4:
+            lv_obj_align_to(sub_indicator_obj, case_1_4_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 5:
+            lv_obj_align_to(sub_indicator_obj, case_2_1_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 6:
+            lv_obj_align_to(sub_indicator_obj, case_2_2_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 7:
+            lv_obj_align_to(sub_indicator_obj, case_2_3_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 8:
+            lv_obj_align_to(sub_indicator_obj, case_2_4_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 9:
+            lv_obj_align_to(sub_indicator_obj, case_3_1_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 10:
+            lv_obj_align_to(sub_indicator_obj, case_3_2_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 11:
+            lv_obj_align_to(sub_indicator_obj, case_3_3_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        case 12:
+            lv_obj_align_to(sub_indicator_obj, case_3_4_title, LV_ALIGN_RIGHT_MID, 0, 2);
+            break;
+        default:
+            break;
+    }
+
+    /* udpate checked */
+    switch(volume)
+    {
+        case 0:
+            lv_obj_align_to(sub_checked_pic_1_obj, case_1_1_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 1:
+            lv_obj_align_to(sub_checked_pic_1_obj, case_1_2_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 2:
+            lv_obj_align_to(sub_checked_pic_1_obj, case_1_3_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 3:
+            lv_obj_align_to(sub_checked_pic_1_obj, case_1_4_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        default:
+            LV_LOG_WARN("volume para error: %d", volume);
+            break;
+    }
+    switch(lumen)
+    {
+        case 0:
+            lv_obj_align_to(sub_checked_pic_2_obj, case_2_1_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 1:
+            lv_obj_align_to(sub_checked_pic_2_obj, case_2_2_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 2:
+            lv_obj_align_to(sub_checked_pic_2_obj, case_2_3_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 3:
+            lv_obj_align_to(sub_checked_pic_2_obj, case_2_4_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        default:
+            LV_LOG_WARN("lumen para error: %d", lumen);
+            break;
+    }
+    switch(light_mode)
+    {
+        case 0:
+            lv_obj_align_to(sub_checked_pic_3_obj, case_3_1_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 1:
+            lv_obj_align_to(sub_checked_pic_3_obj, case_3_2_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 2:
+            lv_obj_align_to(sub_checked_pic_3_obj, case_3_3_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        case 3:
+            lv_obj_align_to(sub_checked_pic_3_obj, case_3_4_title, LV_ALIGN_OUT_LEFT_MID, -5, 2);
+            break;
+        default:
+            LV_LOG_WARN("light_mode para error: %d", light_mode);
+            break;
+    }
+}
+static void lime_sub_setting_switch_event_handler(lv_obj_t* obj, setting_key_option_e key_option, bool *is_sub_exit)
+{
+    MLV_BASE_OBJ_NULL_CHECK(obj);
+
+    /* get hal data */
+    LimeHal_Info_t *halInfo = LimeHAL_GetInfoPin();
+    LimeHal_SettingInfo_t *settingInfo = &halInfo->settingInfo;
+    uint8_t *volume = &settingInfo->volume;
+    uint8_t *lumen = &settingInfo->lumen;
+    uint8_t *light_mode = &settingInfo->lightMode;
+    static int8_t now_selected;
+
+    /* silently refresh */
+    if(key_option == setting_key_option_none)
+    {
+        lime_sub_setting_switch_update(obj, 0, *volume, *lumen, *light_mode);
+
+        now_selected = 1;
+
+        return;
+    }
+
+    /* first enter, show indicator */
+    if(key_option == setting_key_option_first_enter)
+    {
+        lime_sub_setting_switch_update(obj, now_selected, *volume, *lumen, *light_mode);
+
+        return;
+    }
+
+    /* focusing on */
+    switch(key_option)
+    {
+        /*
+        1,  2,  3,  4
+        5,  6,  7,  8
+        9, 10, 11, 12
+        */
+        case setting_key_option_up:
+        {
+            now_selected -= 4;
+            if(now_selected < 1)
+                now_selected += 12;
+
+            break;
+        }
+        case setting_key_option_down:
+        {
+            now_selected += 4;
+            if(now_selected > 12)
+                now_selected -= 12;
+
+            break;
+        }
+        case setting_key_option_left:
+        {
+            if((now_selected % 4) == 1)
+            {
+                /* exti sub menu */
+                if(is_sub_exit != NULL)
+                    *is_sub_exit = true;
+
+                /* hide sub indicator */
+                lime_sub_setting_switch_update(obj, 0, *volume, *lumen, *light_mode);
+
+                return;
+            }
+            else
+            {
+                now_selected -= 1;
+            }
+            break;
+        }
+        case setting_key_option_right:
+        {
+            if(((now_selected - 1) % 4) == 3)
+                now_selected -= 3;
+            else
+                now_selected += 1;
+
+            break;
+        }
+        case setting_key_option_set:
+        {
+            uint8_t sub_value = ((now_selected - 1) % 4);
+
+            switch((now_selected - 1) / 4)
+            {
+                case 0:
+                    *volume = sub_value;
+                    break;
+                case 1:
+                    *lumen = sub_value;
+                    break;
+                case 2:
+                    *light_mode = sub_value;
+                    break;
+                default:
+                    break;
+            }
+
+            break;
+        }
+        default:
+            break;
+    }
+
+    LV_LOG_USER("now_selected: %d", now_selected);
+
+    /* update indicator UI */
+    lime_sub_setting_switch_update(obj, now_selected, *volume, *lumen, *light_mode);
 }
 
 static lv_obj_t *lime_sub_setting_preview_create(lv_obj_t* parent)
@@ -720,12 +1017,12 @@ static lv_obj_t *lime_sub_setting_about_create(lv_obj_t* parent)
     lv_obj_set_style_text_align(case_5_title, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t *case_6_title = lv_label_create(sub_bj_obj);
-    lv_obj_set_size(case_6_title, 100, 16);
+    lv_obj_set_size(case_6_title, 100, 20);
     lv_obj_align(case_6_title, LV_ALIGN_TOP_RIGHT, -145, 75);
     lv_label_set_text(case_6_title, "192.168.199.100");
     lv_obj_set_style_text_color(case_6_title, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(case_6_title, &lime_font_setting_title, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_label_set_long_mode(case_6_title, LV_LABEL_LONG_MODE_CLIP);
+    lv_label_set_long_mode(case_6_title, LV_LABEL_LONG_MODE_SCROLL_CIRCULAR);
     lv_obj_set_style_text_align(case_6_title, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t *enter_u_disk_bg = lv_obj_create(sub_bj_obj);
@@ -773,7 +1070,7 @@ static lv_obj_t *lime_sub_setting_about_create(lv_obj_t* parent)
     lv_obj_set_style_text_font(description_sub_label, &lime_font_setting_sub_text, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_label_set_long_mode(description_sub_label, LV_LABEL_LONG_MODE_WRAP);
     lv_obj_set_style_text_align(description_sub_label, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
-	
+
 #ifndef SOFTWARE_VERSION
 #define SOFTWARE_VERSION "NULL"
 #endif
@@ -790,7 +1087,7 @@ static void lime_sub_setting_about_update(lv_obj_t* obj, uint8_t indicator_index
 {
     /* check para */
     MLV_BASE_OBJ_NULL_CHECK(obj);
-	
+
 	/* get hal data */
 	LimeHal_Info_t *halInfo = LimeHAL_GetInfoPin();
     LimeHal_SenserInfo_t *senserInfo = &halInfo->senserInfo;
@@ -823,13 +1120,13 @@ static void lime_sub_setting_about_update(lv_obj_t* obj, uint8_t indicator_index
         default:
             break;
     }
-	
+
 	/* update usb Voltage */
 	lime_base_set_label_string(case_4_title, "%.2fV", senserInfo->usbVolt);
-	
+
 	/* update flash UID */
-	lime_base_set_label_string(case_5_title, "0x%x", senserInfo->flashID);
-	
+	lime_base_set_label_string(case_5_title, "0x%X", senserInfo->flashID);
+
 	/* update ip address */
 	lime_base_set_label_string(case_6_title, "%d.%d.%d.%d", senserInfo->ipAddress[0], senserInfo->ipAddress[1], senserInfo->ipAddress[2], senserInfo->ipAddress[3]);
 }
@@ -941,6 +1238,7 @@ setting_in_out_dir_e lime_setting_run_handler(const LimeHal_KeyInfo_t *keyInfo, 
 
         /* update now setting data to UI */
         lime_sub_setting_countdown_event_handler(sub_tab1, setting_key_option_none, NULL);
+        lime_sub_setting_switch_event_handler(sub_tab2, setting_key_option_none, NULL);
         lime_sub_setting_preview_event_handler(sub_tab3, setting_key_option_none, NULL);
         lime_sub_setting_about_event_handler(sub_tab4, setting_key_option_none, NULL);
 
@@ -969,6 +1267,9 @@ setting_in_out_dir_e lime_setting_run_handler(const LimeHal_KeyInfo_t *keyInfo, 
             case 1:
                 lime_sub_setting_countdown_event_handler(sub_tab1, option, &is_sub_menu_return);
                 break;
+            case 2:
+                lime_sub_setting_switch_event_handler(sub_tab2, option, &is_sub_menu_return);
+                break;
             case 3:
                 lime_sub_setting_preview_event_handler(sub_tab3, option, &is_sub_menu_return);
                 break;
@@ -987,6 +1288,18 @@ setting_in_out_dir_e lime_setting_run_handler(const LimeHal_KeyInfo_t *keyInfo, 
         }
 
         goto refresh_main_indicator;
+    }
+
+    /* sub menu slicent loop */
+    if( !is_sub_menu_loop)
+    {
+        /* 2Hz refresh sub tab 4 */
+        static uint32_t last_tab_4_time = 0;
+        if(lv_tick_get() - last_tab_4_time > 500)
+        {
+            last_tab_4_time = lv_tick_get();
+            lime_sub_setting_about_event_handler(sub_tab4, setting_key_option_none, NULL);
+        }
     }
 
     /* judge key action */

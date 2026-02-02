@@ -15,6 +15,7 @@ void lime_stm_system_restart(void)
 
 void lime_stm_system_enter_u_disk_mode(void)
 {
+	DEBUG_LOG("%s()\n", __FUNCTION__);
     /* turn off voice */
     HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);
 
@@ -24,6 +25,7 @@ void lime_stm_system_enter_u_disk_mode(void)
 
 void lime_stm_system_exit_u_disk_mode(void)
 {
+	DEBUG_LOG("%s()\n", __FUNCTION__);
     USBD_DeInit(&hUsbDeviceFS);
 }
 

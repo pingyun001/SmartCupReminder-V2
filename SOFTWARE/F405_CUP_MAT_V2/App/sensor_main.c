@@ -213,17 +213,17 @@ static void play_flash_music(void)
 	Lime_audio_play_stop();
 	osDelay(10);
 	
-	/* suspend tasks, be sure file read not break by lvgl */
-	vTaskSuspendAll();
+//	/* suspend tasks, be sure file read not break by lvgl */
+//	vTaskSuspendAll();
 	
 	/* play new music */
 	Lime_audio_play_start(path);
 	
-	/* resume tasks */
-	if( !xTaskResumeAll())
-	{
-		taskYIELD();
-	}
+//	/* resume tasks */
+//	if( !xTaskResumeAll())
+//	{
+//		taskYIELD();
+//	}
 }
 
 static void senser_task_error_handle(void)
