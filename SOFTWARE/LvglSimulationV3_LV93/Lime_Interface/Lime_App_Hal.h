@@ -140,6 +140,7 @@ void LimeHAL_SetDayAfterTomorrowWeather(const dayWeather_t *weather);
 void LimeHAL_SetUsbLowVolErr(void);
 void LimeHAL_SetUsbVoltage(float voltage);
 void LimeHAL_SetHomeTemerSensor(float homeTemper);
+void LimeHAL_SetFlashID(uint32_t flashID);
 bool LimeHAL_IsSetted_UDiskMode(void);
 bool LimeHAL_IsSetted_RestoreMode(void);
 bool LimeHAL_IsNeed_PlayMusic(void);

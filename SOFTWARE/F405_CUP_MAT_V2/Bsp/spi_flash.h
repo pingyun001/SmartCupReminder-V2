@@ -47,6 +47,8 @@ HAL_StatusTypeDef spi_flash_read(uint8_t *p_data, uint32_t addr, uint32_t len);
 uint32_t spi_flash_get_capacity_bytes(void);
 uint32_t spi_flash_get_sector_count(void);
 
+uint32_t spi_flash_get_jedec_id(void);
+
 void spi_flash_dma_irq_hook(void);
 
 #endif /* __BSP_SPI_FLASH_H__ */

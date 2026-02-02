@@ -138,6 +138,10 @@ void LimeHAL_SetHomeTemerSensor(float homeTemper)
 {
 	LimeHal_Info.senserInfo.homeTemper = homeTemper;
 }
+void LimeHAL_SetFlashID(uint32_t flashID)
+{
+	LimeHal_Info.senserInfo.flashID = flashID;
+}
 
 uint8_t Lime_CalDayInMonth(uint32_t year, uint8_t month)
 {

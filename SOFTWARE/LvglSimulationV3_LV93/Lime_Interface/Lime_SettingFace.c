@@ -769,11 +769,19 @@ static lv_obj_t *lime_sub_setting_about_create(lv_obj_t* parent)
     lv_obj_t *description_sub_label = lv_label_create(sub_bj_obj);
     lv_obj_set_size(description_sub_label, 110, 72);
     lv_obj_set_pos(description_sub_label, 221, 67);
-    lv_label_set_text(description_sub_label, "软件版本：V2.0\n编译时间：Jan 24 2026\n\n\n由B站 平韵の小窝 开源");
     lv_obj_set_style_text_color(description_sub_label, lv_color_hex(0x7F7F7F), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(description_sub_label, &lime_font_setting_sub_text, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_label_set_long_mode(description_sub_label, LV_LABEL_LONG_MODE_WRAP);
     lv_obj_set_style_text_align(description_sub_label, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
+	
+#ifndef SOFTWARE_VERSION
+#define SOFTWARE_VERSION "NULL"
+#endif
+	char *about_text = lv_malloc_zeroed(128);
+	MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(about_text);
+	snprintf(about_text, 128, "软件版本：%s\n编译时间：%s\n\n\n由B站 平韵の小窝 开源", SOFTWARE_VERSION, __DATE__);
+	lv_label_set_text(description_sub_label, about_text);
+	lv_free(about_text);
 
     return sub_bj_obj;
 }

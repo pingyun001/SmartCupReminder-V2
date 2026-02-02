@@ -10,6 +10,7 @@ key_info_t key_info = {0};
 static void key_scan_handle(void);
 static void usb_voltage_scan_handle(void);
 static void udisk_mode_deetch(void);
+static void restore_mode_detech(void);
 
 void key_main(void const * argument)
 {
@@ -157,4 +158,12 @@ static void udisk_mode_deetch(void)
 	{
 		taskYIELD();
 	}
+}
+
+static void restore_mode_detech(void)
+{
+	if( !LimeHAL_IsSetted_RestoreMode())
+		return;
+	
+	
 }

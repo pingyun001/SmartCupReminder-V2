@@ -4,6 +4,7 @@
 #include "ws2812.h"
 #include "ds18b20.h"
 #include "key.h"
+#include "spi_flash.h"
 #include "ff.h"
 #include "esp8266.h"
 
@@ -34,6 +35,7 @@ void sensor_main(void const * argument)
 		/* enter error handle */
 		senser_task_error_handle();
 	}
+	LimeHAL_SetFlashID(spi_flash_get_jedec_id());
 	
 	osDelay(100);
 	

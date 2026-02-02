@@ -115,7 +115,7 @@ int main(void)
   MX_TIM7_Init();
   MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
-	DEBUG_LOG("CUP_MAT_V2 Start!\n");
+	DEBUG_LOG("CUP_MAT_%s Start!\n", SOFTWARE_VERSION);
 	DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
 	
 	/* for update datas */
@@ -140,24 +140,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//		printf("temp:%.3f\n", (float)ds18b20_get_temp() / 10.0f);
-		
-//		uint16_t val = key_get_raw_value();
-//		printf("mult_key:%d:", val);
-//		
-//		for(uint8_t offset = 0; offset < 12; offset ++)
-//		{
-//			if(val & (1 << (12 - offset)))
-//				printf("1 ");
-//			else
-//				printf("0 ");
-//		}
-//		
-//		printf("end\n");
-//		
-		
-    HAL_Delay(100);
-	
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

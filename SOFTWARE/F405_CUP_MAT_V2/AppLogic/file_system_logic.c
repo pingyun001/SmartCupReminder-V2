@@ -62,11 +62,11 @@ FRESULT Lime_file_system_get_free(char *pdrv, uint32_t *total, uint32_t *free)
         *total = tot_sect >> 1;     /* 单位为KB */
         *free = fre_sect >> 1;      /* 单位为KB */
     }
-		else
-		{
-			*total = 0;
-			*free = 0;
-		}
+	else
+	{
+		*total = 0;
+		*free = 0;
+	}
 
     return res;
 }
@@ -95,7 +95,7 @@ HAL_StatusTypeDef file_system_ReInit(void)
     UINT bytes_written;
     
     /* create setting.txt file */
-    res = f_open(&file, "D:/setting.txt", FA_CREATE_ALWAYS | FA_WRITE);
+    res = f_open(&file, GLOBAL_SETTING_FILE_PATH, FA_CREATE_ALWAYS | FA_WRITE);
     if(res != FR_OK)
     {
         DEBUG_LOG("Create file failed: %d\n", res);
@@ -168,7 +168,7 @@ HAL_StatusTypeDef file_system_confirm(void)
 	CHECK_FILE_EXISTS("D:/wryhbold.ttf");
 	
 	/* check setting.txt */
-	CHECK_FILE_EXISTS("D:setting.txt");
+	CHECK_FILE_EXISTS(GLOBAL_SETTING_FILE_PATH);
 	
 	return HAL_OK;
 }

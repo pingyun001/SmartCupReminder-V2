@@ -352,6 +352,15 @@ uint32_t spi_flash_get_sector_count(void)
 	return spi_flash_get_capacity_bytes() / 4096;
 }
 
+uint32_t spi_flash_get_jedec_id(void)
+{
+	uint32_t jedec_id = 0;
+	
+	jedec_id = spi_flash_info.jedec_id[0] | (spi_flash_info.jedec_id[1] << 8) | (spi_flash_info.jedec_id[2] << 16);
+	
+	return jedec_id;
+}
+
 void spi_flash_dma_irq_hook(void)
 {
 

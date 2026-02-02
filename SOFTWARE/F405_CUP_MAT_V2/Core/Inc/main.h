@@ -85,6 +85,9 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 #include <stdio.h>
 #include <stdbool.h>
+
+#define SOFTWARE_VERSION	"V2.0"
+
 #if 1
 #define DEBUG_LOG(...)	printf(__VA_ARGS__);
 #else
