@@ -26,6 +26,7 @@ void sensor_main(void const * argument)
 	DEBUG_LOG("Task %s,start\n", __FUNCTION__);
 	
 	osDelay(1000);
+	LimeRtc_SetNowTime(12, 30, 0);
 	
 	/* mount fatfs */
 	LimeHAL_SetInitStep(10, "flash");
@@ -135,7 +136,7 @@ void sensor_main(void const * argument)
 		
 		play_flash_music_handle();
 		
-//		time_logic_handle();
+		time_logic_handle();
 		
 		osDelay(10);
 	}
@@ -232,7 +233,14 @@ static void time_logic_handle(void)
 	
 	last_run_time = HAL_GetTick();
 	
-	LimeRtc_PrintNowTime();
+	/* get now time from RTC */
+	volatile uint8_t hour = 0, minute = 0, second = 0;
+	LimeRtc_GetNowTime((uint8_t*)&hour, (uint8_t*)&minute, (uint8_t*)&second);
+	
+	/* sync time to GUI */
+	LimeHAL_SetTime(hour, minute);
+	
+//	LimeRtc_PrintNowTime();
 }
 
 void senser_main_set_now_time_hook(uint8_t hour, uint8_t minute, uint8_t second)

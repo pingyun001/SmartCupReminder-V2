@@ -227,14 +227,14 @@ static lv_font_t *lime_weather_make_big_font(void)
     static lv_font_t * weather_font = NULL;
     if(weather_font == NULL)
     {
-        LV_LOG_USER("Create weather font 1");
+        // LV_LOG_USER("Create weather font 1");
 #if !USING_LIME_HARDWARE
         weather_font = lv_tiny_ttf_create_file("D:/LimeLvResources/wryhbold.ttf", 14);
 #else
         weather_font = lv_tiny_ttf_create_file("D:/wryhbold.ttf", 14);
 #endif
         MLV_BASE_OBJ_NULL_CHECK_RETURN_NULL(weather_font);
-        LV_LOG_USER("Create weather font 1 success");
+        // LV_LOG_USER("Create weather font 1 success");
     }
 
     return weather_font;

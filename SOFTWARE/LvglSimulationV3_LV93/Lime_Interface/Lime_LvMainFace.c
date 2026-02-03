@@ -82,7 +82,6 @@ void Lime_LvMainFace_Init(void)
 
 void Lime_App_StartFace_Finish_Hook(void)
 {
-    LV_LOG_USER("Lime_App_StartFace_Finish_Hook");
 
     /* create face 1(face 1 need fonts in fatfs!!!) */
     lime_weatherface_create(tab1);

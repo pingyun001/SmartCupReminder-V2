@@ -425,7 +425,7 @@ static void lime_sub_setting_countdown_event_handler(lv_obj_t* obj, setting_key_
             break;
     }
 
-    LV_LOG_USER("key_option: %d, now_selected: %d", key_option, now_selected);
+    // LV_LOG_USER("key_option: %d, now_selected: %d", key_option, now_selected);
 
     /* update indicator UI */
     lime_sub_setting_countdown_update(obj, now_selected, *count_down_index);
