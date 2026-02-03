@@ -8,6 +8,7 @@
 #include "cmsis_os.h"
 
 #include "Lime_App_Hal.h"
+#include "sensor_main.h"
 
 #if 0
 #define ESP8266_DEBUG_LOG DEBUG_LOG
@@ -330,7 +331,10 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
             uint8_t now_time[3];
             sscanf(message, "---nowtime:%d:%d:%d", (int*)&now_time[0], (int*)&now_time[1], (int*)&now_time[2]);
             ESP8266_DEBUG_LOG("decode now time: %d:%d:%d\n", now_time[0], now_time[1], now_time[2]);
-            LimeHAL_SetTime(now_time[1], now_time[2]);
+//            LimeHAL_SetTime(now_time[1], now_time[2]);
+			
+			senser_main_set_now_time_hook(now_time[0], now_time[1], now_time[2]);
+			
             break;
         }
 

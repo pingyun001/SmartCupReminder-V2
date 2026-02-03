@@ -10,11 +10,15 @@
 #include "Lime_App_Base.h"
 #include "Lime_SettingFace.h"
 #include "Lime_App_Hal.h"
+#include "Lime_App_StartFace.h"
 
 LV_IMG_DECLARE(lime_mainbg);
 
 static lv_obj_t* mainFaceObj = NULL;
 static lv_obj_t *mainTabview = NULL;
+static lv_obj_t *tab1 = NULL;
+static lv_obj_t *tab2 = NULL;
+static lv_obj_t *tab3 = NULL;
 
 static const uint8_t default_page = 1;
 
@@ -45,37 +49,47 @@ void Lime_LvMainFace_Init(void)
     lv_obj_set_size(mainTabview, LV_HOR_RES, LV_VER_RES);
     lv_obj_center(mainTabview);
 
-    lv_obj_t *tab1 = lv_tabview_add_tab(mainTabview, "Tab 1");
+    tab1 = lv_tabview_add_tab(mainTabview, "Tab 1");
     lv_obj_set_style_bg_opa(tab1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_all(tab1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_t *tab2 = lv_tabview_add_tab(mainTabview, "Tab 2");
+    tab2 = lv_tabview_add_tab(mainTabview, "Tab 2");
     lv_obj_set_style_bg_opa(tab2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_all(tab2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_tabview_set_active(mainTabview, 1, LV_ANIM_OFF);
-    lv_obj_t *tab3 = lv_tabview_add_tab(mainTabview, "Tab 3");
+    tab3 = lv_tabview_add_tab(mainTabview, "Tab 3");
     lv_obj_set_style_bg_opa(tab3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_all(tab3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lime_headbar_create(mainFaceObj);
 
-    lime_weatherface_create(tab1);
-    lime_weatherface_soft_start(false);
     lime_countface_create(tab2);
     lime_setting_widget_create(tab3);
 
     /* just debug */
     lv_tabview_set_active(mainTabview, default_page, LV_ANIM_OFF);
 
-    /* start scan timer */
-    lv_timer_create(main_scan_timer_cb, 10, NULL);
-
     /* start simulator hardware timer */
 #if !USING_LIME_HARDWARE
     Lime_SimFiveKey_Init(mainFaceObj);
     LimeHAL_SoftSimHardwareTimer_Init();
 #else
-    LimeHAL_SoftSimHardwareTimer_Init();
+    // LimeHAL_SoftSimHardwareTimer_Init();
 #endif
+
+    /* show start face */
+    Lime_App_StartFace_Create(mainFaceObj, LV_HOR_RES, LV_VER_RES);
+}
+
+void Lime_App_StartFace_Finish_Hook(void)
+{
+    LV_LOG_USER("Lime_App_StartFace_Finish_Hook");
+
+    /* create face 1(face 1 need fonts in fatfs!!!) */
+    lime_weatherface_create(tab1);
+    lime_weatherface_soft_start(false);
+
+    /* start scan timer */
+    lv_timer_create(main_scan_timer_cb, 10, NULL);
 }
 
 static void main_scan_timer_cb(lv_timer_t * timer)

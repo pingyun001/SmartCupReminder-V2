@@ -22,6 +22,7 @@
 #include "adc.h"
 #include "dac.h"
 #include "dma.h"
+#include "rtc.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -114,6 +115,7 @@ int main(void)
   MX_ADC2_Init();
   MX_TIM7_Init();
   MX_TIM14_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 	DEBUG_LOG("CUP_MAT_%s Start!\n", SOFTWARE_VERSION);
 	DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);

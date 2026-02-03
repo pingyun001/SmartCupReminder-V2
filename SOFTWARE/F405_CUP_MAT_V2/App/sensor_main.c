@@ -5,6 +5,7 @@
 #include "ds18b20.h"
 #include "key.h"
 #include "spi_flash.h"
+#include "rtc_time.h"
 #include "ff.h"
 #include "esp8266.h"
 
@@ -17,11 +18,14 @@
 static void senser_task_error_handle(void);
 static void read_sync_setting_info(void);
 static void ds18b20_scan_handle(void);
-static void play_flash_music(void);
+static void play_flash_music_handle(void);
+static void time_logic_handle(void);
 
 void sensor_main(void const * argument)
 {
 	DEBUG_LOG("Task %s,start\n", __FUNCTION__);
+	
+	osDelay(1000);
 	
 	/* mount fatfs */
 	LimeHAL_SetInitStep(10, "flash");
@@ -129,7 +133,9 @@ void sensor_main(void const * argument)
 		
 		ds18b20_scan_handle();
 		
-		play_flash_music();
+		play_flash_music_handle();
+		
+//		time_logic_handle();
 		
 		osDelay(10);
 	}
@@ -195,7 +201,7 @@ fill_default:
 	esp8266_set_position(GLOBAL_DEFAULT_CITY_NAME);
 }
 
-static void play_flash_music(void)
+static void play_flash_music_handle(void)
 {
 	/* no need play music */
 	if( !LimeHAL_IsNeed_PlayMusic())
@@ -213,17 +219,25 @@ static void play_flash_music(void)
 	Lime_audio_play_stop();
 	osDelay(10);
 	
-//	/* suspend tasks, be sure file read not break by lvgl */
-//	vTaskSuspendAll();
-	
 	/* play new music */
 	Lime_audio_play_start(path);
 	
-//	/* resume tasks */
-//	if( !xTaskResumeAll())
-//	{
-//		taskYIELD();
-//	}
+}
+
+static void time_logic_handle(void)
+{
+	static uint32_t last_run_time = 0;
+	if(HAL_GetTick() - last_run_time < 1000)
+		return;
+	
+	last_run_time = HAL_GetTick();
+	
+	LimeRtc_PrintNowTime();
+}
+
+void senser_main_set_now_time_hook(uint8_t hour, uint8_t minute, uint8_t second)
+{
+	LimeRtc_SetNowTime(hour, minute, second);
 }
 
 static void senser_task_error_handle(void)
