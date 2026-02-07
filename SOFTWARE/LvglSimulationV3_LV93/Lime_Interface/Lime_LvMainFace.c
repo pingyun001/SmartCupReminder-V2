@@ -23,6 +23,7 @@ static lv_obj_t *tab3 = NULL;
 static const uint8_t default_page = 1;
 
 static void main_scan_timer_cb(lv_timer_t * timer);
+static void error_scan_timer_cb(lv_timer_t * timer);
 
 void Lime_LvMainFace_Init(void)
 {
@@ -68,6 +69,9 @@ void Lime_LvMainFace_Init(void)
     /* just debug */
     lv_tabview_set_active(mainTabview, default_page, LV_ANIM_OFF);
 
+    /* start error scan timer */
+    lv_timer_create(error_scan_timer_cb, 10, NULL);
+
     /* start simulator hardware timer */
 #if !USING_LIME_HARDWARE
     Lime_SimFiveKey_Init(mainFaceObj);
@@ -76,8 +80,13 @@ void Lime_LvMainFace_Init(void)
     // LimeHAL_SoftSimHardwareTimer_Init();
 #endif
 
+#if 1
     /* show start face */
     Lime_App_StartFace_Create(mainFaceObj, LV_HOR_RES, LV_VER_RES);
+#else
+    /* jump initial face */
+    Lime_App_StartFace_Finish_Hook();
+#endif
 }
 
 void Lime_App_StartFace_Finish_Hook(void)
@@ -184,4 +193,17 @@ sync_end:
     keyInfoLast.sw_left = keyInfo->sw_left;
     keyInfoLast.sw_right = keyInfo->sw_right;
     keyInfoLast.sw_set = keyInfo->sw_set;
+}
+
+static void error_scan_timer_cb(lv_timer_t * timer)
+{
+    if(LimeHAL_WorkingInfo_IsUsbLowPower())
+    {
+        Lime_MessageBox_Show("警告", "USB供电不足，推荐使用手机充电头供电或调低灯光亮度", NULL, 2000, NULL);
+    }
+
+    if(LimeHAL_WorkingInfo_IsFileSystemError())
+    {
+        Lime_MessageBox_Show("错误", "系统文件缺失或损坏，即将进入U盘模式，请在存入必要文件后，重新上电", NULL, 2500, LimeHAL_SettingInfo_EnterUdisk);
+    }
 }

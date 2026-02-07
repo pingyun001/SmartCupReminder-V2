@@ -14,6 +14,7 @@ LimeHal_Info_t LimeHal_Info =
 #else
     .senserInfo.isWifiConnected = true,
     .senserInfo.ipAddress = {192, 168, 127, 100},
+    .workingInfo.isFileSystemError = true,
 #endif
     .senserInfo.isWeatherDataValid = false,
     .senserInfo.homeTemper = 23,
@@ -131,6 +132,10 @@ void LimeHAL_SetUsbLowVolErr(void)
 {
 	LimeHal_Info.workingInfo.isUsbLowPower = true;
 }
+void LimeHAL_SetFileSystemErr(void)
+{
+    LimeHal_Info.workingInfo.isFileSystemError = true;
+}
 void LimeHAL_SetUsbVoltage(float voltage)
 {
 	LimeHal_Info.senserInfo.usbVolt = voltage;
@@ -233,11 +238,34 @@ void LimeHAL_SettingInfo_PlayMusicByIndex(uint8_t index)
 }
 void LimeHAL_SettingInfo_EnterUdisk(void)
 {
+#if !USING_LIME_HARDWARE
+    LV_LOG_USER("sim enter udisk");
+#endif
+
     LimeHal_Info.settingInfo.isNeedEnterUdisk = true;
 }
 void LimeHAL_SettingInfo_Restore(void)
 {
+#if !USING_LIME_HARDWARE
+    LV_LOG_USER("sim restore system");
+#endif
     LimeHal_Info.settingInfo.isNeedRestore = true;
+}
+bool LimeHAL_WorkingInfo_IsUsbLowPower(void)
+{
+    bool vaule = LimeHal_Info.workingInfo.isUsbLowPower;
+
+    LimeHal_Info.workingInfo.isUsbLowPower = false;
+
+    return vaule;
+}
+bool LimeHAL_WorkingInfo_IsFileSystemError(void)
+{
+    bool vaule = LimeHal_Info.workingInfo.isFileSystemError;
+
+    LimeHal_Info.workingInfo.isFileSystemError = false;
+
+    return vaule;
 }
 
 void LimeHAL_SoftSimHardwareTimer_Init(void)

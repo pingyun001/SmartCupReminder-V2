@@ -10,7 +10,7 @@
 #include "../main/src/main.h"
 #endif
 
-void Lime_MessageBox_Show(const char* title, const char* message, uint8_t *tracePercent, uint32_t timeOut_ms);
+void Lime_MessageBox_Show(const char* title, const char* message, uint8_t *tracePercent, uint32_t timeOut_ms, void (*closeCallback)(void));
 void Lime_MessageBox_Close(void);
 
 #endif // __LIME_MESSAGE_BOX_H__

@@ -1,5 +1,6 @@
 #include "Lime_SettingFace.h"
 #include "Lime_App_Base.h"
+#include "Lime_MessageBox.h"
 
 static lv_obj_t *bj_obj = NULL;
 static lv_obj_t *title_countdown_obj = NULL;
@@ -1135,6 +1136,7 @@ static void lime_sub_setting_about_event_handler(lv_obj_t* obj, setting_key_opti
     MLV_BASE_OBJ_NULL_CHECK(obj);
 
     static int8_t now_selected;
+    static uint8_t restore_triggered_cnt = 0;
 
     /* silently refresh */
     if(key_option == setting_key_option_none)
@@ -1143,6 +1145,8 @@ static void lime_sub_setting_about_event_handler(lv_obj_t* obj, setting_key_opti
 
         now_selected = 1;
 
+        restore_triggered_cnt = 0;
+
         return;
     }
 
@@ -1150,6 +1154,8 @@ static void lime_sub_setting_about_event_handler(lv_obj_t* obj, setting_key_opti
     if(key_option == setting_key_option_first_enter)
     {
         lime_sub_setting_about_update(obj, now_selected);
+
+        restore_triggered_cnt = 0;
 
         return;
     }
@@ -1181,17 +1187,33 @@ static void lime_sub_setting_about_event_handler(lv_obj_t* obj, setting_key_opti
         }
         case setting_key_option_set:
         {
+            /* enter u disk */
             if(now_selected == 1)
             {
-                /* enter u disk */
-                LV_LOG_USER("enter u disk");
-                LimeHAL_SettingInfo_EnterUdisk();
+                LV_LOG_USER("UI enter u disk");
+                Lime_MessageBox_Show("进度", "即将进入U盘模式，待停止传输后，可按任意按键退出", NULL, 2500, LimeHAL_SettingInfo_EnterUdisk);
             }
+
+            /* restore device */
             else
             {
-                /* restore device */
-                LV_LOG_USER("restore device");
-                LimeHAL_SettingInfo_Restore();
+                /* show message box */
+                if(restore_triggered_cnt == 0)
+                {
+                    Lime_MessageBox_Show("警告", "即将重置整个系统，需再按中键5次以确认", NULL, 1500, NULL);
+                }
+
+                /* triggered 5 times */
+                if(restore_triggered_cnt == 5)
+                {
+                    LV_LOG_USER("UI restore device");
+
+                    /* close last message box(if exist) */
+                    Lime_MessageBox_Close();
+                    Lime_MessageBox_Show("进度", "重置系统", NULL, 1500, LimeHAL_SettingInfo_Restore);
+                }
+
+                restore_triggered_cnt ++;
             }
 			break;
         }

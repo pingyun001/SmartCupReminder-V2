@@ -9,12 +9,13 @@ static void meBox_timer_cb(lv_timer_t * timer);
 static bool initFlag = false;
 static uint8_t *glob_tracePercent = NULL;
 static uint32_t glob_timeOut_ms = 0;
+static void (*glob_closeCallback)(void) = NULL;
 static lv_timer_t *scanTimer = NULL;
 
 static lv_anim_t mainObj_InAnim;
 static void mainObj_InAnim_cb(lv_anim_t * anim);
 
-void Lime_MessageBox_Show(const char* title, const char* message, uint8_t *tracePercent, uint32_t timeOut_ms)
+void Lime_MessageBox_Show(const char* title, const char* message, uint8_t *tracePercent, uint32_t timeOut_ms, void (*closeCallback)(void))
 {
     if(meBox != NULL)
     {
@@ -35,6 +36,7 @@ void Lime_MessageBox_Show(const char* title, const char* message, uint8_t *trace
 
     glob_tracePercent = tracePercent;
     glob_timeOut_ms = timeOut_ms;
+    glob_closeCallback = closeCallback;
     initFlag = true;
 
     lv_anim_init(&mainObj_InAnim);
@@ -97,18 +99,28 @@ finish:
     scanTimer = NULL;
     lv_msgbox_close(meBox);
     meBox = NULL;
+
+    /* run close callback */
+    if(glob_closeCallback != NULL)
+    {
+        glob_closeCallback();
+    }
+    glob_closeCallback = NULL;
 }
 
 void Lime_MessageBox_Close(void)
 {
-    if(meBox != NULL)
-    {
-        lv_msgbox_close(meBox);
-        meBox = NULL;
-    }
     if(scanTimer != NULL)
     {
         lv_timer_del(scanTimer);
         scanTimer = NULL;
     }
+
+    if(meBox != NULL)
+    {
+        lv_msgbox_close(meBox);
+        meBox = NULL;
+    }
+
+    glob_closeCallback = NULL;
 }

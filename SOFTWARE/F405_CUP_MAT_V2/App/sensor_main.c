@@ -53,8 +53,14 @@ void sensor_main(void const * argument)
 		/* show UI */
 		LimeHAL_SetInitStep(21, "file system confirm failed!");
 		
+		osDelay(500);
+		
 		/* enter error handle */
-		senser_task_error_handle();
+		LimeHAL_SetFileSystemErr();
+		while(1)
+		{
+			osDelay(100);
+		}
 	}
 	
 	osDelay(100);

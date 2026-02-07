@@ -44,7 +44,10 @@ typedef struct
 	uint16_t remainCountSeconds;
 	uint16_t totalCountSeconds;
 	bool isSleepMode;
+
+	/* error check */
 	bool isUsbLowPower;
+	bool isFileSystemError;
 
 }LimeHal_WorkingInfo_t;
 
@@ -143,6 +146,7 @@ void LimeHAL_SetTodayWeather(const dayWeather_t *weather);
 void LimeHAL_SetTomorrowWeather(const dayWeather_t *weather);
 void LimeHAL_SetDayAfterTomorrowWeather(const dayWeather_t *weather);
 void LimeHAL_SetUsbLowVolErr(void);
+void LimeHAL_SetFileSystemErr(void);
 void LimeHAL_SetUsbVoltage(float voltage);
 void LimeHAL_SetHomeTemerSensor(float homeTemper);
 void LimeHAL_SetFlashID(uint32_t flashID);
@@ -160,5 +164,7 @@ void LimeHAL_SetAllKeyToReleased(void);
 void LimeHAL_SettingInfo_PlayMusicByIndex(uint8_t index);
 void LimeHAL_SettingInfo_EnterUdisk(void);
 void LimeHAL_SettingInfo_Restore(void);
+bool LimeHAL_WorkingInfo_IsUsbLowPower(void);
+bool LimeHAL_WorkingInfo_IsFileSystemError(void);
 
 #endif // __Lime_App_Hal_H__

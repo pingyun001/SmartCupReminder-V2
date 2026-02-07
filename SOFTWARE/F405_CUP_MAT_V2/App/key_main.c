@@ -95,7 +95,7 @@ static void usb_voltage_scan_handle(void)
 	}
 	
 	/* out of range */
-	if(low_count > 10)
+	if(low_count > 30)
 	{
 		LimeHAL_SetUsbLowVolErr();
 		low_count = 0;
@@ -105,7 +105,7 @@ static void usb_voltage_scan_handle(void)
 	LimeHAL_SetUsbVoltage(now_voltage);
 	
 	/* sync last voltage */
-	last_voltage = now_voltage;
+	last_voltage = now_voltage * 0.3f + last_voltage * 0.7f;
 }
 
 static void udisk_mode_deetch(void)
