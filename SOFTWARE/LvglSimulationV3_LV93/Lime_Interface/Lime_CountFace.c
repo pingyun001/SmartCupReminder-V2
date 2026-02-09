@@ -161,11 +161,11 @@ static void lime_countface_update_main_time(uint32_t total_second, uint32_t rema
     lime_base_set_label_string(count_label, "%02d:%02d", minute, second);
 }
 
-static void lime_countface_update_charactor_img(LimeHal_WoringStatus_e status)
+static void lime_countface_update_charactor_img(LimeHal_WorkingStatus_e status)
 {
     MLV_BASE_OBJ_NULL_CHECK(bj_obj);
 
-    static LimeHal_WoringStatus_e last_status = LimeHal_WoringStatus_Idle;
+    static LimeHal_WorkingStatus_e last_status = LimeHal_WoringStatus_Idle;
     if(status == last_status)
         return;
     last_status = status;

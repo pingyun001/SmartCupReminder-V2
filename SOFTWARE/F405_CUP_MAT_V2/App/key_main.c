@@ -26,6 +26,8 @@ void key_main(void const * argument)
 		usb_voltage_scan_handle();
 		
 		udisk_mode_deetch();
+		
+		restore_mode_detech();
 
 		osDelay(10);
 	}
@@ -146,7 +148,7 @@ static void udisk_mode_deetch(void)
 		mult_key_e now_key = key_get_press();
 		
 		/* key press */
-		if(now_key != MULT_KEY_NO)
+		if((now_key != MULT_KEY_NO) && (now_key != MULT_KEY_SET))
 			break;
 	}
 	
@@ -165,5 +167,5 @@ static void restore_mode_detech(void)
 	if( !LimeHAL_IsSetted_RestoreMode())
 		return;
 	
-	
+	lime_stm_system_restore();
 }

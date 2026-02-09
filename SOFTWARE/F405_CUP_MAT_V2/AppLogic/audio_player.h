@@ -29,6 +29,7 @@ typedef struct
 	uint32_t avg_bytes_per_sec;
 	
 	uint32_t total_pcm_bytes;
+	uint32_t played_pcm_bytes;
 	uint32_t total_time_ms;
 	
 	uint8_t user_setted_volume;

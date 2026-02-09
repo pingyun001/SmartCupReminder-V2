@@ -20,6 +20,8 @@ static void read_sync_setting_info(void);
 static void ds18b20_scan_handle(void);
 static void play_flash_music_handle(void);
 static void time_logic_handle(void);
+static void volume_sync_handle(void);
+static void cup_scan_handle(void);
 
 void sensor_main(void const * argument)
 {
@@ -115,26 +117,6 @@ void sensor_main(void const * argument)
 	
 	while(1)
 	{
-		// printf("usb Vol:%.2f V\n", key_get_usb_vol());
-		
-		static bool is_cup_deteched_last = false;
-		bool is_cup_deteched = IS_CUP_DETECHED();
-		if(is_cup_deteched && !is_cup_deteched_last)
-		{
-			LimeHAL_SettingInfo_PlayMusicByIndex(3);
-			
-//			Lime_audio_play_stop();
-//			osDelay(10);
-//			Lime_audio_play_start("D:voice/3.wav");
-		}
-		if(!is_cup_deteched && is_cup_deteched_last)
-		{
-//			Lime_audio_play_stop();
-//			osDelay(10);
-//			Lime_audio_play_start("D:voice/4.wav");
-			LimeHAL_SettingInfo_PlayMusicByIndex(4);
-		}
-		is_cup_deteched_last = is_cup_deteched;
 
 		esp8266_sync_handle();
 		
@@ -143,6 +125,10 @@ void sensor_main(void const * argument)
 		play_flash_music_handle();
 		
 		time_logic_handle();
+		
+		volume_sync_handle();
+		
+		cup_scan_handle();
 		
 		osDelay(10);
 	}
@@ -245,13 +231,130 @@ static void time_logic_handle(void)
 	
 	/* sync time to GUI */
 	LimeHAL_SetTime(hour, minute);
+}
+
+static void cup_scan_handle(void)
+{
+	static bool is_countdown = false;
+	static bool is_timeout = false;
+	uint32_t timeout_second = 0;
 	
-//	LimeRtc_PrintNowTime();
+	/* get setted info */
+	uint8_t timeout_index = LimeHAL_GetCountDownTimeIndex();
+	switch(timeout_index)
+	{
+		case 1:
+			timeout_second = 1 * 60;
+			break;
+		case 2:
+			timeout_second = 10;
+			break;
+		case 3:
+			timeout_second = 10 * 60;
+			break;
+		case 4:
+			timeout_second = 25 * 60;
+			break;
+		case 5:
+			timeout_second = 45 * 60;
+			break;
+		case 6:
+			timeout_second = 60 * 60;
+			break;
+		default:
+			timeout_second = 120 * 60;
+			DEBUG_LOG("timeout_index:%d,err\n", timeout_index);
+			break;
+	}
+	
+	/* cup status detech */
+	static bool is_cup_deteched_last = false;
+	bool is_cup_deteched = IS_CUP_DETECHED();
+	
+	/* cup senser is pressed */
+	if(is_cup_deteched && !is_cup_deteched_last)
+	{
+		LimeHAL_SettingInfo_PlayMusicByIndex(2);
+		LimeRtc_SetSoftAlarm(timeout_second);
+		is_timeout = false;
+	}
+	
+	/* cup senser is released */
+	if(!is_cup_deteched && is_cup_deteched_last)
+	{
+		LimeHAL_SettingInfo_PlayMusicByIndex(4);
+	}
+	is_cup_deteched_last = is_cup_deteched;
+	
+	/* timeout check */
+	int32_t elaps_time_seconds = LimeRtc_GetSoftAlarm_LastTime();
+	if(is_cup_deteched)
+	{
+		/* no timeout */
+		if(elaps_time_seconds >= 0)
+		{
+			LimeHAL_SetWorkingStatus(LimeHal_WoringStatus_Countdown);
+			LimeHAL_SetRemainCountSeconds(elaps_time_seconds);
+		}
+		
+		/* timeout */
+		else
+		{
+			LimeHAL_SetWorkingStatus(LimeHal_WoringStatus_CountFinish);
+			LimeHAL_SetRemainCountSeconds(0);
+			if( !is_timeout)
+			{
+				is_timeout = true;
+				LimeHAL_SettingInfo_PlayMusicByIndex(3);
+			}
+		}
+	}
+	else
+	{
+		LimeHAL_SetWorkingStatus(LimeHal_WoringStatus_Idle);
+		LimeHAL_SetRemainCountSeconds(timeout_second);
+	}
+	
+	LimeHAL_SetTotalCountSeconds(timeout_second);
+	
+	/* debug */
+//	static uint32_t last_run_time = 0;
+//	if(HAL_GetTick() - last_run_time >= 250)
+//	{
+//		last_run_time = HAL_GetTick();
+//		DEBUG_LOG("elaps_time_seconds:%d\n", elaps_time_seconds);
+//	}
 }
 
 void senser_main_set_now_time_hook(uint8_t hour, uint8_t minute, uint8_t second)
 {
 	LimeRtc_SetNowTime(hour, minute, second);
+}
+
+static void volume_sync_handle(void)
+{
+	uint8_t volume_setted = LimeHAL_GetVolume();
+	
+	/* 0:off, 1:low, 2:mid, 3:high */
+	switch(volume_setted)
+	{
+		case 0:
+			volume_setted = 0;
+			break;
+		case 1:
+			volume_setted = 160;
+			break;
+		case 2:
+			volume_setted = 220;
+			break;
+		case 3:
+			volume_setted = 255;
+			break;
+		default:
+			volume_setted = 255;
+			break;
+	}
+	Lime_audio_play_set_volume(volume_setted);
 }
 
 static void senser_task_error_handle(void)

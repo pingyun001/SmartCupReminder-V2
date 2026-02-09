@@ -74,6 +74,8 @@ FRESULT Lime_file_system_get_free(char *pdrv, uint32_t *total, uint32_t *free)
 
 HAL_StatusTypeDef file_system_ReInit(void)
 {
+	DEBUG_LOG("%s()\n", __FUNCTION__);
+	
 	/* re-create file system */
 	if(Lime_file_system_mkfs("D:") != FR_OK)
 	{

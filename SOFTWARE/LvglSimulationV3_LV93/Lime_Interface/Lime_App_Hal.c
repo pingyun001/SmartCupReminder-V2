@@ -14,7 +14,7 @@ LimeHal_Info_t LimeHal_Info =
 #else
     .senserInfo.isWifiConnected = true,
     .senserInfo.ipAddress = {192, 168, 127, 100},
-    .workingInfo.isFileSystemError = true,
+    // .workingInfo.isFileSystemError = true,
 #endif
     .senserInfo.isWeatherDataValid = false,
     .senserInfo.homeTemper = 23,
@@ -43,6 +43,10 @@ LimeHal_Info_t LimeHal_Info =
     .senserInfo.dayAfterTomorrowWeather.temperaLow = 5,
     .senserInfo.dayAfterTomorrowWeather.temperaHigh = 15,
     .senserInfo.dayAfterTomorrowWeather.humidity = 40,
+
+    .settingInfo.volume = 3,
+    .settingInfo.lumen = 2,
+    .settingInfo.lightMode = 0,
 
     .settingInfo.countDownTimeIndex = 1,
 };
@@ -301,6 +305,34 @@ bool LimeHAL_IsNeed_PlayMusic(void)
 uint8_t LimeHAL_GetPlayMusicIndex(void)
 {
 	return LimeHal_Info.settingInfo.playMusicIndex;
+}
+uint8_t LimeHAL_GetCountDownTimeIndex(void)
+{
+	return LimeHal_Info.settingInfo.countDownTimeIndex;
+}
+uint8_t LimeHAL_GetVolume(void)
+{
+    return LimeHal_Info.settingInfo.volume;
+}
+uint8_t LimeHAL_GetLumen(void)
+{
+    return LimeHal_Info.settingInfo.lumen;
+}
+uint8_t LimeHAL_GetLightMode(void)
+{
+    return LimeHal_Info.settingInfo.lightMode;
+}
+void LimeHAL_SetWorkingStatus(LimeHal_WorkingStatus_e status)
+{
+	LimeHal_Info.workingInfo.workingStatus = status;
+}
+void LimeHAL_SetRemainCountSeconds(uint16_t remainSeconds)
+{
+	LimeHal_Info.workingInfo.remainCountSeconds = remainSeconds;
+}
+void LimeHAL_SetTotalCountSeconds(uint16_t totalSeconds)
+{
+	LimeHal_Info.workingInfo.totalCountSeconds = totalSeconds;
 }
 
 /*typedef struct {

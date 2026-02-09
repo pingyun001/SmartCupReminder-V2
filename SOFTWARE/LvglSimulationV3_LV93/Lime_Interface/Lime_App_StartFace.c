@@ -42,7 +42,7 @@ void Lime_App_StartFace_Create(lv_obj_t* father, uint16_t width, uint16_t height
     lv_obj_set_size(startFaceObj, width, height);
     lv_obj_center(startFaceObj);
     lv_obj_set_style_bg_opa(startFaceObj, LV_OPA_100, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(startFaceObj, lv_color_hex(0xf68818), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(startFaceObj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_all(startFaceObj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(startFaceObj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(startFaceObj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);

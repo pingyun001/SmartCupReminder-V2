@@ -1,9 +1,10 @@
 #include "audio_player.h"
+#include "cmsis_os.h"
 #include <string.h>
 #include "tim.h"
 #include "dac.h"
 
-#if 1
+#if 0
 #define AUDIO_DEBUG_LOG DEBUG_LOG
 #else
 #define AUDIO_DEBUG_LOG(...)
@@ -12,6 +13,7 @@
 
 audiopy_t audiopy = 
 {
+	.fil = {0},
 	.now_status = audiopy_status_idle,
 	.user_setted_volume = 255,
 };
@@ -93,7 +95,11 @@ static void Lime_audio_read_new_data(void)
 			audiopy.is_file_opened = false;
 			return;
 		}
-		if(bytesRead < AUDIO_BUFFER_SIZE / 2)
+		
+		/* cal total played bytes */
+		audiopy.played_pcm_bytes += bytesRead;
+		
+		if((bytesRead < AUDIO_BUFFER_SIZE / 2) || (audiopy.played_pcm_bytes >= audiopy.total_pcm_bytes))
 		{
 			AUDIO_DEBUG_LOG("Voice data end\n");
 			f_close(&audiopy.fil);
@@ -118,7 +124,11 @@ static void Lime_audio_read_new_data(void)
 			audiopy.is_file_opened = false;
 			return;
 		}
-		if(bytesRead < AUDIO_BUFFER_SIZE / 2)
+		
+		/* cal total played bytes */
+		audiopy.played_pcm_bytes += bytesRead;
+		
+		if((bytesRead < AUDIO_BUFFER_SIZE / 2) || (audiopy.played_pcm_bytes >= audiopy.total_pcm_bytes))
 		{
 			AUDIO_DEBUG_LOG("Voice data end\n");
 			f_close(&audiopy.fil);
@@ -139,7 +149,7 @@ HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 	FRESULT fr;
 	uint8_t retry_cnt;
 	
-	retry_cnt = 2;
+	retry_cnt = 5;
 retry_read:
 
 	/* prepare audio player */
@@ -215,6 +225,9 @@ retry_read:
 		if(retry_cnt)
 		{
 			retry_cnt --;
+			
+			osDelay(2);
+			
 			goto retry_read;
 		}
 		
@@ -279,6 +292,8 @@ retry_read:
 	}
 
 	/* read audio wave data */
+	audiopy.total_pcm_bytes = chunk_size;
+	audiopy.played_pcm_bytes = 0;
 	audiopy.is_buffer_a_filled = false;
 	audiopy.is_buffer_b_filled = false;
 	audiopy.is_file_read_finished = false;
@@ -326,7 +341,12 @@ HAL_StatusTypeDef Lime_audio_play_stop(void)
 	return HAL_OK;
 }
 
-HAL_StatusTypeDef Lime_audio_play_set_volume(uint8_t volume);
+HAL_StatusTypeDef Lime_audio_play_set_volume(uint8_t volume)
+{
+	audiopy.user_setted_volume = volume;
+	
+	return HAL_OK;
+}
 
 void Lime_audio_run_handle(void)
 {
@@ -343,10 +363,12 @@ void Lime_audio_dma_callback(bool is_half_callback)
 	if(is_half_callback)
 	{
 		audiopy.is_buffer_a_filled = false;
+//		AUDIO_DEBUG_LOG("v:a\n");
 	}
 	else
 	{
 		audiopy.is_buffer_b_filled = false;
+//		AUDIO_DEBUG_LOG("v:b\n");
 	}
 
 	if((!audiopy.is_buffer_a_filled) && (!audiopy.is_buffer_b_filled))
@@ -357,7 +379,7 @@ void Lime_audio_dma_callback(bool is_half_callback)
 
 		audiopy.now_status = audiopy_status_finish;
 
-		// AUDIO_DEBUG_LOG("v:c\n");
+//		AUDIO_DEBUG_LOG("v:c\n");
 	}
 }
 

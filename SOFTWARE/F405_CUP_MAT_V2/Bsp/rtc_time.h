@@ -18,5 +18,8 @@ void LimeRtc_GetNowTime(uint8_t *hour, uint8_t *minute, uint8_t *second);
 
 uint8_t LimeRtc_CheckAndInitDefaultTime(void);
 
+void LimeRtc_SetSoftAlarm(uint32_t gap_seconds);
+int32_t LimeRtc_GetSoftAlarm_LastTime(void);
+
 
 #endif	//__LIME_RTC_TIME_H

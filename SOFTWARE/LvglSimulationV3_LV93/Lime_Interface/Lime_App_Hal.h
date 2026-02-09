@@ -37,10 +37,10 @@ typedef enum
 	LimeHal_WoringStatus_Idle,
 	LimeHal_WoringStatus_Countdown,
 	LimeHal_WoringStatus_CountFinish,
-}LimeHal_WoringStatus_e;
+}LimeHal_WorkingStatus_e;
 typedef struct
 {
-	LimeHal_WoringStatus_e workingStatus;
+	LimeHal_WorkingStatus_e workingStatus;
 	uint16_t remainCountSeconds;
 	uint16_t totalCountSeconds;
 	bool isSleepMode;
@@ -154,6 +154,14 @@ bool LimeHAL_IsSetted_UDiskMode(void);
 bool LimeHAL_IsSetted_RestoreMode(void);
 bool LimeHAL_IsNeed_PlayMusic(void);
 uint8_t LimeHAL_GetPlayMusicIndex(void);
+uint8_t LimeHAL_GetCountDownTimeIndex(void);
+uint8_t LimeHAL_GetVolume(void);
+uint8_t LimeHAL_GetLumen(void);
+uint8_t LimeHAL_GetLightMode(void);
+void LimeHAL_SetWorkingStatus(LimeHal_WorkingStatus_e status);
+void LimeHAL_SetRemainCountSeconds(uint16_t remainSeconds);
+void LimeHAL_SetTotalCountSeconds(uint16_t totalSeconds);
+
 
 /*VS simulator API*/
 void LimeHAL_SoftSimHardwareTimer_Init(void);

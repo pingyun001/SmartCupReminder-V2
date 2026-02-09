@@ -426,8 +426,6 @@ static void lime_sub_setting_countdown_event_handler(lv_obj_t* obj, setting_key_
             break;
     }
 
-    // LV_LOG_USER("key_option: %d, now_selected: %d", key_option, now_selected);
-
     /* update indicator UI */
     lime_sub_setting_countdown_update(obj, now_selected, *count_down_index);
 }
@@ -756,8 +754,6 @@ static void lime_sub_setting_switch_event_handler(lv_obj_t* obj, setting_key_opt
             break;
     }
 
-    LV_LOG_USER("now_selected: %d", now_selected);
-
     /* update indicator UI */
     lime_sub_setting_switch_update(obj, now_selected, *volume, *lumen, *light_mode);
 }
@@ -956,15 +952,13 @@ static void lime_sub_setting_preview_event_handler(lv_obj_t* obj, setting_key_op
         }
         case setting_key_option_set:
         {
-            LV_LOG_USER("play music, set selected: %d", now_selected);
+            // LV_LOG_USER("play music, set selected: %d", now_selected);
             LimeHAL_SettingInfo_PlayMusicByIndex(now_selected);
             break;
         }
         default:
             break;
     }
-
-    LV_LOG_USER("key_option: %d, now_selected: %d", key_option, now_selected);
 
     /* update indicator UI */
     lime_sub_setting_preview_update(obj, now_selected);
