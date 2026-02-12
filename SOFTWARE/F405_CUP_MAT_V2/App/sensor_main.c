@@ -8,6 +8,7 @@
 #include "rtc_time.h"
 #include "ff.h"
 #include "esp8266.h"
+#include "rgbled_logic.h"
 
 /* just test */
 #include "file_system_logic.h"
@@ -22,6 +23,7 @@ static void play_flash_music_handle(void);
 static void time_logic_handle(void);
 static void volume_sync_handle(void);
 static void cup_scan_handle(void);
+static void rgb_led_run_handle(void);
 
 void sensor_main(void const * argument)
 {
@@ -130,12 +132,22 @@ void sensor_main(void const * argument)
 		
 		cup_scan_handle();
 		
+		rgb_led_run_handle();
+		
 		osDelay(10);
 	}
 }
 
 static void ds18b20_scan_handle(void)
 {
+	/* limit frequence */
+	static uint32_t last_run_time = 0;
+	if(HAL_GetTick() - last_run_time < 200)
+	{
+		return;
+	}
+	last_run_time = HAL_GetTick();
+	
 	/* suspend tasks */
 	vTaskSuspendAll();
 	
@@ -355,6 +367,63 @@ static void volume_sync_handle(void)
 			break;
 	}
 	Lime_audio_play_set_volume(volume_setted);
+}
+
+static void rgb_led_run_handle(void)
+{
+	/* get GUI setted value */
+	uint8_t led_brightness = LimeHAL_GetLumen();
+	uint8_t mode = LimeHAL_GetLightMode();
+	
+	/* get now led mode */
+	rgbled_mode_e led_mode = rgbled_mode_off;
+	switch(mode)
+	{
+		case 0:
+			led_mode = rgbled_mode_rainbow;
+			break;
+		case 1:
+			led_mode = rgbled_mode_candle;
+			break;
+		case 2:
+			led_mode = rgbled_mode_starnight;
+			break;
+		case 4:
+			led_mode = rgbled_mode_white;
+			break;
+		default:
+			led_mode = rgbled_mode_off;
+			break;
+	}
+	
+	/* get now led brightness */
+	switch(led_brightness)
+	{
+		case 0:
+			led_brightness = 0;
+			led_mode = rgbled_mode_off;
+			break;
+		case 1:
+			led_brightness = 16;
+			break;
+		case 2:
+			led_brightness = 32;
+			break;
+		case 3:
+			led_brightness = 48;
+			break;
+		default:
+			led_brightness = 4;
+			break;
+			
+	}
+	
+	/* sync to low driver */
+	rgbled_set_mode(led_mode);
+	rgbled_set_brightness(led_brightness);
+	
+	/* led run handle */
+	rgbled_run_handler();
 }
 
 static void senser_task_error_handle(void)

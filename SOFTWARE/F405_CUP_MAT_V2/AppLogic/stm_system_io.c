@@ -1,11 +1,22 @@
 #include "stm_system_io.h"
 #include "usb_device.h"
 #include "usbd_core.h"
+#include "ws2812.h"
 #include "file_system_logic.h"
 
 void lime_stm_system_restart(void)
 {
     DEBUG_LOG("%s()\n", __FUNCTION__);
+	
+	/* turn off LED */
+	WS2812_SetRGB(0, 0, 0, 0);
+	WS2812_SetRGB(1, 0, 0, 0);
+	WS2812_SetRGB(2, 0, 0, 0);
+	WS2812_SetRGB(3, 0, 0, 0);
+	WS2812_Sync();
+	
+	/* make sure all LED are turn off */
+	HAL_Delay(10);
 
     /* turn off voice */
     HAL_GPIO_WritePin(AUDIO_EN_GPIO_Port, AUDIO_EN_Pin, GPIO_PIN_RESET);

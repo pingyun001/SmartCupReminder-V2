@@ -3,10 +3,10 @@
 #include "main.h"
 #include "ff.h"
 
- #define MAX_PATHNAME_DEPTH 512 + 1  /* ×î´óÄ¿±êÎÄ¼şÂ·¾¶+ÎÄ¼şÃûÉî¶È */
+ #define MAX_PATHNAME_DEPTH 512 + 1  /* æœ€å¤§ç›®æ ‡æ–‡ä»¶è·¯å¾„+æ–‡ä»¶åæ·±åº¦ */
 
-#define FILE_MAX_TYPE_NUM       7       /* ×î¶àFILE_MAX_TYPE_NUM¸ö´óÀà */
-#define FILE_MAX_SUBT_NUM       4       /* ×î¶àFILE_MAX_SUBT_NUM¸öĞ¡Àà */
+#define FILE_MAX_TYPE_NUM       7       /* æœ€å¤šFILE_MAX_TYPE_NUMä¸ªå¤§ç±» */
+#define FILE_MAX_SUBT_NUM       4       /* æœ€å¤šFILE_MAX_SUBT_NUMä¸ªå°ç±» */
 
 #define DYNAMIC_MEM_MELLOC		1
 #if DYNAMIC_MEM_MELLOC
@@ -15,62 +15,62 @@
 #define EXFUNS_FREE(pin)		vPortFree(pin)
 #endif
 
-/* ÎÄ¼şÀàĞÍÁĞ±í */
+/* æ–‡ä»¶ç±»å‹åˆ—è¡¨ */
 char *const FILE_TYPE_TBL[FILE_MAX_TYPE_NUM][FILE_MAX_SUBT_NUM] =
 {
-    {"BIN"},            /* BINÎÄ¼ş */
-    {"LRC"},            /* LRCÎÄ¼ş */
-    {"NES", "SMS"},     /* NES/SMSÎÄ¼ş */
-    {"TXT", "C", "H"},  /* ÎÄ±¾ÎÄ¼ş */
-    {"WAV", "MP3", "APE", "FLAC"},  /* Ö§³ÖµÄÒôÀÖÎÄ¼ş */
-    {"BMP", "JPG", "JPEG", "GIF"},  /* Í¼Æ¬ÎÄ¼ş */
-    {"AVI"},            /* ÊÓÆµÎÄ¼ş */
+    {"BIN"},            /* BINæ–‡ä»¶ */
+    {"LRC"},            /* LRCæ–‡ä»¶ */
+    {"NES", "SMS"},     /* NES/SMSæ–‡ä»¶ */
+    {"TXT", "C", "H"},  /* æ–‡æœ¬æ–‡ä»¶ */
+    {"WAV", "MP3", "APE", "FLAC"},  /* æ”¯æŒçš„éŸ³ä¹æ–‡ä»¶ */
+    {"BMP", "JPG", "JPEG", "GIF"},  /* å›¾ç‰‡æ–‡ä»¶ */
+    {"AVI"},            /* è§†é¢‘æ–‡ä»¶ */
 };
 
 /**
- * @brief       ½«Ğ¡Ğ´×ÖÄ¸×ªÎª´óĞ´×ÖÄ¸,Èç¹ûÊÇÊı×Ö,Ôò±£³Ö²»±ä.
- * @param       c : Òª×ª»»µÄ×ÖÄ¸
- * @retval      ×ª»»ºóµÄ×ÖÄ¸,´óĞ´
+ * @brief       å°†å°å†™å­—æ¯è½¬ä¸ºå¤§å†™å­—æ¯,å¦‚æœæ˜¯æ•°å­—,åˆ™ä¿æŒä¸å˜.
+ * @param       c : è¦è½¬æ¢çš„å­—æ¯
+ * @retval      è½¬æ¢åçš„å­—æ¯,å¤§å†™
  */
 uint8_t exfuns_char_upper(uint8_t c)
 {
-    if (c < 'A')return c;   /* Êı×Ö,±£³Ö²»±ä. */
+    if (c < 'A')return c;   /* æ•°å­—,ä¿æŒä¸å˜. */
 
     if (c >= 'a')
     {
-        return c - 0x20;    /* ±äÎª´óĞ´. */
+        return c - 0x20;    /* å˜ä¸ºå¤§å†™. */
     }
     else
     {
-        return c;           /* ´óĞ´,±£³Ö²»±ä */
+        return c;           /* å¤§å†™,ä¿æŒä¸å˜ */
     }
 }
 
 /**
- * @brief       ±¨¸æÎÄ¼şµÄÀàĞÍ
- * @param       fname : ÎÄ¼şÃû
- * @retval      ÎÄ¼şÀàĞÍ
- *   @arg       0XFF , ±íÊ¾ÎŞ·¨Ê¶±ğµÄÎÄ¼şÀàĞÍ±àºÅ.
- *   @arg       ÆäËû , ¸ßËÄÎ»±íÊ¾ËùÊô´óÀà,µÍËÄÎ»±íÊ¾ËùÊôĞ¡Àà.
+ * @brief       æŠ¥å‘Šæ–‡ä»¶çš„ç±»å‹
+ * @param       fname : æ–‡ä»¶å
+ * @retval      æ–‡ä»¶ç±»å‹
+ *   @arg       0XFF , è¡¨ç¤ºæ— æ³•è¯†åˆ«çš„æ–‡ä»¶ç±»å‹ç¼–å·.
+ *   @arg       å…¶ä»– , é«˜å››ä½è¡¨ç¤ºæ‰€å±å¤§ç±»,ä½å››ä½è¡¨ç¤ºæ‰€å±å°ç±».
  */
 uint8_t exfuns_file_type(char *fname)
 {
     uint8_t tbuf[5];
-    char *attr = 0;   /* ºó×ºÃû */
+    char *attr = 0;   /* åç¼€å */
     uint8_t i = 0, j;
 
     while (i < 250)
     {
         i++;
 
-        if (*fname == '\0')break;   /* Æ«ÒÆµ½ÁË×îºóÁË. */
+        if (*fname == '\0')break;   /* åç§»åˆ°äº†æœ€åäº†. */
 
         fname++;
     }
 
-    if (i == 250)return 0XFF;   /* ´íÎóµÄ×Ö·û´®. */
+    if (i == 250)return 0XFF;   /* é”™è¯¯çš„å­—ç¬¦ä¸². */
 
-    for (i = 0; i < 5; i++)     /* µÃµ½ºó×ºÃû */
+    for (i = 0; i < 5; i++)     /* å¾—åˆ°åç¼€å */
     {
         fname--;
 
@@ -86,30 +86,30 @@ uint8_t exfuns_file_type(char *fname)
 
     strcpy((char *)tbuf, (const char *)attr);       /* copy */
 
-    for (i = 0; i < 4; i++)tbuf[i] = exfuns_char_upper(tbuf[i]);    /* È«²¿±äÎª´óĞ´ */
+    for (i = 0; i < 4; i++)tbuf[i] = exfuns_char_upper(tbuf[i]);    /* å…¨éƒ¨å˜ä¸ºå¤§å†™ */
 
-    for (i = 0; i < FILE_MAX_TYPE_NUM; i++)         /* ´óÀà¶Ô±È */
+    for (i = 0; i < FILE_MAX_TYPE_NUM; i++)         /* å¤§ç±»å¯¹æ¯” */
     {
-        for (j = 0; j < FILE_MAX_SUBT_NUM; j++)     /* ×ÓÀà¶Ô±È */
+        for (j = 0; j < FILE_MAX_SUBT_NUM; j++)     /* å­ç±»å¯¹æ¯” */
         {
-            if (*FILE_TYPE_TBL[i][j] == 0)break;    /* ´Ë×éÒÑ¾­Ã»ÓĞ¿É¶Ô±ÈµÄ³ÉÔ±ÁË. */
+            if (*FILE_TYPE_TBL[i][j] == 0)break;    /* æ­¤ç»„å·²ç»æ²¡æœ‰å¯å¯¹æ¯”çš„æˆå‘˜äº†. */
 
-            if (strcmp((const char *)FILE_TYPE_TBL[i][j], (const char *)tbuf) == 0) /* ÕÒµ½ÁË */
+            if (strcmp((const char *)FILE_TYPE_TBL[i][j], (const char *)tbuf) == 0) /* æ‰¾åˆ°äº† */
             {
                 return (i << 4) | j;
             }
         }
     }
 
-    return 0XFF;    /* Ã»ÕÒµ½ */
+    return 0XFF;    /* æ²¡æ‰¾åˆ° */
 }
 
 /**
- * @brief       »ñÈ¡´ÅÅÌÊ£ÓàÈİÁ¿
- * @param       pdrv : ´ÅÅÌ±àºÅ("0:"~"9:")
- * @param       total: ×ÜÈİÁ¿ (KB)
- * @param       free : Ê£ÓàÈİÁ¿ (KB)
- * @retval      0, Õı³£; ÆäËû, ´íÎó´úÂë
+ * @brief       è·å–ç£ç›˜å‰©ä½™å®¹é‡
+ * @param       pdrv : ç£ç›˜ç¼–å·("0:"~"9:")
+ * @param       total: æ€»å®¹é‡ (KB)
+ * @param       free : å‰©ä½™å®¹é‡ (KB)
+ * @retval      0, æ­£å¸¸; å…¶ä»–, é”™è¯¯ä»£ç 
  */
 uint8_t exfuns_get_free(char *pdrv, uint32_t *total, uint32_t *free)
 {
@@ -117,51 +117,51 @@ uint8_t exfuns_get_free(char *pdrv, uint32_t *total, uint32_t *free)
     uint8_t res;
     uint32_t fre_clust = 0, fre_sect = 0, tot_sect = 0;
     
-    /* µÃµ½´ÅÅÌĞÅÏ¢¼°¿ÕÏĞ´ØÊıÁ¿ */
+    /* å¾—åˆ°ç£ç›˜ä¿¡æ¯åŠç©ºé—²ç°‡æ•°é‡ */
     res = (uint32_t)f_getfree((const TCHAR *)pdrv, (DWORD *)&fre_clust, &fs1);
 
     if (res == 0)
     {
-        tot_sect = (fs1->n_fatent - 2) * fs1->csize;    /* µÃµ½×ÜÉÈÇøÊı */
-        fre_sect = fre_clust * fs1->csize;              /* µÃµ½¿ÕÏĞÉÈÇøÊı */
-#if FF_MAX_SS!=512  /* ÉÈÇø´óĞ¡²»ÊÇ512×Ö½Ú,Ôò×ª»»Îª512×Ö½Ú */
+        tot_sect = (fs1->n_fatent - 2) * fs1->csize;    /* å¾—åˆ°æ€»æ‰‡åŒºæ•° */
+        fre_sect = fre_clust * fs1->csize;              /* å¾—åˆ°ç©ºé—²æ‰‡åŒºæ•° */
+#if FF_MAX_SS!=512  /* æ‰‡åŒºå¤§å°ä¸æ˜¯512å­—èŠ‚,åˆ™è½¬æ¢ä¸º512å­—èŠ‚ */
         tot_sect *= fs1->ssize / 512;
         fre_sect *= fs1->ssize / 512;
 #endif
-        *total = tot_sect >> 1;     /* µ¥Î»ÎªKB */
-        *free = fre_sect >> 1;      /* µ¥Î»ÎªKB */
+        *total = tot_sect >> 1;     /* å•ä½ä¸ºKB */
+        *free = fre_sect >> 1;      /* å•ä½ä¸ºKB */
     }
 
     return res;
 }
 
 /**
- * @brief       ÎÄ¼ş¸´ÖÆ
- *   @note      ½«psrcÎÄ¼ş,copyµ½pdst.
- *              ×¢Òâ: ÎÄ¼ş´óĞ¡²»Òª³¬¹ı4GB.
+ * @brief       æ–‡ä»¶å¤åˆ¶
+ *   @note      å°†psrcæ–‡ä»¶,copyåˆ°pdst.
+ *              æ³¨æ„: æ–‡ä»¶å¤§å°ä¸è¦è¶…è¿‡4GB.
  *
- * @param       fcpymsg : º¯ÊıÖ¸Õë, ÓÃÓÚÊµÏÖ¿½±´Ê±µÄĞÅÏ¢ÏÔÊ¾
- *                  pname:ÎÄ¼ş/ÎÄ¼ş¼ĞÃû
- *                  pct:°Ù·Ö±È
+ * @param       fcpymsg : å‡½æ•°æŒ‡é’ˆ, ç”¨äºå®ç°æ‹·è´æ—¶çš„ä¿¡æ¯æ˜¾ç¤º
+ *                  pname:æ–‡ä»¶/æ–‡ä»¶å¤¹å
+ *                  pct:ç™¾åˆ†æ¯”
  *                  mode:
- *                      bit0 : ¸üĞÂÎÄ¼şÃû
- *                      bit1 : ¸üĞÂ°Ù·Ö±Èpct
- *                      bit2 : ¸üĞÂÎÄ¼ş¼Ğ
- *                      ÆäËû : ±£Áô
- *                  ·µ»ØÖµ: 0, Õı³£; 1, Ç¿ÖÆÍË³ö;
+ *                      bit0 : æ›´æ–°æ–‡ä»¶å
+ *                      bit1 : æ›´æ–°ç™¾åˆ†æ¯”pct
+ *                      bit2 : æ›´æ–°æ–‡ä»¶å¤¹
+ *                      å…¶ä»– : ä¿ç•™
+ *                  è¿”å›å€¼: 0, æ­£å¸¸; 1, å¼ºåˆ¶é€€å‡º;
  *
- * @param       psrc    : Ô´ÎÄ¼ş
- * @param       pdst    : Ä¿±êÎÄ¼ş
- * @param       totsize : ×Ü´óĞ¡(µ±totsizeÎª0µÄÊ±ºò,±íÊ¾½ö½öÎªµ¥¸öÎÄ¼ş¿½±´)
- * @param       cpdsize : ÒÑ¸´ÖÆÁËµÄ´óĞ¡.
- * @param       fwmode  : ÎÄ¼şĞ´ÈëÄ£Ê½
- *   @arg       0: ²»¸²¸ÇÔ­ÓĞµÄÎÄ¼ş
- *   @arg       1: ¸²¸ÇÔ­ÓĞµÄÎÄ¼ş
+ * @param       psrc    : æºæ–‡ä»¶
+ * @param       pdst    : ç›®æ ‡æ–‡ä»¶
+ * @param       totsize : æ€»å¤§å°(å½“totsizeä¸º0çš„æ—¶å€™,è¡¨ç¤ºä»…ä»…ä¸ºå•ä¸ªæ–‡ä»¶æ‹·è´)
+ * @param       cpdsize : å·²å¤åˆ¶äº†çš„å¤§å°.
+ * @param       fwmode  : æ–‡ä»¶å†™å…¥æ¨¡å¼
+ *   @arg       0: ä¸è¦†ç›–åŸæœ‰çš„æ–‡ä»¶
+ *   @arg       1: è¦†ç›–åŸæœ‰çš„æ–‡ä»¶
  *
- * @retval      Ö´ĞĞ½á¹û
- *   @arg       0   , Õı³£
- *   @arg       0XFF, Ç¿ÖÆÍË³ö
- *   @arg       ÆäËû, ´íÎó´úÂë
+ * @retval      æ‰§è¡Œç»“æœ
+ *   @arg       0   , æ­£å¸¸
+ *   @arg       0XFF, å¼ºåˆ¶é€€å‡º
+ *   @arg       å…¶ä»–, é”™è¯¯ä»£ç 
  */
 
  
@@ -180,7 +180,7 @@ uint8_t exfuns_file_copy(uint8_t(*fcpymsg)(uint8_t *pname, uint8_t pct, uint8_t 
     unsigned long long lcpdsize = cpdsize;
 
 #if DYNAMIC_MEM_MELLOC
-    fsrc = (FIL *)EXFUNS_MELLOC(sizeof(FIL));    /* ÉêÇëÄÚ´æ */
+    fsrc = (FIL *)EXFUNS_MELLOC(sizeof(FIL));    /* ç”³è¯·å†…å­˜ */
     fdst = (FIL *)EXFUNS_MELLOC(sizeof(FIL));
     fbuf = (uint8_t *)EXFUNS_MELLOC(FILE_CAT_SIZE);
 #else
@@ -194,26 +194,26 @@ uint8_t exfuns_file_copy(uint8_t(*fcpymsg)(uint8_t *pname, uint8_t pct, uint8_t 
 
     if (fsrc == NULL || fdst == NULL || fbuf == NULL)
     {
-        res = 100;  /* Ç°ÃæµÄÖµÁô¸øfatfs */
+        res = 100;  /* å‰é¢çš„å€¼ç•™ç»™fatfs */
     }
     else
     {
         if (fwmode == 0)
         {
-            fwmode = FA_CREATE_NEW;     /* ²»¸²¸Ç */
+            fwmode = FA_CREATE_NEW;     /* ä¸è¦†ç›– */
         }
         else 
         {
-            fwmode = FA_CREATE_ALWAYS;  /* ¸²¸Ç´æÔÚµÄÎÄ¼ş */
+            fwmode = FA_CREATE_ALWAYS;  /* è¦†ç›–å­˜åœ¨çš„æ–‡ä»¶ */
         }
         
-        res = f_open(fsrc, (const TCHAR *)psrc, FA_READ | FA_OPEN_EXISTING);        /* ´ò¿ªÖ»¶ÁÎÄ¼ş */
+        res = f_open(fsrc, (const TCHAR *)psrc, FA_READ | FA_OPEN_EXISTING);        /* æ‰“å¼€åªè¯»æ–‡ä»¶ */
 
-        if (res == 0)res = f_open(fdst, (const TCHAR *)pdst, FA_WRITE | fwmode);    /* µÚÒ»¸ö´ò¿ª³É¹¦,²Å¿ªÊ¼´ò¿ªµÚ¶ş¸ö */
+        if (res == 0)res = f_open(fdst, (const TCHAR *)pdst, FA_WRITE | fwmode);    /* ç¬¬ä¸€ä¸ªæ‰“å¼€æˆåŠŸ,æ‰å¼€å§‹æ‰“å¼€ç¬¬äºŒä¸ª */
 
-        if (res == 0)           /* Á½¸ö¶¼´ò¿ª³É¹¦ÁË */
+        if (res == 0)           /* ä¸¤ä¸ªéƒ½æ‰“å¼€æˆåŠŸäº† */
         {
-            if (totsize == 0)   /* ½ö½öÊÇµ¥¸öÎÄ¼ş¸´ÖÆ */
+            if (totsize == 0)   /* ä»…ä»…æ˜¯å•ä¸ªæ–‡ä»¶å¤åˆ¶ */
             {
                 totsize = fsrc->obj.objsize;
                 lcpdsize = 0;
@@ -221,27 +221,27 @@ uint8_t exfuns_file_copy(uint8_t(*fcpymsg)(uint8_t *pname, uint8_t pct, uint8_t 
             }
             else
             {
-                curpct = (lcpdsize * 100) / totsize;            /* µÃµ½ĞÂ°Ù·Ö±È */
+                curpct = (lcpdsize * 100) / totsize;            /* å¾—åˆ°æ–°ç™¾åˆ†æ¯” */
             }
             
-            fcpymsg(psrc, curpct, 0X02);                        /* ¸üĞÂ°Ù·Ö±È */
+            fcpymsg(psrc, curpct, 0X02);                        /* æ›´æ–°ç™¾åˆ†æ¯” */
 
-            while (res == 0)    /* ¿ªÊ¼¸´ÖÆ */
+            while (res == 0)    /* å¼€å§‹å¤åˆ¶ */
             {
-                res = f_read(fsrc, fbuf, FILE_CAT_SIZE, (UINT *)&br);    /* Ô´Í·¶Á³ö512×Ö½Ú */
+                res = f_read(fsrc, fbuf, FILE_CAT_SIZE, (UINT *)&br);    /* æºå¤´è¯»å‡º512å­—èŠ‚ */
 
                 if (res || br == 0)break;
 
-                res = f_write(fdst, fbuf, (UINT)br, (UINT *)&bw);/* Ğ´ÈëÄ¿µÄÎÄ¼ş */
+                res = f_write(fdst, fbuf, (UINT)br, (UINT *)&bw);/* å†™å…¥ç›®çš„æ–‡ä»¶ */
                 lcpdsize += bw;
 
-                if (curpct != (lcpdsize * 100) / totsize)       /* ÊÇ·ñĞèÒª¸üĞÂ°Ù·Ö±È */
+                if (curpct != (lcpdsize * 100) / totsize)       /* æ˜¯å¦éœ€è¦æ›´æ–°ç™¾åˆ†æ¯” */
                 {
                     curpct = (lcpdsize * 100) / totsize;
 
-                    if (fcpymsg(psrc, curpct, 0X02))            /* ¸üĞÂ°Ù·Ö±È */
+                    if (fcpymsg(psrc, curpct, 0X02))            /* æ›´æ–°ç™¾åˆ†æ¯” */
                     {
-                        res = 0XFF;                             /* Ç¿ÖÆÍË³ö */
+                        res = 0XFF;                             /* å¼ºåˆ¶é€€å‡º */
                         break;
                     }
                 }
@@ -255,7 +255,7 @@ uint8_t exfuns_file_copy(uint8_t(*fcpymsg)(uint8_t *pname, uint8_t pct, uint8_t 
     }
 	
 #if DYNAMIC_MEM_MELLOC
-    EXFUNS_FREE(fsrc); /* ÊÍ·ÅÄÚ´æ */
+    EXFUNS_FREE(fsrc); /* é‡Šæ”¾å†…å­˜ */
     EXFUNS_FREE(fdst);
     EXFUNS_FREE(fbuf);
 #endif
@@ -264,11 +264,11 @@ uint8_t exfuns_file_copy(uint8_t(*fcpymsg)(uint8_t *pname, uint8_t pct, uint8_t 
 }
 
 /**
- * @brief       µÃµ½Â·¾¶ÏÂµÄÎÄ¼ş¼Ğ
- *   @note      ¼´°ÑÂ·¾¶È«²¿È¥µô, Ö»ÁôÏÂÎÄ¼ş¼ĞÃû×Ö.
- * @param       pname : ÏêÏ¸Â·¾¶ 
- * @retval      0   , Â·¾¶¾ÍÊÇ¸ö¾í±êºÅ.
- *              ÆäËû, ÎÄ¼ş¼ĞÃû×ÖÊ×µØÖ·
+ * @brief       å¾—åˆ°è·¯å¾„ä¸‹çš„æ–‡ä»¶å¤¹
+ *   @note      å³æŠŠè·¯å¾„å…¨éƒ¨å»æ‰, åªç•™ä¸‹æ–‡ä»¶å¤¹åå­—.
+ * @param       pname : è¯¦ç»†è·¯å¾„ 
+ * @retval      0   , è·¯å¾„å°±æ˜¯ä¸ªå·æ ‡å·.
+ *              å…¶ä»–, æ–‡ä»¶å¤¹åå­—é¦–åœ°å€
  */
 uint8_t *exfuns_get_src_dname(uint8_t *pname)
 {
@@ -282,17 +282,17 @@ uint8_t *exfuns_get_src_dname(uint8_t *pname)
 
     if (temp < 4)return 0;
 
-    while ((*pname != 0x5c) && (*pname != 0x2f))pname--;    /* ×·Êöµ½µ¹ÊıµÚÒ»¸ö"\"»òÕß"/"´¦ */
+    while ((*pname != 0x5c) && (*pname != 0x2f))pname--;    /* è¿½è¿°åˆ°å€’æ•°ç¬¬ä¸€ä¸ª"\"æˆ–è€…"/"å¤„ */
 
     return ++pname;
 }
 
 /**
- * @brief       µÃµ½ÎÄ¼ş¼Ğ´óĞ¡
- *   @note      ×¢Òâ: ÎÄ¼ş¼Ğ´óĞ¡²»Òª³¬¹ı4GB.
- * @param       pname : ÏêÏ¸Â·¾¶ 
- * @retval      0   , ÎÄ¼ş¼Ğ´óĞ¡Îª0, »òÕß¶ÁÈ¡¹ı³ÌÖĞ·¢ÉúÁË´íÎó.
- *              ÆäËû, ÎÄ¼ş¼Ğ´óĞ¡
+ * @brief       å¾—åˆ°æ–‡ä»¶å¤¹å¤§å°
+ *   @note      æ³¨æ„: æ–‡ä»¶å¤¹å¤§å°ä¸è¦è¶…è¿‡4GB.
+ * @param       pname : è¯¦ç»†è·¯å¾„ 
+ * @retval      0   , æ–‡ä»¶å¤¹å¤§å°ä¸º0, æˆ–è€…è¯»å–è¿‡ç¨‹ä¸­å‘ç”Ÿäº†é”™è¯¯.
+ *              å…¶ä»–, æ–‡ä»¶å¤¹å¤§å°
  */
 #if !DYNAMIC_MEM_MELLOC
 static uint8_t folderSizeBufScr[MAX_PATHNAME_DEPTH] = {0};
@@ -300,14 +300,14 @@ static uint8_t folderSizeBufScr[MAX_PATHNAME_DEPTH] = {0};
 uint32_t exfuns_get_folder_size(uint8_t *fdname)
 {
     uint8_t res = 0;
-    DIR *fddir = 0;         /* Ä¿Â¼ */
-    FILINFO *finfo = 0;     /* ÎÄ¼şĞÅÏ¢ */
-    uint8_t *pathname = 0;  /* Ä¿±êÎÄ¼ş¼ĞÂ·¾¶+ÎÄ¼şÃû */
-    uint16_t pathlen = 0;   /* Ä¿±êÂ·¾¶³¤¶È */
+    DIR *fddir = 0;         /* ç›®å½• */
+    FILINFO *finfo = 0;     /* æ–‡ä»¶ä¿¡æ¯ */
+    uint8_t *pathname = 0;  /* ç›®æ ‡æ–‡ä»¶å¤¹è·¯å¾„+æ–‡ä»¶å */
+    uint16_t pathlen = 0;   /* ç›®æ ‡è·¯å¾„é•¿åº¦ */
     uint32_t fdsize = 0;
 
 #if DYNAMIC_MEM_MELLOC
-    fddir = (DIR *)EXFUNS_MELLOC(sizeof(DIR));   /* ÉêÇëÄÚ´æ */
+    fddir = (DIR *)EXFUNS_MELLOC(sizeof(DIR));   /* ç”³è¯·å†…å­˜ */
     finfo = (FILINFO *)EXFUNS_MELLOC(sizeof(FILINFO));
 #else
 	DIR ffddir = {0};
@@ -330,31 +330,31 @@ uint32_t exfuns_get_folder_size(uint8_t *fdname)
         if (res == 0)
         {
             pathname[0] = 0;
-            strcat((char *)pathname, (const char *)fdname);     /* ¸´ÖÆÂ·¾¶ */
-            res = f_opendir(fddir, (const TCHAR *)fdname);      /* ´ò¿ªÔ´Ä¿Â¼ */
+            strcat((char *)pathname, (const char *)fdname);     /* å¤åˆ¶è·¯å¾„ */
+            res = f_opendir(fddir, (const TCHAR *)fdname);      /* æ‰“å¼€æºç›®å½• */
 
-            if (res == 0)   /* ´ò¿ªÄ¿Â¼³É¹¦ */
+            if (res == 0)   /* æ‰“å¼€ç›®å½•æˆåŠŸ */
             {
-                while (res == 0)   /* ¿ªÊ¼¸´ÖÆÎÄ¼ş¼ĞÀïÃæµÄ¶«¶« */
+                while (res == 0)   /* å¼€å§‹å¤åˆ¶æ–‡ä»¶å¤¹é‡Œé¢çš„ä¸œä¸œ */
                 {
-                    res = f_readdir(fddir, finfo);                  /* ¶ÁÈ¡Ä¿Â¼ÏÂµÄÒ»¸öÎÄ¼ş */
+                    res = f_readdir(fddir, finfo);                  /* è¯»å–ç›®å½•ä¸‹çš„ä¸€ä¸ªæ–‡ä»¶ */
 
-                    if (res != FR_OK || finfo->fname[0] == 0)break; /* ´íÎóÁË/µ½Ä©Î²ÁË,ÍË³ö */
+                    if (res != FR_OK || finfo->fname[0] == 0)break; /* é”™è¯¯äº†/åˆ°æœ«å°¾äº†,é€€å‡º */
 
-                    if (finfo->fname[0] == '.')continue;            /* ºöÂÔÉÏ¼¶Ä¿Â¼ */
+                    if (finfo->fname[0] == '.')continue;            /* å¿½ç•¥ä¸Šçº§ç›®å½• */
 
-                    if (finfo->fattrib & 0X10)   /* ÊÇ×ÓÄ¿Â¼(ÎÄ¼şÊôĞÔ,0X20,¹éµµÎÄ¼ş;0X10,×ÓÄ¿Â¼;) */
+                    if (finfo->fattrib & 0X10)   /* æ˜¯å­ç›®å½•(æ–‡ä»¶å±æ€§,0X20,å½’æ¡£æ–‡ä»¶;0X10,å­ç›®å½•;) */
                     {
-                        pathlen = strlen((const char *)pathname);   /* µÃµ½µ±Ç°Â·¾¶µÄ³¤¶È */
-                        strcat((char *)pathname, (const char *)"/");/* ¼ÓĞ±¸Ü */
-                        strcat((char *)pathname, (const char *)finfo->fname);   /* Ô´Â·¾¶¼ÓÉÏ×ÓÄ¿Â¼Ãû×Ö */
-                        //printf("\r\nsub folder:%s\r\n",pathname);      /* ´òÓ¡×ÓÄ¿Â¼Ãû */
-                        fdsize += exfuns_get_folder_size(pathname);     /* µÃµ½×ÓÄ¿Â¼´óĞ¡,µİ¹éµ÷ÓÃ */
-                        pathname[pathlen] = 0;                          /* ¼ÓÈë½áÊø·û */
+                        pathlen = strlen((const char *)pathname);   /* å¾—åˆ°å½“å‰è·¯å¾„çš„é•¿åº¦ */
+                        strcat((char *)pathname, (const char *)"/");/* åŠ æ–œæ  */
+                        strcat((char *)pathname, (const char *)finfo->fname);   /* æºè·¯å¾„åŠ ä¸Šå­ç›®å½•åå­— */
+                        //printf("\r\nsub folder:%s\r\n",pathname);      /* æ‰“å°å­ç›®å½•å */
+                        fdsize += exfuns_get_folder_size(pathname);     /* å¾—åˆ°å­ç›®å½•å¤§å°,é€’å½’è°ƒç”¨ */
+                        pathname[pathlen] = 0;                          /* åŠ å…¥ç»“æŸç¬¦ */
                     }
                     else
                     {
-                        fdsize += finfo->fsize; /* ·ÇÄ¿Â¼,Ö±½Ó¼ÓÉÏÎÄ¼şµÄ´óĞ¡ */
+                        fdsize += finfo->fsize; /* éç›®å½•,ç›´æ¥åŠ ä¸Šæ–‡ä»¶çš„å¤§å° */
                     }
                 }
             }
@@ -379,34 +379,34 @@ uint32_t exfuns_get_folder_size(uint8_t *fdname)
 }
 
 /**
- * @brief       ÎÄ¼ş¼Ğ¸´ÖÆ
- *   @note      ½«psrcÎÄ¼ş¼Ğ, ¿½±´µ½pdstÎÄ¼ş¼Ğ.
- *              ×¢Òâ: ÎÄ¼ş´óĞ¡²»Òª³¬¹ı4GB.
+ * @brief       æ–‡ä»¶å¤¹å¤åˆ¶
+ *   @note      å°†psrcæ–‡ä»¶å¤¹, æ‹·è´åˆ°pdstæ–‡ä»¶å¤¹.
+ *              æ³¨æ„: æ–‡ä»¶å¤§å°ä¸è¦è¶…è¿‡4GB.
  *
- * @param       fcpymsg : º¯ÊıÖ¸Õë, ÓÃÓÚÊµÏÖ¿½±´Ê±µÄĞÅÏ¢ÏÔÊ¾
- *                  pname:ÎÄ¼ş/ÎÄ¼ş¼ĞÃû
- *                  pct:°Ù·Ö±È
+ * @param       fcpymsg : å‡½æ•°æŒ‡é’ˆ, ç”¨äºå®ç°æ‹·è´æ—¶çš„ä¿¡æ¯æ˜¾ç¤º
+ *                  pname:æ–‡ä»¶/æ–‡ä»¶å¤¹å
+ *                  pct:ç™¾åˆ†æ¯”
  *                  mode:
- *                      bit0 : ¸üĞÂÎÄ¼şÃû
- *                      bit1 : ¸üĞÂ°Ù·Ö±Èpct
- *                      bit2 : ¸üĞÂÎÄ¼ş¼Ğ
- *                      ÆäËû : ±£Áô
- *                  ·µ»ØÖµ: 0, Õı³£; 1, Ç¿ÖÆÍË³ö;
+ *                      bit0 : æ›´æ–°æ–‡ä»¶å
+ *                      bit1 : æ›´æ–°ç™¾åˆ†æ¯”pct
+ *                      bit2 : æ›´æ–°æ–‡ä»¶å¤¹
+ *                      å…¶ä»– : ä¿ç•™
+ *                  è¿”å›å€¼: 0, æ­£å¸¸; 1, å¼ºåˆ¶é€€å‡º;
  *
- * @param       psrc    : Ô´ÎÄ¼ş¼Ğ
- * @param       pdst    : Ä¿±êÎÄ¼ş¼Ğ
- *   @note      ±ØĞëĞÎÈç"X:"/"X:XX"/"X:XX/XX"Ö®ÀàµÄ. ÇÒÒªÈ·ÈÏÉÏÒ»¼¶ÎÄ¼ş¼Ğ´æÔÚ
+ * @param       psrc    : æºæ–‡ä»¶å¤¹
+ * @param       pdst    : ç›®æ ‡æ–‡ä»¶å¤¹
+ *   @note      å¿…é¡»å½¢å¦‚"X:"/"X:XX"/"X:XX/XX"ä¹‹ç±»çš„. ä¸”è¦ç¡®è®¤ä¸Šä¸€çº§æ–‡ä»¶å¤¹å­˜åœ¨
  *
- * @param       totsize : ×Ü´óĞ¡(µ±totsizeÎª0µÄÊ±ºò,±íÊ¾½ö½öÎªµ¥¸öÎÄ¼ş¿½±´)
- * @param       cpdsize : ÒÑ¸´ÖÆÁËµÄ´óĞ¡.
- * @param       fwmode  : ÎÄ¼şĞ´ÈëÄ£Ê½
- *   @arg       0: ²»¸²¸ÇÔ­ÓĞµÄÎÄ¼ş
- *   @arg       1: ¸²¸ÇÔ­ÓĞµÄÎÄ¼ş
+ * @param       totsize : æ€»å¤§å°(å½“totsizeä¸º0çš„æ—¶å€™,è¡¨ç¤ºä»…ä»…ä¸ºå•ä¸ªæ–‡ä»¶æ‹·è´)
+ * @param       cpdsize : å·²å¤åˆ¶äº†çš„å¤§å°.
+ * @param       fwmode  : æ–‡ä»¶å†™å…¥æ¨¡å¼
+ *   @arg       0: ä¸è¦†ç›–åŸæœ‰çš„æ–‡ä»¶
+ *   @arg       1: è¦†ç›–åŸæœ‰çš„æ–‡ä»¶
  *
- * @retval      Ö´ĞĞ½á¹û
- *   @arg       0   , Õı³£
- *   @arg       0XFF, Ç¿ÖÆÍË³ö
- *   @arg       ÆäËû, ´íÎó´úÂë
+ * @retval      æ‰§è¡Œç»“æœ
+ *   @arg       0   , æ­£å¸¸
+ *   @arg       0XFF, å¼ºåˆ¶é€€å‡º
+ *   @arg       å…¶ä»–, é”™è¯¯ä»£ç 
  */
 
 #if !DYNAMIC_MEM_MELLOC
@@ -418,19 +418,19 @@ uint8_t exfuns_folder_copy(uint8_t(*fcpymsg)(uint8_t *pname, uint8_t pct, uint8_
 {
 
     uint8_t res = 0;
-    DIR *srcdir = 0;    /* Ô´Ä¿Â¼ */
-    DIR *dstdir = 0;    /* Ô´Ä¿Â¼ */
-    FILINFO *finfo = 0; /* ÎÄ¼şĞÅÏ¢ */
-    uint8_t *fn = 0;    /* ³¤ÎÄ¼şÃû */
+    DIR *srcdir = 0;    /* æºç›®å½• */
+    DIR *dstdir = 0;    /* æºç›®å½• */
+    FILINFO *finfo = 0; /* æ–‡ä»¶ä¿¡æ¯ */
+    uint8_t *fn = 0;    /* é•¿æ–‡ä»¶å */
 
-    uint8_t *dstpathname = 0;   /* Ä¿±êÎÄ¼ş¼ĞÂ·¾¶+ÎÄ¼şÃû */
-    uint8_t *srcpathname = 0;   /* Ô´ÎÄ¼ş¼ĞÂ·¾¶+ÎÄ¼şÃû */
+    uint8_t *dstpathname = 0;   /* ç›®æ ‡æ–‡ä»¶å¤¹è·¯å¾„+æ–‡ä»¶å */
+    uint8_t *srcpathname = 0;   /* æºæ–‡ä»¶å¤¹è·¯å¾„+æ–‡ä»¶å */
 
-    uint16_t dstpathlen = 0;    /* Ä¿±êÂ·¾¶³¤¶È */
-    uint16_t srcpathlen = 0;    /* Ô´Â·¾¶³¤¶È */
+    uint16_t dstpathlen = 0;    /* ç›®æ ‡è·¯å¾„é•¿åº¦ */
+    uint16_t srcpathlen = 0;    /* æºè·¯å¾„é•¿åº¦ */
 
 #if DYNAMIC_MEM_MELLOC
-    srcdir = (DIR *)EXFUNS_MELLOC(sizeof(DIR));  /* ÉêÇëÄÚ´æ */
+    srcdir = (DIR *)EXFUNS_MELLOC(sizeof(DIR));  /* ç”³è¯·å†…å­˜ */
     dstdir = (DIR *)EXFUNS_MELLOC(sizeof(DIR));
     finfo = (FILINFO *)EXFUNS_MELLOC(sizeof(FILINFO));
 #else
@@ -461,62 +461,62 @@ uint8_t exfuns_folder_copy(uint8_t(*fcpymsg)(uint8_t *pname, uint8_t pct, uint8_
         {
             dstpathname[0] = 0;
             srcpathname[0] = 0;
-            strcat((char *)srcpathname, (const char *)psrc);    /* ¸´ÖÆÔ­Ê¼Ô´ÎÄ¼şÂ·¾¶ */
-            strcat((char *)dstpathname, (const char *)pdst);    /* ¸´ÖÆÔ­Ê¼Ä¿±êÎÄ¼şÂ·¾¶ */
-            res = f_opendir(srcdir, (const TCHAR *)psrc);       /* ´ò¿ªÔ´Ä¿Â¼ */
+            strcat((char *)srcpathname, (const char *)psrc);    /* å¤åˆ¶åŸå§‹æºæ–‡ä»¶è·¯å¾„ */
+            strcat((char *)dstpathname, (const char *)pdst);    /* å¤åˆ¶åŸå§‹ç›®æ ‡æ–‡ä»¶è·¯å¾„ */
+            res = f_opendir(srcdir, (const TCHAR *)psrc);       /* æ‰“å¼€æºç›®å½• */
 
-            if (res == 0)   /* ´ò¿ªÄ¿Â¼³É¹¦ */
+            if (res == 0)   /* æ‰“å¼€ç›®å½•æˆåŠŸ */
             {
-                strcat((char *)dstpathname, (const char *)"/"); /* ¼ÓÈëĞ±¸Ü */
+                strcat((char *)dstpathname, (const char *)"/"); /* åŠ å…¥æ–œæ  */
                 fn = exfuns_get_src_dname(psrc);
 
-                if (fn == 0)   /* ²»ĞèÒª¾í±ê¿½±´ */
+                if (fn == 0)   /* ä¸éœ€è¦å·æ ‡æ‹·è´ */
                 {
 					dstpathlen = strlen((const char *)dstpathname);
 					dstpathname[dstpathlen] = 0;
-//                    dstpathname[dstpathlen] = psrc[0];  /* ¼ÇÂ¼¾í±ê */
-//                    dstpathname[dstpathlen + 1] = 0;    /* ½áÊø·û */
+//                    dstpathname[dstpathlen] = psrc[0];  /* è®°å½•å·æ ‡ */
+//                    dstpathname[dstpathlen + 1] = 0;    /* ç»“æŸç¬¦ */
                 }
-                else strcat((char *)dstpathname, (const char *)fn); /* ¼ÓÎÄ¼şÃû */
+                else strcat((char *)dstpathname, (const char *)fn); /* åŠ æ–‡ä»¶å */
 
-                fcpymsg(dstpathname, 0, 0X04);   /* ¸üĞÂÎÄ¼ş¼ĞÃû */
-                res = f_mkdir((const TCHAR *)dstpathname);  /* Èç¹ûÎÄ¼ş¼ĞÒÑ¾­´æÔÚ,¾Í²»´´½¨.Èç¹û²»´æÔÚ¾Í´´½¨ĞÂµÄÎÄ¼ş¼Ğ. */
+                fcpymsg(dstpathname, 0, 0X04);   /* æ›´æ–°æ–‡ä»¶å¤¹å */
+                res = f_mkdir((const TCHAR *)dstpathname);  /* å¦‚æœæ–‡ä»¶å¤¹å·²ç»å­˜åœ¨,å°±ä¸åˆ›å»º.å¦‚æœä¸å­˜åœ¨å°±åˆ›å»ºæ–°çš„æ–‡ä»¶å¤¹. */
 
                 if (res == FR_EXIST)res = 0;
 
-                while (res == 0)   /* ¿ªÊ¼¸´ÖÆÎÄ¼ş¼ĞÀïÃæµÄ¶«¶« */
+                while (res == 0)   /* å¼€å§‹å¤åˆ¶æ–‡ä»¶å¤¹é‡Œé¢çš„ä¸œä¸œ */
                 {
-                    res = f_readdir(srcdir, finfo);         /* ¶ÁÈ¡Ä¿Â¼ÏÂµÄÒ»¸öÎÄ¼ş */
+                    res = f_readdir(srcdir, finfo);         /* è¯»å–ç›®å½•ä¸‹çš„ä¸€ä¸ªæ–‡ä»¶ */
 
-                    if (res != FR_OK || finfo->fname[0] == 0)break; /* ´íÎóÁË/µ½Ä©Î²ÁË,ÍË³ö */
+                    if (res != FR_OK || finfo->fname[0] == 0)break; /* é”™è¯¯äº†/åˆ°æœ«å°¾äº†,é€€å‡º */
 
-                    if (finfo->fname[0] == '.')continue;    /* ºöÂÔÉÏ¼¶Ä¿Â¼ */
+                    if (finfo->fname[0] == '.')continue;    /* å¿½ç•¥ä¸Šçº§ç›®å½• */
 
-                    fn = (uint8_t *)finfo->fname;           /* µÃµ½ÎÄ¼şÃû */
-                    dstpathlen = strlen((const char *)dstpathname); /* µÃµ½µ±Ç°Ä¿±êÂ·¾¶µÄ³¤¶È */
-                    srcpathlen = strlen((const char *)srcpathname); /* µÃµ½Ô´Â·¾¶³¤¶È */
+                    fn = (uint8_t *)finfo->fname;           /* å¾—åˆ°æ–‡ä»¶å */
+                    dstpathlen = strlen((const char *)dstpathname); /* å¾—åˆ°å½“å‰ç›®æ ‡è·¯å¾„çš„é•¿åº¦ */
+                    srcpathlen = strlen((const char *)srcpathname); /* å¾—åˆ°æºè·¯å¾„é•¿åº¦ */
 
-                    strcat((char *)srcpathname, (const char *)"/"); /* Ô´Â·¾¶¼ÓĞ±¸Ü */
+                    strcat((char *)srcpathname, (const char *)"/"); /* æºè·¯å¾„åŠ æ–œæ  */
 
-                    if (finfo->fattrib & 0X10)  /* ÊÇ×ÓÄ¿Â¼(ÎÄ¼şÊôĞÔ,0X20,¹éµµÎÄ¼ş;0X10,×ÓÄ¿Â¼;) */
+                    if (finfo->fattrib & 0X10)  /* æ˜¯å­ç›®å½•(æ–‡ä»¶å±æ€§,0X20,å½’æ¡£æ–‡ä»¶;0X10,å­ç›®å½•;) */
                     {
-#if DYNAMIC_MEM_MELLOC	/* ¾²Ì¬²»Ö§³Öµİ¹éÎÄ¼ş¼Ğ¸´ÖÆ */
-                        strcat((char *)srcpathname, (const char *)fn);  /* Ô´Â·¾¶¼ÓÉÏ×ÓÄ¿Â¼Ãû×Ö */
-                        res = exfuns_folder_copy(fcpymsg, srcpathname, dstpathname, totsize, cpdsize, fwmode);   /* ¿½±´ÎÄ¼ş¼Ğ */
+#if DYNAMIC_MEM_MELLOC	/* é™æ€ä¸æ”¯æŒé€’å½’æ–‡ä»¶å¤¹å¤åˆ¶ */
+                        strcat((char *)srcpathname, (const char *)fn);  /* æºè·¯å¾„åŠ ä¸Šå­ç›®å½•åå­— */
+                        res = exfuns_folder_copy(fcpymsg, srcpathname, dstpathname, totsize, cpdsize, fwmode);   /* æ‹·è´æ–‡ä»¶å¤¹ */
 #endif
                     }
-                    else     /* ·ÇÄ¿Â¼ */
+                    else     /* éç›®å½• */
                     {
-                        strcat((char *)dstpathname, (const char *)"/"); /* Ä¿±êÂ·¾¶¼ÓĞ±¸Ü */
-                        strcat((char *)dstpathname, (const char *)fn);  /* Ä¿±êÂ·¾¶¼ÓÎÄ¼şÃû */
-                        strcat((char *)srcpathname, (const char *)fn);  /* Ô´Â·¾¶¼ÓÎÄ¼şÃû */
-                        fcpymsg(fn, 0, 0X01);       /* ¸üĞÂÎÄ¼şÃû */
-                        res = exfuns_file_copy(fcpymsg, srcpathname, dstpathname, *totsize, *cpdsize, fwmode);  /* ¸´ÖÆÎÄ¼ş */
-                        *cpdsize += finfo->fsize;   /* Ôö¼ÓÒ»¸öÎÄ¼ş´óĞ¡ */
+                        strcat((char *)dstpathname, (const char *)"/"); /* ç›®æ ‡è·¯å¾„åŠ æ–œæ  */
+                        strcat((char *)dstpathname, (const char *)fn);  /* ç›®æ ‡è·¯å¾„åŠ æ–‡ä»¶å */
+                        strcat((char *)srcpathname, (const char *)fn);  /* æºè·¯å¾„åŠ æ–‡ä»¶å */
+                        fcpymsg(fn, 0, 0X01);       /* æ›´æ–°æ–‡ä»¶å */
+                        res = exfuns_file_copy(fcpymsg, srcpathname, dstpathname, *totsize, *cpdsize, fwmode);  /* å¤åˆ¶æ–‡ä»¶ */
+                        *cpdsize += finfo->fsize;   /* å¢åŠ ä¸€ä¸ªæ–‡ä»¶å¤§å° */
                     }
 
-                    srcpathname[srcpathlen] = 0;    /* ¼ÓÈë½áÊø·û */
-                    dstpathname[dstpathlen] = 0;    /* ¼ÓÈë½áÊø·û */
+                    srcpathname[srcpathlen] = 0;    /* åŠ å…¥ç»“æŸç¬¦ */
+                    dstpathname[dstpathlen] = 0;    /* åŠ å…¥ç»“æŸç¬¦ */
                 }
             }
 			
