@@ -234,7 +234,6 @@ static void time_logic_handle(void)
 	static uint32_t last_run_time = 0;
 	if(HAL_GetTick() - last_run_time < 1000)
 		return;
-	
 	last_run_time = HAL_GetTick();
 	
 	/* get now time from RTC */
@@ -371,6 +370,11 @@ static void volume_sync_handle(void)
 
 static void rgb_led_run_handle(void)
 {
+	static uint32_t last_run_time = 0;
+	if(HAL_GetTick() - last_run_time < 100)
+		return;
+	last_run_time = HAL_GetTick();
+	
 	/* get GUI setted value */
 	uint8_t led_brightness = LimeHAL_GetLumen();
 	uint8_t mode = LimeHAL_GetLightMode();
@@ -388,7 +392,7 @@ static void rgb_led_run_handle(void)
 		case 2:
 			led_mode = rgbled_mode_starnight;
 			break;
-		case 4:
+		case 3:
 			led_mode = rgbled_mode_white;
 			break;
 		default:
