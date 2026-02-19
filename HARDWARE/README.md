@@ -4,8 +4,15 @@
 - PCB：提醒喝水杯垫PCB图以及交互式焊接BOM表
 
 # 原理图说明
-这里还没装修......
-
+## 关键芯片选型
+- MCU：STM32F405RGT6（192KB SRAM， 1MB Flash）
+- 功放：FM8002A（DAC + DMA直推）
+- 无线：ESP8266（UART）
+- 存储：W25Q64JV（8MB SPI接口驱动）
+- 屏幕：NV3007（142 * 428像素 SPI接口）
+## 原理图
+![原理图V2.0-P1](./SCH/SCH_MainBoard_V2.0-P1.png)
+![原理图V2.0-P2](./SCH/SCH_MainBoard_V2.0-P2.png)
 
 
 # PCB说明
