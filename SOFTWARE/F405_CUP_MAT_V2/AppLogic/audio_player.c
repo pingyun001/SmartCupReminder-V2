@@ -348,10 +348,39 @@ HAL_StatusTypeDef Lime_audio_play_set_volume(uint8_t volume)
 	return HAL_OK;
 }
 
+void Lime_audio_play_music(const char* music_file_path)
+{
+	/* check path length */
+	uint32_t file_path_len = strlen(music_file_path);
+	if(file_path_len >= sizeof(audiopy.file_name))
+	{
+		AUDIO_DEBUG_LOG("audio path is too long!\n");
+		return;
+	}
+	
+	/* save target audio path */
+	memcpy(audiopy.file_name, music_file_path, file_path_len);
+	audiopy.new_file_name_need_play = true;
+}
+
 void Lime_audio_run_handle(void)
 {
+	/* load new audio file */
+	if((audiopy.now_status == audiopy_status_idle) && audiopy.new_file_name_need_play)
+	{
+		if(Lime_audio_play_start(audiopy.file_name) != HAL_OK)
+		{
+			AUDIO_DEBUG_LOG("music file load failed\n");
+			
+			return;
+		}
+		
+		audiopy.new_file_name_need_play = false;
+	}
+	
 	Lime_audio_read_new_data();
-
+	
+	/* play finish, goto idle status */
 	if(audiopy.now_status == audiopy_status_finish)
 	{
 		audiopy.now_status = audiopy_status_idle;

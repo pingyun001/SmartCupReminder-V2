@@ -32,7 +32,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "spi_flash.h"
-#include "spi_flash_test.h"
+#include "ws2812.h"
 
 #include "FatFsSelfTest.h"
 #include "stm_system_io.h"
@@ -232,6 +232,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 1 */
   if (htim->Instance == TIM13) {
 	lv_tick_inc(1);
+	WS2812_Sync();
   }
 	
   /* USER CODE END Callback 1 */

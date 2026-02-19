@@ -13,7 +13,6 @@ void lime_stm_system_restart(void)
 	WS2812_SetRGB(1, 0, 0, 0);
 	WS2812_SetRGB(2, 0, 0, 0);
 	WS2812_SetRGB(3, 0, 0, 0);
-	WS2812_Sync();
 	
 	/* make sure all LED are turn off */
 	HAL_Delay(10);

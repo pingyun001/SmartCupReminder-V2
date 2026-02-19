@@ -18,6 +18,8 @@ typedef struct
 {
 	audiopy_status_e now_status;
 	
+	char file_name[63];
+	bool new_file_name_need_play;
 	FIL fil;
 	bool is_file_opened;
 	bool is_file_read_finished;
@@ -54,6 +56,7 @@ HAL_StatusTypeDef Lime_audio_play_set_volume(uint8_t volume);
 
 audiopy_status_e Lime_audio_play_get_status(void);
 
+void Lime_audio_play_music(const char* music_file_path);
 void Lime_audio_run_handle(void);
 void Lime_audio_dma_callback(bool is_half_callback);
 

@@ -35,6 +35,28 @@ mult_key_e key_get_press(void)
 	return MULT_KEY_DOWN;
 }
 
+mult_key_e key_get_press_with_filter(void)
+{
+	static mult_key_e key_deteched[4] = {MULT_KEY_NO};
+	
+	/* move back & fill new key */
+	for(uint8_t i = 0; i < 3; i++)
+	{
+		key_deteched[i + 1] = key_deteched[i];
+	}
+	key_deteched[0] = key_get_press();
+	
+	/* filter */
+	mult_key_e return_key = key_deteched[0];
+	for(uint8_t i = 1; i < 4; i++)
+	{
+		if(key_deteched[i] != return_key)
+			return MULT_KEY_NO;
+	}
+	
+	return return_key;
+}
+
 float key_get_usb_vol(void)
 {
 	const float register_up = 5.1f, register_down = 10.0f;

@@ -29,13 +29,13 @@ void key_main(void const * argument)
 		
 		restore_mode_detech();
 
-		osDelay(10);
+		osDelay(2);
 	}
 }
 
 static void key_scan_handle(void)
 {
-	mult_key_e now_key = key_get_press();
+	mult_key_e now_key = key_get_press_with_filter();
 	static mult_key_e last_key = MULT_KEY_NO;
 
 	/* scan now status */

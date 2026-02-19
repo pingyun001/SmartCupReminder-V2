@@ -225,8 +225,7 @@ static void play_flash_music_handle(void)
 	osDelay(10);
 	
 	/* play new music */
-	Lime_audio_play_start(path);
-	
+	Lime_audio_play_music(path);
 }
 
 static void time_logic_handle(void)
@@ -370,11 +369,6 @@ static void volume_sync_handle(void)
 
 static void rgb_led_run_handle(void)
 {
-	static uint32_t last_run_time = 0;
-	if(HAL_GetTick() - last_run_time < 100)
-		return;
-	last_run_time = HAL_GetTick();
-	
 	/* get GUI setted value */
 	uint8_t led_brightness = LimeHAL_GetLumen();
 	uint8_t mode = LimeHAL_GetLightMode();
@@ -408,13 +402,13 @@ static void rgb_led_run_handle(void)
 			led_mode = rgbled_mode_off;
 			break;
 		case 1:
-			led_brightness = 16;
+			led_brightness = 8;
 			break;
 		case 2:
-			led_brightness = 32;
+			led_brightness = 15;
 			break;
 		case 3:
-			led_brightness = 48;
+			led_brightness = 24;
 			break;
 		default:
 			led_brightness = 4;
@@ -432,6 +426,8 @@ static void rgb_led_run_handle(void)
 
 static void senser_task_error_handle(void)
 {
+	DEBUG_LOG("%s()\n", __FUNCTION__);
+	
 	while(1)
 	{
 		osDelay(1000);

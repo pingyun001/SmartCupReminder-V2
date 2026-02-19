@@ -3,6 +3,12 @@
 #include <stdio.h>
 #include "spi.h"
 
+#if 0
+#define SPI_FLASH_LOG DEBUG_LOG
+#else
+#define SPI_FLASH_LOG(...)
+#endif
+
 static HAL_StatusTypeDef spi_flash_reset(void);
 static HAL_StatusTypeDef spi_flash_read_id(uint8_t jedec_id[3]);
 static HAL_StatusTypeDef spi_flash_read_uid(uint8_t uid[8]);
@@ -51,7 +57,7 @@ HAL_StatusTypeDef spi_flash_do_cmd(spi_flash_do_cmd_t *p_cmd)
     {
 			if(HAL_GetTick() - start_time > 1000)
 			{
-				printf("spi flash timeout1...\n");
+				SPI_FLASH_LOG("spi flash timeout1...\n");
 				return HAL_ERROR;
 			}
 	}
@@ -72,7 +78,7 @@ HAL_StatusTypeDef spi_flash_do_cmd(spi_flash_do_cmd_t *p_cmd)
         {
             /* let CS High */
             HAL_GPIO_WritePin(FLASH_CS_GPIO_Port, FLASH_CS_Pin, GPIO_PIN_SET);
-            printf("err\n");
+            SPI_FLASH_LOG("err\n");
             return HAL_ERROR;
         }
 	
@@ -81,8 +87,8 @@ HAL_StatusTypeDef spi_flash_do_cmd(spi_flash_do_cmd_t *p_cmd)
 				{
 						if(HAL_GetTick() - start_time > 1000)
 						{
-								printf("for debug:%#x, %#x, %d\n", (uint32_t)p_cmd->tx_data, (uint32_t)p_cmd->rx_data, p_cmd->data_len);
-								printf("spi flash timeout2...\n");
+								SPI_FLASH_LOG("for debug:%#x, %#x, %d\n", (uint32_t)p_cmd->tx_data, (uint32_t)p_cmd->rx_data, p_cmd->data_len);
+								SPI_FLASH_LOG("spi flash timeout2...\n");
 								return HAL_ERROR;
 						}
 				}
@@ -220,9 +226,9 @@ HAL_StatusTypeDef spi_flash_init(spi_flash_info_t *p_info)
 			memcpy(p_info, &spi_flash_info, sizeof(spi_flash_info_t));
 		}
 
-    printf("JEDEC ID: %02X %02X %02X\n", spi_flash_info.jedec_id[0], spi_flash_info.jedec_id[1], spi_flash_info.jedec_id[2]);
-    printf("Capacity: %d MB\n", spi_flash_info.capacity / (1024 * 1024));
-    printf("UID: %02X %02X %02X %02X %02X %02X %02X %02X\n", spi_flash_info.uid[0], spi_flash_info.uid[1], spi_flash_info.uid[2], spi_flash_info.uid[3], spi_flash_info.uid[4], spi_flash_info.uid[5], spi_flash_info.uid[6], spi_flash_info.uid[7]);
+    SPI_FLASH_LOG("JEDEC ID: %02X %02X %02X\n", spi_flash_info.jedec_id[0], spi_flash_info.jedec_id[1], spi_flash_info.jedec_id[2]);
+    SPI_FLASH_LOG("Capacity: %d MB\n", spi_flash_info.capacity / (1024 * 1024));
+    SPI_FLASH_LOG("UID: %02X %02X %02X %02X %02X %02X %02X %02X\n", spi_flash_info.uid[0], spi_flash_info.uid[1], spi_flash_info.uid[2], spi_flash_info.uid[3], spi_flash_info.uid[4], spi_flash_info.uid[5], spi_flash_info.uid[6], spi_flash_info.uid[7]);
 
     return ret;
 }
