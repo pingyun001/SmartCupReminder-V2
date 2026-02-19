@@ -23,6 +23,10 @@ void rgbled_set_brightness(uint8_t brightness)
 {
     rgbled.glob_brightness = brightness;
 }
+void rgbled_set_night_mode(bool night_mode)
+{
+	rgbled.glob_night_mode = night_mode;
+}
 void rgbled_run_handler(void)
 {
 	uint8_t brightness = rgbled.glob_brightness;
@@ -116,8 +120,11 @@ void rgbled_run_handler(void)
 		/* angle update */
 		rgbled.angle = (rgbled.angle + 1) % 360;
 	}
-		
 
+	/* mix night mode */
+	brightness = rgbled.glob_night_mode ? brightness >> 2 : brightness;
+	
+	
     /* calculate brightness */
     for(uint8_t i = 0; i < 4; i++)
     {

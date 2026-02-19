@@ -72,6 +72,8 @@ void LCD_Init(void);                                                            
 
 void PY_LCD_Clear(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye, uint16_t color);
 
-void PY_LCD_ColorFill(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t* color_p);	//逐行写入算法。待优化！
+void PY_LCD_ColorFill(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t* color_p);
+
+void PY_LCD_SetBackLight(uint8_t percent);
 
 #endif

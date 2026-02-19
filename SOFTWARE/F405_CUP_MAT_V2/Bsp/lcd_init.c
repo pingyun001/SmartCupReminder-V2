@@ -453,15 +453,11 @@ void LCD_Init(void)
     LCD_WR_REG(0x29);
     HAL_Delay(15);
 		
-		/* backlight */
-		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
-		
-		TIM4->CCR3 = 80;
+	/* backlight */
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+	
+	TIM4->CCR3 = 80;
 }
-
-
-
-
 
 void PY_LCD_ColorFill(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t* color_p)
 {
@@ -486,4 +482,7 @@ void PY_LCD_ColorFill(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t* 
 //	HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_SET);
 }
 
-
+void PY_LCD_SetBackLight(uint8_t percent)
+{
+	TIM4->CCR3 = percent;
+}

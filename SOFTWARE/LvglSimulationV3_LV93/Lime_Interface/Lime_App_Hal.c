@@ -334,6 +334,18 @@ void LimeHAL_SetTotalCountSeconds(uint16_t totalSeconds)
 {
 	LimeHal_Info.workingInfo.totalCountSeconds = totalSeconds;
 }
+void LimeHAL_SetSleepMode(bool isSleepMode)
+{
+	LimeHal_Info.workingInfo.isSleepMode = isSleepMode;
+}
+LimeHal_WorkingStatus_e LimeHAL_GetWorkingStatus(void)
+{
+	return LimeHal_Info.workingInfo.workingStatus;
+}
+bool LimeHAL_WorkingStatus_IsIdle(void)
+{
+	return (LimeHal_Info.workingInfo.workingStatus == LimeHal_WoringStatus_Idle);
+}
 
 /*typedef struct {
     uint8_t keySubBoard;

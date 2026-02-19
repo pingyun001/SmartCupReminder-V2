@@ -57,6 +57,7 @@ lv_obj_t * lime_headbar_create(lv_obj_t *parent)
     moon_img = lv_img_create(bj_obj);
     lv_img_set_src(moon_img, &lime_img_moon);
     lv_obj_align(moon_img, LV_ALIGN_LEFT_MID, 46, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_flag(moon_img, LV_OBJ_FLAG_HIDDEN);
 
     /* right side */
     weatherlogo_img = lv_img_create(bj_obj);
@@ -121,6 +122,7 @@ static void scan_timer_cb(lv_timer_t * timer)
     const LimeHal_Info_t *info = LimeHAL_GetInfoPin();
     MLV_BASE_OBJ_NULL_CHECK(info);
     const LimeHal_SenserInfo_t *senser = &info->senserInfo;
+    const LimeHal_WorkingInfo_t *working = &info->workingInfo;
 
     /* update wifi ui */
     const lv_image_dsc_t *wifi_img_dsc = senser->isWifiConnected ? &lime_img_wificonn : &lime_img_wifidisconn;
@@ -134,6 +136,16 @@ static void scan_timer_cb(lv_timer_t * timer)
     else
     {
         lv_obj_add_flag(weatherlogo_img, LV_OBJ_FLAG_HIDDEN);
+    }
+
+    /* update moon ui */
+    if(working->isSleepMode)
+    {
+        lv_obj_remove_flag(moon_img, LV_OBJ_FLAG_HIDDEN);
+    }
+    else
+    {
+        lv_obj_add_flag(moon_img, LV_OBJ_FLAG_HIDDEN);
     }
 
     /* update time ui */

@@ -37,10 +37,10 @@ mult_key_e key_get_press(void)
 
 mult_key_e key_get_press_with_filter(void)
 {
-	static mult_key_e key_deteched[4] = {MULT_KEY_NO};
+	static mult_key_e key_deteched[16] = {MULT_KEY_NO};
 	
 	/* move back & fill new key */
-	for(uint8_t i = 0; i < 3; i++)
+	for(uint8_t i = 0; i < 15; i++)
 	{
 		key_deteched[i + 1] = key_deteched[i];
 	}
@@ -48,7 +48,7 @@ mult_key_e key_get_press_with_filter(void)
 	
 	/* filter */
 	mult_key_e return_key = key_deteched[0];
-	for(uint8_t i = 1; i < 4; i++)
+	for(uint8_t i = 1; i < 16; i++)
 	{
 		if(key_deteched[i] != return_key)
 			return MULT_KEY_NO;

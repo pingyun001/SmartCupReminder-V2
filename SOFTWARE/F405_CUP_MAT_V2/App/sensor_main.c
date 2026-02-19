@@ -9,6 +9,7 @@
 #include "ff.h"
 #include "esp8266.h"
 #include "rgbled_logic.h"
+#include "lcd_init.h"
 
 /* just test */
 #include "file_system_logic.h"
@@ -24,6 +25,7 @@ static void time_logic_handle(void);
 static void volume_sync_handle(void);
 static void cup_scan_handle(void);
 static void rgb_led_run_handle(void);
+static void sleep_mode_handle(void);
 
 void sensor_main(void const * argument)
 {
@@ -115,11 +117,10 @@ void sensor_main(void const * argument)
 	
 	LimeHAL_SetInitStep(100, "finish");
 	
-	osDelay(500);
+	osDelay(1000);
 	
 	while(1)
 	{
-
 		esp8266_sync_handle();
 		
 		ds18b20_scan_handle();
@@ -133,6 +134,8 @@ void sensor_main(void const * argument)
 		cup_scan_handle();
 		
 		rgb_led_run_handle();
+		
+		sleep_mode_handle();
 		
 		osDelay(10);
 	}
@@ -422,6 +425,36 @@ static void rgb_led_run_handle(void)
 	
 	/* led run handle */
 	rgbled_run_handler();
+}
+
+static void sleep_mode_handle(void)
+{
+	/* wait 1s */
+	static uint32_t last_run_time = 0;
+	if(HAL_GetTick() - last_run_time < 1000)
+		return;
+	last_run_time = HAL_GetTick();
+	
+	/* get now time */
+	uint8_t now_hour = 0, now_minutes = 0, now_seconds = 0;
+	LimeRtc_GetNowTime(&now_hour, &now_minutes, &now_seconds);
+	
+	/* if night */
+	bool is_night = false;
+	if((now_hour > 23) || (now_hour < 7))
+	{
+		is_night = true;
+	}
+	
+	/* sync data to HAL */
+	LimeHAL_SetSleepMode(is_night);
+	
+	/* when night & no cup, make screen backlight low */
+	bool is_idle = LimeHAL_WorkingStatus_IsIdle();
+	PY_LCD_SetBackLight((is_night && is_idle) ? 15 : 90);
+	
+	/* when night, make led low */
+	rgbled_set_night_mode(is_night);
 }
 
 static void senser_task_error_handle(void)

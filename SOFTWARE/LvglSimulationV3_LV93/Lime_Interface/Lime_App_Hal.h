@@ -161,7 +161,9 @@ uint8_t LimeHAL_GetLightMode(void);
 void LimeHAL_SetWorkingStatus(LimeHal_WorkingStatus_e status);
 void LimeHAL_SetRemainCountSeconds(uint16_t remainSeconds);
 void LimeHAL_SetTotalCountSeconds(uint16_t totalSeconds);
-
+void LimeHAL_SetSleepMode(bool isSleepMode);
+LimeHal_WorkingStatus_e LimeHAL_GetWorkingStatus(void);
+bool LimeHAL_WorkingStatus_IsIdle(void);
 
 /*VS simulator API*/
 void LimeHAL_SoftSimHardwareTimer_Init(void);

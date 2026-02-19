@@ -24,12 +24,14 @@ typedef struct
     rgbled_mode_e now_mode;
     rgbled_mode_e last_mode;
     uint8_t glob_brightness;
+	bool glob_night_mode;
     uint16_t angle;
     rgbled_unit_t led_unit[4];
 }rgbled_t;
 
 void rgbled_set_mode(rgbled_mode_e mode);
 void rgbled_set_brightness(uint8_t brightness);
+void rgbled_set_night_mode(bool night_mode);
 void rgbled_run_handler(void);
 
 #endif	//__RGB_LED_LOGIC_H__

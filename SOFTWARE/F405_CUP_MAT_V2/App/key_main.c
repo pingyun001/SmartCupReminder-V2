@@ -29,7 +29,7 @@ void key_main(void const * argument)
 		
 		restore_mode_detech();
 
-		osDelay(2);
+		osDelay(5);
 	}
 }
 
