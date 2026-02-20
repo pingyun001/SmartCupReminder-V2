@@ -4,7 +4,7 @@
 #include "tim.h"
 #include "dac.h"
 
-#if 0
+#if 1
 #define AUDIO_DEBUG_LOG DEBUG_LOG
 #else
 #define AUDIO_DEBUG_LOG(...)
@@ -51,7 +51,7 @@ static void Lime_audio_raw_data_cal(uint16_t* data, uint32_t len_bytes)
 	/* wave data */
 #if 1
 	uint32_t attenuation = audiopy.user_setted_volume;
-	attenuation = (attenuation * attenuation) >> 8;  // Æ½·½½üËÆ
+	attenuation = (attenuation * attenuation) >> 8;
 	
 	for(int i = 0; i < len_bytes / 2; i++)
 	{
@@ -84,9 +84,15 @@ static void Lime_audio_read_new_data(void)
 	{
 		return;
 	}
+	
+//	AUDIO_DEBUG_LOG("%s()\n", __FUNCTION__);
+	
+//	AUDIO_DEBUG_LOG("SSS\n");
 
 	if((!audiopy.is_buffer_a_filled) && (!audiopy.is_file_read_finished))
 	{
+		AUDIO_DEBUG_LOG("AAA\n");
+		
 		fr = f_read(&audiopy.fil, audiopy.buffer_a, AUDIO_BUFFER_SIZE / 2, &bytesRead);
 		if (fr != FR_OK)
 		{
@@ -116,6 +122,8 @@ static void Lime_audio_read_new_data(void)
 
 	if((!audiopy.is_buffer_b_filled) && (!audiopy.is_file_read_finished))
 	{
+		AUDIO_DEBUG_LOG("BBB\n");
+		
 		fr = f_read(&audiopy.fil, audiopy.buffer_b, AUDIO_BUFFER_SIZE / 2, &bytesRead);
 		if (fr != FR_OK)
 		{
@@ -328,6 +336,8 @@ audiopy_status_e Lime_audio_play_get_status(void)
 
 HAL_StatusTypeDef Lime_audio_play_stop(void)
 {
+	AUDIO_DEBUG_LOG("%s()\n", __FUNCTION__);
+	
 	HAL_TIM_Base_Stop(&htim7);
 
 	if(audiopy.is_file_opened)
@@ -350,6 +360,8 @@ HAL_StatusTypeDef Lime_audio_play_set_volume(uint8_t volume)
 
 void Lime_audio_play_music(const char* music_file_path)
 {
+	AUDIO_DEBUG_LOG("%s(%s)\n", __FUNCTION__, music_file_path);
+	
 	/* check path length */
 	uint32_t file_path_len = strlen(music_file_path);
 	if(file_path_len >= sizeof(audiopy.file_name))
@@ -392,12 +404,12 @@ void Lime_audio_dma_callback(bool is_half_callback)
 	if(is_half_callback)
 	{
 		audiopy.is_buffer_a_filled = false;
-//		AUDIO_DEBUG_LOG("v:a\n");
+		AUDIO_DEBUG_LOG("v:a\n");
 	}
 	else
 	{
 		audiopy.is_buffer_b_filled = false;
-//		AUDIO_DEBUG_LOG("v:b\n");
+		AUDIO_DEBUG_LOG("v:b\n");
 	}
 
 	if((!audiopy.is_buffer_a_filled) && (!audiopy.is_buffer_b_filled))
@@ -408,7 +420,7 @@ void Lime_audio_dma_callback(bool is_half_callback)
 
 		audiopy.now_status = audiopy_status_finish;
 
-//		AUDIO_DEBUG_LOG("v:c\n");
+		AUDIO_DEBUG_LOG("v:c\n");
 	}
 }
 

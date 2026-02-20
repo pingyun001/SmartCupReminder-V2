@@ -101,7 +101,7 @@ lv_obj_t *lime_countface_create(lv_obj_t* parent)
     lv_obj_clear_flag(remain_slider_second_bj, LV_OBJ_FLAG_SCROLLABLE);
 
     charactor_img = lv_img_create(bj_obj);
-    lv_img_set_src(charactor_img, &lime_img_timeout);
+    lv_img_set_src(charactor_img, &lime_img_idle);
     lv_obj_set_size(charactor_img, 160, 140);
     lv_obj_align(charactor_img, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
 
@@ -172,7 +172,6 @@ static void lime_countface_update_charactor_img(LimeHal_WorkingStatus_e status)
 
     switch(status)
     {
-        case LimeHal_WoringStatus_Init:
         case LimeHal_WoringStatus_Idle:
             tar_charactor_img_dsc = (lv_img_dsc_t *)&lime_img_idle;
             break;

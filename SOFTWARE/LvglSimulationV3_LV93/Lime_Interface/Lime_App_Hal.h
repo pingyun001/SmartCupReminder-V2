@@ -33,8 +33,7 @@ typedef struct
 //LimeHal_WoringStatus_Init -> LimeHal_WoringStatus_Idle -> LimeHal_WoringStatus_Countdown -> LimeHal_WoringStatus_CountFinish ->(back to LimeHal_WoringStatus_Idle)
 typedef enum
 {
-	LimeHal_WoringStatus_Init = 0,
-	LimeHal_WoringStatus_Idle,
+	LimeHal_WoringStatus_Idle = 0,
 	LimeHal_WoringStatus_Countdown,
 	LimeHal_WoringStatus_CountFinish,
 }LimeHal_WorkingStatus_e;

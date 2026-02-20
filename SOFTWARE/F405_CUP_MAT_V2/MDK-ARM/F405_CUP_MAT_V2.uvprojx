@@ -54,7 +54,7 @@
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
-          <BrowseInformation>1</BrowseInformation>
+          <BrowseInformation>0</BrowseInformation>
           <ListingPath></ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
@@ -4040,6 +4040,11 @@
               <FileName>rgbled_logic.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\AppLogic\rgbled_logic.c</FilePath>
+            </File>
+            <File>
+              <FileName>audio_call_logic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AppLogic\audio_call_logic.c</FilePath>
             </File>
           </Files>
         </Group>

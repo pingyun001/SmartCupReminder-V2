@@ -15,6 +15,7 @@
 #include "file_system_logic.h"
 
 #include "audio_player.h"
+#include "audio_call_logic.h"
 #include "Lime_App_Hal.h"
 
 static void senser_task_error_handle(void);
@@ -126,6 +127,8 @@ void sensor_main(void const * argument)
 		ds18b20_scan_handle();
 		
 		play_flash_music_handle();
+
+		audio_call_logic_handle();
 		
 		time_logic_handle();
 		
@@ -145,7 +148,7 @@ static void ds18b20_scan_handle(void)
 {
 	/* limit frequence */
 	static uint32_t last_run_time = 0;
-	if(HAL_GetTick() - last_run_time < 200)
+	if((HAL_GetTick() - last_run_time < 200) && (HAL_GetTick() > 1500))
 	{
 		return;
 	}
@@ -217,18 +220,20 @@ static void play_flash_music_handle(void)
 	
 	/* get music index */
 	uint8_t index = LimeHAL_GetPlayMusicIndex();
+
+	auido_call_add_new_music(index, true);
 	
-	/* synthesis path */
-	char path[24] = {0};
-	snprintf(path, sizeof(path), "D:voice/%d.wav", index);
-	DEBUG_LOG("%s(), play path:%s\n", __FUNCTION__, path);
+	// /* synthesis path */
+	// char path[24] = {0};
+	// snprintf(path, sizeof(path), "D:voice/%d.wav", index);
+	// DEBUG_LOG("%s(), play path:%s\n", __FUNCTION__, path);
 	
-	/* stop play */
-	Lime_audio_play_stop();
-	osDelay(10);
+	// /* stop play */
+	// Lime_audio_play_stop();
+	// osDelay(10);
 	
-	/* play new music */
-	Lime_audio_play_music(path);
+	// /* play new music */
+	// Lime_audio_play_music(path);
 }
 
 static void time_logic_handle(void)
