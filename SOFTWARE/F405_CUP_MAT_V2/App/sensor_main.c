@@ -17,6 +17,7 @@
 #include "audio_player.h"
 #include "audio_call_logic.h"
 #include "Lime_App_Hal.h"
+#include "audio_main.h"
 
 static void senser_task_error_handle(void);
 static void read_sync_setting_info(void);
@@ -48,6 +49,9 @@ void sensor_main(void const * argument)
 		senser_task_error_handle();
 	}
 	LimeHAL_SetFlashID(spi_flash_get_jedec_id());
+	
+	/* FatFs mount success, notify audio task */
+	audio_main_task_yleld_exHook(false);
 	
 	osDelay(100);
 	

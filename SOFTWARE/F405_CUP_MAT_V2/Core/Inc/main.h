@@ -90,10 +90,10 @@ void Error_Handler(void);
 
 #if GLOBAL_DEVELOP_MODE
 #define DEBUG_LOG(...)	printf(__VA_ARGS__);
-#define SOFTWARE_VERSION	"V2.0 D"
+#define SOFTWARE_VERSION	"V2.0 DEBUG"
 #else
 #define DEBUG_LOG(...)
-#define SOFTWARE_VERSION	"V2.0 R"
+#define SOFTWARE_VERSION	"V2.0"
 #endif
 
 #define GLOBAL_SETTING_FILE_PATH		"D:/setting.txt"

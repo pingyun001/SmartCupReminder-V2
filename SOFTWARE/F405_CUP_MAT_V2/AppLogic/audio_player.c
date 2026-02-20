@@ -4,10 +4,16 @@
 #include "tim.h"
 #include "dac.h"
 
-#if 1
+#if 0
 #define AUDIO_DEBUG_LOG DEBUG_LOG
 #else
 #define AUDIO_DEBUG_LOG(...)
+#endif
+
+#if 0
+#define AUDIO_TRACE_LOG AUDIO_DEBUG_LOG
+#else
+#define AUDIO_TRACE_LOG(...)
 #endif
 
 
@@ -39,8 +45,6 @@ static HAL_StatusTypeDef Lime_file_seek_relative(FIL* fp, FSIZE_t offset)
 
 static void Lime_audio_raw_data_cal(uint16_t* data, uint32_t len_bytes)
 {
-	//dac_value = ( (sample + 32768) >> 4 ) & 0x0FFF;
-
 	/* para check */
 	if(data == NULL || len_bytes > AUDIO_BUFFER_SIZE / 2)
 	{
@@ -84,10 +88,6 @@ static void Lime_audio_read_new_data(void)
 	{
 		return;
 	}
-	
-//	AUDIO_DEBUG_LOG("%s()\n", __FUNCTION__);
-	
-//	AUDIO_DEBUG_LOG("SSS\n");
 
 	if((!audiopy.is_buffer_a_filled) && (!audiopy.is_file_read_finished))
 	{
@@ -154,6 +154,8 @@ static void Lime_audio_read_new_data(void)
 
 HAL_StatusTypeDef Lime_audio_play_start(const char* music_file_path)
 {
+	AUDIO_DEBUG_LOG("%s(%s)\n", __FUNCTION__, music_file_path);
+	
 	FRESULT fr;
 	uint8_t retry_cnt;
 	
@@ -163,15 +165,15 @@ retry_read:
 	/* prepare audio player */
 	audiopy.buffer_a = (uint16_t*)audiopy.buffer;
 	audiopy.buffer_b = (uint16_t*)(((uint32_t)audiopy.buffer) + AUDIO_BUFFER_SIZE / 2);
-	AUDIO_DEBUG_LOG("buffer_a:0x%x\n", (uint32_t)audiopy.buffer_a);
-	AUDIO_DEBUG_LOG("buffer_b:0x%x\n", (uint32_t)audiopy.buffer_b);
+	AUDIO_TRACE_LOG("buffer_a:0x%x\n", (uint32_t)audiopy.buffer_a);
+	AUDIO_TRACE_LOG("buffer_b:0x%x\n", (uint32_t)audiopy.buffer_b);
 	audiopy.now_status = audiopy_status_decode_head;
 	
 	/* open file */
 	fr = f_open(&audiopy.fil, music_file_path, FA_READ);  
 	if (fr != FR_OK) 
 	{
-		AUDIO_DEBUG_LOG("music file opened failed.\n");
+		AUDIO_DEBUG_LOG("music file opened failed.%d\n", fr);
 		audiopy.now_status = audiopy_status_idle;
 		
 		return HAL_ERROR;
@@ -222,9 +224,9 @@ retry_read:
 	}
 	memcpy((uint8_t*)chunk_id, temp_rd_buf + 0, 4);
 	memcpy((uint8_t*)&chunk_size, temp_rd_buf + 4, 4);
-	AUDIO_DEBUG_LOG("readed size:%d\n", bytesRead);
-	AUDIO_DEBUG_LOG("chunk_id:%c,%c,%c,%c\n", chunk_id[0], chunk_id[1], chunk_id[2], chunk_id[3]);
-	AUDIO_DEBUG_LOG("chunk_size:%d\n", chunk_size);
+	AUDIO_TRACE_LOG("readed size:%d\n", bytesRead);
+	AUDIO_TRACE_LOG("chunk_id:%c,%c,%c,%c\n", chunk_id[0], chunk_id[1], chunk_id[2], chunk_id[3]);
+	AUDIO_TRACE_LOG("chunk_size:%d\n", chunk_size);
 	if(chunk_size > sizeof(temp_rd_buf))
 	{
 		AUDIO_DEBUG_LOG("chunk_size is out of range!\n");
@@ -255,10 +257,10 @@ retry_read:
 	memcpy((uint8_t*)&audiopy.channels, temp_rd_buf + 2, 2);
 	memcpy((uint8_t*)&audiopy.samples_per_sec, temp_rd_buf + 4, 4);
 	memcpy((uint8_t*)&audiopy.avg_bytes_per_sec, temp_rd_buf + 8, 4);
-	AUDIO_DEBUG_LOG("formatTag:%d\n", audiopy.formatTag);
-	AUDIO_DEBUG_LOG("channels:%d\n", audiopy.channels);
-	AUDIO_DEBUG_LOG("samples_per_sec:%d\n", audiopy.samples_per_sec);
-	AUDIO_DEBUG_LOG("avg_bytes_per_sec:%d\n", audiopy.avg_bytes_per_sec);
+	AUDIO_TRACE_LOG("formatTag:%d\n", audiopy.formatTag);
+	AUDIO_TRACE_LOG("channels:%d\n", audiopy.channels);
+	AUDIO_TRACE_LOG("samples_per_sec:%d\n", audiopy.samples_per_sec);
+	AUDIO_TRACE_LOG("avg_bytes_per_sec:%d\n", audiopy.avg_bytes_per_sec);
 	
 	/* read data[1] */
 	fr = f_read(&audiopy.fil, temp_rd_buf, 8, &bytesRead);
@@ -271,8 +273,8 @@ retry_read:
 	}
 	memcpy((uint8_t*)chunk_id, temp_rd_buf + 0, 4);
 	memcpy((uint8_t*)&chunk_size, temp_rd_buf + 4, 4);
-	AUDIO_DEBUG_LOG("chunk_id:%c,%c,%c,%c\n", chunk_id[0], chunk_id[1], chunk_id[2], chunk_id[3]);
-	AUDIO_DEBUG_LOG("chunk_size:%d\n", chunk_size);
+	AUDIO_TRACE_LOG("chunk_id:%c,%c,%c,%c\n", chunk_id[0], chunk_id[1], chunk_id[2], chunk_id[3]);
+	AUDIO_TRACE_LOG("chunk_size:%d\n", chunk_size);
 	
 	/* (skip)read data[1] */
 	Lime_file_seek_relative(&audiopy.fil, chunk_size);
@@ -288,8 +290,8 @@ retry_read:
 	}
 	memcpy((uint8_t*)chunk_id, temp_rd_buf + 0, 4);
 	memcpy((uint8_t*)&chunk_size, temp_rd_buf + 4, 4);
-	AUDIO_DEBUG_LOG("chunk_id:%c,%c,%c,%c\n", chunk_id[0], chunk_id[1], chunk_id[2], chunk_id[3]);
-	AUDIO_DEBUG_LOG("chunk_size:%d\n", chunk_size);
+	AUDIO_TRACE_LOG("chunk_id:%c,%c,%c,%c\n", chunk_id[0], chunk_id[1], chunk_id[2], chunk_id[3]);
+	AUDIO_TRACE_LOG("chunk_size:%d\n", chunk_size);
 	
 	if(memcmp(chunk_id, "data", 4) != 0)
 	{
@@ -371,6 +373,7 @@ void Lime_audio_play_music(const char* music_file_path)
 	}
 	
 	/* save target audio path */
+	memset(audiopy.file_name, '\0', sizeof(audiopy.file_name));
 	memcpy(audiopy.file_name, music_file_path, file_path_len);
 	audiopy.new_file_name_need_play = true;
 }
@@ -404,12 +407,12 @@ void Lime_audio_dma_callback(bool is_half_callback)
 	if(is_half_callback)
 	{
 		audiopy.is_buffer_a_filled = false;
-		AUDIO_DEBUG_LOG("v:a\n");
+//		AUDIO_TRACE_LOG("v:a\n");
 	}
 	else
 	{
 		audiopy.is_buffer_b_filled = false;
-		AUDIO_DEBUG_LOG("v:b\n");
+//		AUDIO_TRACE_LOG("v:b\n");
 	}
 
 	if((!audiopy.is_buffer_a_filled) && (!audiopy.is_buffer_b_filled))
@@ -420,7 +423,7 @@ void Lime_audio_dma_callback(bool is_half_callback)
 
 		audiopy.now_status = audiopy_status_finish;
 
-		AUDIO_DEBUG_LOG("v:c\n");
+//		AUDIO_TRACE_LOG("v:c\n");
 	}
 }
 

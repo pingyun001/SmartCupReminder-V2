@@ -50,6 +50,7 @@
 osThreadId lvgl_taskHandle;
 osThreadId sensor_taskHandle;
 osThreadId key_taskHandle;
+osThreadId audio_taskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -59,6 +60,7 @@ osThreadId key_taskHandle;
 void lvgl_main(void const * argument);
 void sensor_main(void const * argument);
 void key_main(void const * argument);
+void audio_main(void const * argument);
 
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -144,8 +146,12 @@ void MX_FREERTOS_Init(void) {
   sensor_taskHandle = osThreadCreate(osThread(sensor_task), NULL);
 
   /* definition and creation of key_task */
-  osThreadDef(key_task, key_main, osPriorityHigh, 0, 128);
+  osThreadDef(key_task, key_main, osPriorityAboveNormal, 0, 128);
   key_taskHandle = osThreadCreate(osThread(key_task), NULL);
+
+  /* definition and creation of audio_task */
+  osThreadDef(audio_task, audio_main, osPriorityHigh, 0, 256);
+  audio_taskHandle = osThreadCreate(osThread(audio_task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -207,6 +213,24 @@ __weak void key_main(void const * argument)
     osDelay(1);
   }
   /* USER CODE END key_main */
+}
+
+/* USER CODE BEGIN Header_audio_main */
+/**
+* @brief Function implementing the audio_task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_audio_main */
+__weak void audio_main(void const * argument)
+{
+  /* USER CODE BEGIN audio_main */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END audio_main */
 }
 
 /* Private application code --------------------------------------------------*/

@@ -65,12 +65,17 @@ void audio_call_logic_handle(void)
         return;
     }
 
-    /* play music */
+    /* play audio */
     char path[24] = {0};
     uint8_t index = audio_call_logic.audio_play_book[0];
-    audio_call_logic.audio_play_book_num --;
 	snprintf(path, sizeof(path), "D:voice/%d.wav", index);
-	AUDIO_LOGIC_DEBUG_LOG("%s(), play path:%s\n", __FUNCTION__, path);
+	
+	/* last audio out fifo */
+	audio_call_logic.audio_play_book_num --;
+	for(uint8_t i = 0; i < AUDIO_PLAY_BOOK_MAX_NUM; i++)
+	{
+		audio_call_logic.audio_play_book[i] = audio_call_logic.audio_play_book[i + 1];
+	}
 
     /* play new music */
 	Lime_audio_play_music(path);

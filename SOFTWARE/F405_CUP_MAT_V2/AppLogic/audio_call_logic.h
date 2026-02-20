@@ -18,7 +18,7 @@ typedef enum
 	audio_type_night = 10,
 }audio_type_e;
 
-#define AUDIO_PLAY_BOOK_MAX_NUM 5
+#define AUDIO_PLAY_BOOK_MAX_NUM 3
 
 typedef struct
 {

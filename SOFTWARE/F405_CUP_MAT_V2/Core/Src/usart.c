@@ -24,17 +24,17 @@
 #include <stdio.h>
 
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION > 6000000)
-// V5±àÒëÆ÷
+// V5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #define COMPILER_IS_V6	1
 #else
-// V6±àÒëÆ÷
+// V6ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #define COMPILER_IS_V5	1
 #endif
 
 #ifdef COMPILER_IS_V6
 #if !defined(__MICROLIB)
 __asm (".global __use_no_semihosting\n\t");
-void _sys_exit(int x) //±ÜÃâÊ¹ÓÃ°ëÖ÷»úÄ£Ê½
+void _sys_exit(int x) //ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 {
   x = x;
 }
@@ -53,8 +53,8 @@ FILE __stdout;
 #endif 
 PUTCHAR_PROTOTYPE
 {
-  /* ÊµÏÖ´®¿Ú·¢ËÍÒ»¸ö×Ö½ÚÊý¾ÝµÄº¯Êý */
-  //serial_write(&serial1, (uint8_t)ch); //·¢ËÍÒ»¸ö×Ô¼ºµÄÊý¾Ýµ½´®¿Ú
+  /* Êµï¿½Ö´ï¿½ï¿½Ú·ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ÝµÄºï¿½ï¿½ï¿½ */
+  //serial_write(&serial1, (uint8_t)ch); //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½ï¿½
 	while((USART1 -> SR & 0X40) == 0){}
     USART1->DR = (uint8_t )ch;
   return ch;
