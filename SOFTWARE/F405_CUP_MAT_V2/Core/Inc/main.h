@@ -89,7 +89,7 @@ void Error_Handler(void);
 #define GLOBAL_DEVELOP_MODE		0
 
 #if GLOBAL_DEVELOP_MODE
-#define DEBUG_LOG(...)	printf(__VA_ARGS__);
+#define DEBUG_LOG(...)	printf(__VA_ARGS__)
 #define SOFTWARE_VERSION	"V2.0 DEBUG"
 #else
 #define DEBUG_LOG(...)
