@@ -1,5 +1,5 @@
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_1.png)
+![](./DOC/Readme_Pictures/image_1.png)
 
 # 1、概览：
 ## 1.1、导览：
@@ -46,14 +46,14 @@ wifi联网功能：
     - 该接口同时作为USB通讯接口，可将杯垫通过该接口+数据线连接电脑后，在杯垫设置中打开U盘模式，即可更新杯垫内wifi密码、语音等。
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_2.png)
+![](./DOC/Readme_Pictures/image_2.png)
 
 ## 2.2、界面说明
 ### 2.2.1、开机自检界面
 通过使用TYPE-C数据线连接USB-TypeC接口和电脑，杯垫屏幕点亮，并展示当前初始化进度：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_3.png)
+![](./DOC/Readme_Pictures/image_3.png)
 
 其中进度条展示当前开机进度，下方文字展示对应系统自检内容，如果进度条卡死，可根据下方自检内容判断故障原因。
 
@@ -73,7 +73,7 @@ wifi联网功能：
 + 杯垫状态：共三个表情包，分别对应 无水杯、水杯放下、时间到
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_4.png)
+![](./DOC/Readme_Pictures/image_4.png)
 
 ---
 
@@ -87,7 +87,7 @@ wifi联网功能：
 + 今天、明天、后天：指示三天的日期，天气，温度范围，湿度
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_5.png)
+![](./DOC/Readme_Pictures/image_5.png)
 
 ### 2.2.4、设置界面
 在天气界面，继续上滑（或从主界面下滑，进入设置界面）：
@@ -99,7 +99,7 @@ wifi联网功能：
 + 可选择倒计时时间，当前固件支持如下6个常用时间
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_6.png)
+![](./DOC/Readme_Pictures/image_6.png)
 
 ---
 
@@ -114,7 +114,7 @@ wifi联网功能：
     - 白：纯白色效果，该模式灯光不闪烁。无动效
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_7.png)
+![](./DOC/Readme_Pictures/image_7.png)
 
 ---
 
@@ -123,7 +123,7 @@ wifi联网功能：
 + 用于预览存入杯垫内的音频文件，共有如下10种音频
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_8.png)
+![](./DOC/Readme_Pictures/image_8.png)
 
 ---
 
@@ -138,7 +138,7 @@ wifi联网功能：
 + 右侧 编译时间：显示当前程序的编译时间，Feb 21 2026表示 编译于2026年2月21日
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_9.png)
+![](./DOC/Readme_Pictures/image_9.png)
 
 ---
 
@@ -148,7 +148,7 @@ wifi联网功能：
 若初始化时进度条卡住，且弹出该提示框，表示内部存储芯片内文件损坏，5s后系统将进入U盘模式，可将必要文件拖入该U盘，待复制完成后，为杯垫断电，重新通电即可
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_10.png)
+![](./DOC/Readme_Pictures/image_10.png)
 
 ---
 
@@ -159,7 +159,7 @@ wifi联网功能：
 推荐日常使用时，通过手机充电头供电，若使用电脑USB供电，且弹出该提示框，可适当降低音量或LED灯亮度。
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_11.png)
+![](./DOC/Readme_Pictures/image_11.png)
 
 ---
 
@@ -172,7 +172,7 @@ U盘模式提示：
 注意！退出U盘模式后，建议断电 并重新上电，以使系统更新各类信息。
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_12.png)
+![](./DOC/Readme_Pictures/image_12.png)
 
 ---
 
@@ -181,28 +181,28 @@ U盘模式提示：
 在点击重置设备按钮后，弹出该提示框。
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_13.png)
+![](./DOC/Readme_Pictures/image_13.png)
 
 再次按5下中键，弹出第二个提示框，待该提示框消失，杯垫将删除所有用户文件（音频，配置信息等）
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_14.png)
+![](./DOC/Readme_Pictures/image_14.png)
 
 ## 2.3、修改WIFI信息&连接网络
 将杯垫通过USB线连接电脑，点击设置界面中 进入U盘按钮：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_15.png)
+![](./DOC/Readme_Pictures/image_15.png)
 
 待提示框消失，打开电脑，可以看到多了一个U盘：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_16.png)
+![](./DOC/Readme_Pictures/image_16.png)
 
 打开该U盘，可以看到如下内容：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_17.png
+![](./DOC/Readme_Pictures/image_17.png
 
 wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事本打开该文件：
 
@@ -215,7 +215,7 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 + 城市名称：Beijing
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_18.png)
+![](./DOC/Readme_Pictures/image_18.png)
 
 按需修改上述信息，
 
@@ -244,7 +244,7 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 如果电脑没有git环境，也可以直接下载压缩包：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_19.png)
+![](./DOC/Readme_Pictures/image_19.png)
 
 ## 3.2、硬件焊接
 > 默认您已经熟练掌握电路板下单，贴片元器件焊接等技能。
@@ -253,14 +253,14 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 自行下单PCB板，注意板厚1.6mm，并完成焊接，焊接完成成品如下：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_20.png)
+![](./DOC/Readme_Pictures/image_20.png)
 
 推荐优先焊接贴片原件，最后焊接屏幕。
 
 屏幕焊接时，事先在屏幕背面贴好双面胶，并按如下方式对齐，粘贴后，弯折排线，完成焊接
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_21.png)
+![](./DOC/Readme_Pictures/image_21.png)
 
 ## 3.3、机械结构预组装
 > 默认您已经熟练掌握3D打印，且有相关打印设备或条件
@@ -272,19 +272,19 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 >
 
 推荐直接打印3MF后缀的三个文件<!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_22.png)
+![](./DOC/Readme_Pictures/image_22.png)
 
 完成后如下：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_23.png)
+![](./DOC/Readme_Pictures/image_23.png)
 
 完成打印后，拆除必要的支撑，将PCB掰开（分离为底板和屏幕按键子板）后，
 
 按如下步骤进行装配：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_24.png)
+![](./DOC/Readme_Pictures/image_24.png)
 
 ## 3.4、ESP8266固件下载
 > 固件和源码均位于路径：SmartCupReminder-V2\SOFTWARE\ESP8266_WifiWeather
@@ -297,13 +297,13 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 按住ESP-BOOT后，为PCB上电，连接ESP下载串口，下载固件即可。
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_25.png)
+![](./DOC/Readme_Pictures/image_25.png)
 
 ## 3.5、STM32固件烧录
 推荐电脑安装STM32CubeProgrammer软件：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_26.png)
+![](./DOC/Readme_Pictures/image_26.png)
 
 并烧录固件Hex：
 
@@ -315,22 +315,22 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 无特殊情况，推荐下载发行版。
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_27.png)
+![](./DOC/Readme_Pictures/image_27.png)
 
 推荐使用USB数据线连接PCB板和CubeProgrammer软件，如下图，保持按住BOOT按钮，插入数据线到电脑
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_28.png)
+![](./DOC/Readme_Pictures/image_28.png)
 
 可以在CubeProgrammer软件中搜索到STM32芯片，搜索到后，点击连接按钮。
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_29.png)
+![](./DOC/Readme_Pictures/image_29.png)
 
 成功连接后，下图1处显示已连接，在2处选择上述Hex文件，并点3 开始烧录
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_30.png)
+![](./DOC/Readme_Pictures/image_30.png)
 
 待进度条跑完即可。
 
@@ -342,13 +342,13 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 SWD接口位置如图，按线序连线即可，并连接板子，后续操作步骤同USB
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_31.png)
+![](./DOC/Readme_Pictures/image_31.png)
 
 ## 3.6、U盘文件下载
 完成ESP8266和STM32固件烧录后，使用USB线连接杯垫和电脑，杯垫会进行开机自检，检测到文件缺失，会进行弹窗，并进入U盘模式
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_32.png)
+![](./DOC/Readme_Pictures/image_32.png)
 
 此时电脑上会识别到一个U盘，将必要的文件复制入U盘中：
 
@@ -363,7 +363,7 @@ SWD接口位置如图，按线序连线即可，并连接板子，后续操作�
 + wryhbold.ttf：中文字体库文件，用于UI界面中的中文显示（城市名称等）
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_33.png)
+![](./DOC/Readme_Pictures/image_33.png)
 
 其中setting.txt中的内容需要根据自己的wifi名称进行修改，可参考2.3章节。
 
@@ -372,19 +372,19 @@ SWD接口位置如图，按线序连线即可，并连接板子，后续操作�
 成功进入主界面
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_34.png)
+![](./DOC/Readme_Pictures/image_34.png)
 
 ## 3.7、机械结构组装
 在之前的基础上，安装顶盖：
 
 <!-- 这是一张图片，ocr 内容为： -->
-![](.\DOC\Readme_Pictures\image_35.png)
+![](./DOC/Readme_Pictures/image_35.png)
 
 同时使用热熔胶粘贴前面板，并完成制作
 
 # 4、系统架构浅析
 ## 4.1、硬件架构
-![画板](.\DOC\Readme_Pictures\image_36.png)
+![画板](./DOC/Readme_Pictures/image_36.png)
 
 ## 4.2、软件架构
 主要使用技术栈：
@@ -394,7 +394,7 @@ SWD接口位置如图，按线序连线即可，并连接板子，后续操作�
 + FatFs文件系统
 + 前后端分离架构，GUI框架可直接在模拟器上运行，并无缝部署到硬件环境
 
-![画板](.\DOC\Readme_Pictures\image_37.png)
+![画板](./DOC/Readme_Pictures/image_37.png)
 
 # 5、Q and A
 ## 5.1、有哪些素材可以自定义修改？
