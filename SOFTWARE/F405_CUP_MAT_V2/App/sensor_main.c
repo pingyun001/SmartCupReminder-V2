@@ -258,7 +258,7 @@ static void cup_scan_handle(void)
 			timeout_second = 1 * 60;
 			break;
 		case 2:
-			timeout_second = 10;
+			timeout_second = 5 * 60;
 			break;
 		case 3:
 			timeout_second = 10 * 60;
