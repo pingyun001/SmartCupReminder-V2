@@ -376,12 +376,14 @@ void Lime_audio_play_music(const char* music_file_path)
 	memset(audiopy.file_name, '\0', sizeof(audiopy.file_name));
 	memcpy(audiopy.file_name, music_file_path, file_path_len);
 	audiopy.new_file_name_need_play = true;
+
+	audiopy.now_status = audiopy_status_get_file_name;
 }
 
-void Lime_audio_run_handle(void)
+void Lime_audio_run_handle(void) 
 {
 	/* load new audio file */
-	if((audiopy.now_status == audiopy_status_idle) && audiopy.new_file_name_need_play)
+	if((audiopy.now_status <= audiopy_status_get_file_name) && audiopy.new_file_name_need_play)
 	{
 		if(Lime_audio_play_start(audiopy.file_name) != HAL_OK)
 		{

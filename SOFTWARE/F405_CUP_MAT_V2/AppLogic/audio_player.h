@@ -9,6 +9,7 @@
 typedef enum
 {
 	audiopy_status_idle,
+	audiopy_status_get_file_name,
 	audiopy_status_decode_head,
 	audiopy_status_running,
 	audiopy_status_finish,

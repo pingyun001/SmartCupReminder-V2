@@ -117,16 +117,8 @@ int main(void)
   MX_TIM14_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-	DEBUG_LOG("CUP_MAT_%s Start!\n", SOFTWARE_VERSION);
-	DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
-	
-	/* for update datas */
-#if 0
-	lime_stm_system_enter_u_disk_mode();
-//	MX_USB_DEVICE_Init();
-	while(1)
-		;
-#endif
+  DEBUG_LOG("CUP_MAT_%s Start!\n", SOFTWARE_VERSION);
+  DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
 
   /* USER CODE END 2 */
 
@@ -198,14 +190,14 @@ void SystemClock_Config(void)
 
 void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
 {
-	printf("\n%s('%s')\n", __FUNCTION__, pcTaskName);
+	DEBUG_LOG("\n%s('%s')\n", __FUNCTION__, pcTaskName);
 	
 	while(1)
 		;
 }
 void vApplicationMallocFailedHook(void)
 {
-	printf("\n%s()\n", __FUNCTION__);
+	DEBUG_LOG("\n%s()\n", __FUNCTION__);
 	
 	while(1)
 		;
@@ -245,7 +237,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-	printf("\n%s()\n", __FUNCTION__);
+	DEBUG_LOG("\n%s()\n", __FUNCTION__);
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)

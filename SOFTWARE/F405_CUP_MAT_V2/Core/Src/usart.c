@@ -81,7 +81,7 @@ int fputc(int ch, FILE *f){
 #include <string.h>
 void lime_lvgl_print(lv_log_level_t level, const char * buf)
 {
-	printf("%d,%s", level, buf);
+	DEBUG_LOG("%d,%s", level, buf);
 }
 
 /* USER CODE END 0 */

@@ -352,7 +352,6 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
             sscanf(message, "---City:%s", city);
             ESP8266_DEBUG_LOG("decode city: %s\n", city);
             LimeHAL_SetCityName(city);
-            LimeHAL_SetWeatherDataValid(true);
             break;
         }
 
@@ -467,6 +466,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         case 29:
         {
             LimeHAL_SetDayAfterTomorrowWeather(&temp_weather_data);
+			LimeHAL_SetWeatherDataValid(true);
             break;
         }
     }

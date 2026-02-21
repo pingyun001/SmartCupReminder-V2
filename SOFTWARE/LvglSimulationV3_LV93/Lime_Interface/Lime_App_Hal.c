@@ -44,11 +44,11 @@ LimeHal_Info_t LimeHal_Info =
     .senserInfo.dayAfterTomorrowWeather.temperaHigh = 15,
     .senserInfo.dayAfterTomorrowWeather.humidity = 40,
 
-    .settingInfo.volume = 3,
+    .settingInfo.volume = 2,
     .settingInfo.lumen = 2,
     .settingInfo.lightMode = 0,
 
-    .settingInfo.countDownTimeIndex = 1,
+    .settingInfo.countDownTimeIndex = 2,
 };
 
 /*common API*/

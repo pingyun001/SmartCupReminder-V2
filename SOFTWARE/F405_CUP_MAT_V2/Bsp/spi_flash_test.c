@@ -10,19 +10,19 @@ static float dwtSpeedTester(uint8_t cmd);
 
 static void printfBuf(uint8_t* buf, uint32_t length)
 {
-	printf("Buf:\n");
+	DEBUG_LOG("Buf:\n");
 	for(uint32_t i = 0; i < length; i++)
 	{
-		printf("0x%02x,",buf[i]);
+		DEBUG_LOG("0x%02x,",buf[i]);
 		if(i % 16 == 15)
-			printf("\n");
+			DEBUG_LOG("\n");
 	}
-	printf("end\n");
+	DEBUG_LOG("end\n");
 }
 
 void W25QFlash_SmallDataCheck(void)
 {
-	printf("%s()\n", __func__);
+	DEBUG_LOG("%s()\n", __func__);
 	
 	memset(testTxBuf, 0, sizeof(testTxBuf));
 	memset(testRxBuf, 0, sizeof(testRxBuf));
@@ -31,19 +31,19 @@ void W25QFlash_SmallDataCheck(void)
 		testTxBuf[i] = i;
 	
 	if(spi_flash_erase_sector(0) != HAL_OK)
-		printf("Erase Err\n");
+		DEBUG_LOG("Erase Err\n");
 	else
-		printf("Erase Success!\n");
+		DEBUG_LOG("Erase Success!\n");
 	
 	if(spi_flash_write(testTxBuf, 0, sizeof(testTxBuf)) != HAL_OK)
-		printf("Write Err\n");
+		DEBUG_LOG("Write Err\n");
 	else
-		printf("Write Success!\n");
+		DEBUG_LOG("Write Success!\n");
 	
 	if(spi_flash_read(testRxBuf, 0, sizeof(testRxBuf)) != HAL_OK)
-		printf("Read Err\n");
+		DEBUG_LOG("Read Err\n");
 	else
-		printf("Read Success!\n");
+		DEBUG_LOG("Read Success!\n");
 	
 	printfBuf(testRxBuf, sizeof(testRxBuf));
 }
@@ -66,7 +66,7 @@ void W25QFlash_FullChipCheck(uint32_t totalSize)
   uint32_t seedA = 0x12345678;
   uint32_t i = 0;
   
-  printf("func:%s(totalSize:%.6f MB), start!\n", __func__, totalSize / 1024.0f / 1024.0f);
+  DEBUG_LOG("func:%s(totalSize:%.6f MB), start!\n", __func__, totalSize / 1024.0f / 1024.0f);
   
   for(i = 0; i < totalSize / 4; i++)
   {
@@ -80,12 +80,12 @@ void W25QFlash_FullChipCheck(uint32_t totalSize)
     
 		if(((i * 4) % (100 * 1024)) == (100 * 1024 - 4))
     {
-      printf("write random num %d kB, %.3f MB\n", (i + 1) * 4 / 1024, (float)(i + 1) * 4.0f / 1024.0f / 1024.0f);
+      DEBUG_LOG("write random num %d kB, %.3f MB\n", (i + 1) * 4 / 1024, (float)(i + 1) * 4.0f / 1024.0f / 1024.0f);
     }
   }
   
-  printf("write random num %d kB, %.3f MB\n", (i + 1) * 4 / 1024, (float)(i + 1) * 4.0f / 1024.0f / 1024.0f);
-  printf("Write random Finish\n");
+  DEBUG_LOG("write random num %d kB, %.3f MB\n", (i + 1) * 4 / 1024, (float)(i + 1) * 4.0f / 1024.0f / 1024.0f);
+  DEBUG_LOG("Write random Finish\n");
   
   seedA = 0x12345678;
   for(i = 0; i < totalSize / 4; i++)
@@ -98,17 +98,17 @@ void W25QFlash_FullChipCheck(uint32_t totalSize)
     uint32_t randomNum = getRandomData(&seedA);
     if(temp4KBuf[i % 1024] != randomNum)
     {
-      printf("Address:%#x, failed!,read:%#x, target:%#x\n", i * 4, temp4KBuf[i], randomNum);
+      DEBUG_LOG("Address:%#x, failed!,read:%#x, target:%#x\n", i * 4, temp4KBuf[i], randomNum);
     }
     
     if(((i * 4) % (100 * 1024)) == (100 * 1024 - 4))
     {
-      printf("check memory %d kB, %.3f MB\n", (i + 1) * 4 / 1024, (float)(i + 1) * 4.0f / 1024.0f / 1024.0f);
+      DEBUG_LOG("check memory %d kB, %.3f MB\n", (i + 1) * 4 / 1024, (float)(i + 1) * 4.0f / 1024.0f / 1024.0f);
     }
   }
-  printf("check memory %d kB, %.3f MB\n", (i + 1) * 4 / 1024, (float)(i + 1) * 4.0f / 1024.0f / 1024.0f);
+  DEBUG_LOG("check memory %d kB, %.3f MB\n", (i + 1) * 4 / 1024, (float)(i + 1) * 4.0f / 1024.0f / 1024.0f);
 	
-	printf("%s()finish\n", __func__);
+	DEBUG_LOG("%s()finish\n", __func__);
 }
 
 
@@ -144,10 +144,10 @@ static float dwtSpeedTester(uint8_t cmd)
                 elapsed_time = end_time - start_time;
                 float time_seconds = (float)elapsed_time / SystemCoreClock;
 #if	(!TOTAL_TRANS_DATA_BYTES)
-                printf("Time elapsed: %.4f ms\n", time_seconds * 1000.0f);
+                DEBUG_LOG("Time elapsed: %.4f ms\n", time_seconds * 1000.0f);
 #else
 								float speed = (float)TOTAL_TRANS_DATA_BYTES / (time_seconds * 1000000.0f);  // 字节数转为MB，并计算每秒传输的速度
-                printf("Time elapsed: %.4f ms, totalSpeed: %.4f MBytes/s\n", time_seconds * 1000.0f, speed);
+                DEBUG_LOG("Time elapsed: %.4f ms, totalSpeed: %.4f MBytes/s\n", time_seconds * 1000.0f, speed);
 #endif
                 return time_seconds * 1000.0f;
             }
@@ -165,7 +165,7 @@ uint32_t tempTestSpeedBuffer[32 * 1024 / 4] = {0};		//32kB read Speed Test Buffe
 
 void W25QFlash_ReadSpeedTest(void)
 {
-	printf("%s()\n", __func__);
+	DEBUG_LOG("%s()\n", __func__);
 	dwtSpeedTester(1);
 	for(uint32_t i = 0; i < 256; i++)
 		spi_flash_read((uint8_t*)tempTestSpeedBuffer, 0, 32 * 1024);
@@ -175,7 +175,7 @@ void W25QFlash_ReadSpeedTest(void)
 
 void W25QFlash_AIPReadSpeedTest(void)
 {
-	printf("%s()\n", __func__);
+	DEBUG_LOG("%s()\n", __func__);
 	
 	uint64_t i = 0;
 	
@@ -264,12 +264,12 @@ void W25QFlash_AIPReadSpeedTest(void)
 	dwtSpeedTester(2);
 	dwtSpeedTester(3);
   
-  printf("EndPin:%#x\n", (uint32_t)pBuf);
+  DEBUG_LOG("EndPin:%#x\n", (uint32_t)pBuf);
 }
 
 void STM32InternalFlash_ReadSpeedTest(void)
 {
-	printf("%s()\n", __func__);
+	DEBUG_LOG("%s()\n", __func__);
 	
 	uint64_t i = 0;
 	
@@ -364,7 +364,7 @@ void STM32InternalFlash_ReadSpeedTest(void)
 	dwtSpeedTester(2);
 	dwtSpeedTester(3);
   
-  printf("EndPin:%#x\n", (uint32_t)pBuf);
+  DEBUG_LOG("EndPin:%#x\n", (uint32_t)pBuf);
 }
 
 

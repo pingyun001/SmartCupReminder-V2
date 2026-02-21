@@ -28,6 +28,7 @@ static void volume_sync_handle(void);
 static void cup_scan_handle(void);
 static void rgb_led_run_handle(void);
 static void sleep_mode_handle(void);
+static void audio_logic_handle(void);
 
 void sensor_main(void const * argument)
 {
@@ -91,7 +92,7 @@ void sensor_main(void const * argument)
 	while(ds18b20_Init())
 	{
 		static uint8_t err_cnt = 0;
-		printf("ds18b20 init err\n");
+		DEBUG_LOG("ds18b20 init err\n");
 		HAL_Delay(300);
 		
 		err_cnt ++;
@@ -131,8 +132,6 @@ void sensor_main(void const * argument)
 		ds18b20_scan_handle();
 		
 		play_flash_music_handle();
-
-		audio_call_logic_handle();
 		
 		time_logic_handle();
 		
@@ -143,6 +142,8 @@ void sensor_main(void const * argument)
 		rgb_led_run_handle();
 		
 		sleep_mode_handle();
+
+		audio_logic_handle();
 		
 		osDelay(10);
 	}
@@ -225,19 +226,7 @@ static void play_flash_music_handle(void)
 	/* get music index */
 	uint8_t index = LimeHAL_GetPlayMusicIndex();
 
-	auido_call_add_new_music(index, true);
-	
-	// /* synthesis path */
-	// char path[24] = {0};
-	// snprintf(path, sizeof(path), "D:voice/%d.wav", index);
-	// DEBUG_LOG("%s(), play path:%s\n", __FUNCTION__, path);
-	
-	// /* stop play */
-	// Lime_audio_play_stop();
-	// osDelay(10);
-	
-	// /* play new music */
-	// Lime_audio_play_music(path);
+	auido_call_add_new_music_to_list(index, true);
 }
 
 static void time_logic_handle(void)
@@ -338,14 +327,6 @@ static void cup_scan_handle(void)
 	}
 	
 	LimeHAL_SetTotalCountSeconds(timeout_second);
-	
-	/* debug */
-//	static uint32_t last_run_time = 0;
-//	if(HAL_GetTick() - last_run_time >= 250)
-//	{
-//		last_run_time = HAL_GetTick();
-//		DEBUG_LOG("elaps_time_seconds:%d\n", elaps_time_seconds);
-//	}
 }
 
 void senser_main_set_now_time_hook(uint8_t hour, uint8_t minute, uint8_t second)
@@ -414,19 +395,21 @@ static void rgb_led_run_handle(void)
 			led_mode = rgbled_mode_off;
 			break;
 		case 1:
-			led_brightness = 8;
+			led_brightness = 10;
 			break;
 		case 2:
-			led_brightness = 15;
+			led_brightness = 20;
 			break;
 		case 3:
-			led_brightness = 24;
+			led_brightness = 36;
 			break;
 		default:
 			led_brightness = 4;
 			break;
-			
 	}
+	
+	/* starnight mode, inc brightness */
+	led_brightness = (led_mode == rgbled_mode_starnight) ? led_brightness + 20 : led_brightness;
 	
 	/* sync to low driver */
 	rgbled_set_mode(led_mode);
@@ -464,6 +447,26 @@ static void sleep_mode_handle(void)
 	
 	/* when night, make led low */
 	rgbled_set_night_mode(is_night);
+}
+
+static void audio_logic_handle(void)
+{
+	/* sync data from HAL */
+	const LimeHal_Info_t *info = LimeHAL_GetInfoPin();
+	bool server_connected = info->senserInfo.isWeatherDataValid;
+	uint8_t hour = info->senserInfo.hour;
+	uint8_t weather_code = info->senserInfo.todayWeather.weatherLogoID;
+
+	/* sync data to audio call logic */
+	if(server_connected)
+	{
+		audio_call_logic_sync_time(hour);
+		audio_call_logic_sync_weather(weather_code);
+	}
+	audio_call_logic_sync_server(server_connected);
+
+	/* audio logic handle */
+	audio_call_logic_handle();
 }
 
 static void senser_task_error_handle(void)

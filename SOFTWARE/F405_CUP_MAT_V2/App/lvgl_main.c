@@ -13,7 +13,6 @@ void lvgl_main(void const * argument)
 	
 	/* init screen */
 	LCD_Init();
-//	LCD_Fill(0, 0, 428, 142, 0xf800);
 	
 	/* Init lvgl */
 	lv_init();
