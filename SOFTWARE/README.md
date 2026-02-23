@@ -1,10 +1,10 @@
 # 文件夹概览
 
 - ESP8266_WifiWeather：ESP8266 Wifi天气小组件源码
-- F4_UDISK_RESOURCES：提醒喝水杯垫主板U盘资源文件（需要自行拷贝到文件系统中）
+- F4_UDISK_RESOURCES：提醒喝水杯垫主板U盘资源文件（需要自行拷贝到文件系统根目录中）
 - F405_CUP_MAT_V2：提醒喝水杯垫F405主板固件，使用Keil 5 MDK编写
 - F405_USB_ESP_Downloader：可以将F405模拟成ESP8266下载器（未完成！暂时使用CH340等USB转TTL转换器下载ESP8266固件）
-- LvglSimulationV3_LV93：LVGL图形库仿真源码
+- LvglSimulationV3_LV93：LVGL GUI界面代码以及对应的资源文件
 
 # 主板固件说明
 ## 主板固件阅读说明：
