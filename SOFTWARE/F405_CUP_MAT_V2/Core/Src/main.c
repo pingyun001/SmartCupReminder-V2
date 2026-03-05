@@ -82,7 +82,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+//  SystemCoreClockUpdate();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -119,6 +119,11 @@ int main(void)
   /* USER CODE BEGIN 2 */
   DEBUG_LOG("CUP_MAT_%s Start!\n", SOFTWARE_VERSION);
   DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
+  
+  __enable_irq();
+  
+//  while(1)
+//	  ;
 
   /* USER CODE END 2 */
 
