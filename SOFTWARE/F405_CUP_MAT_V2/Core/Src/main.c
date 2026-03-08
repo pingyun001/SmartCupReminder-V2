@@ -71,7 +71,24 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+typedef struct
+{
+	char head[12];
+	uint32_t version;
+	uint32_t app_len;
+	uint32_t app_crc;
+	uint32_t tag_crc;
+	char end[4];
+}lime_boot_tag_t;
+const lime_boot_tag_t tag __attribute__(( section(".ARM.__at_0x08010400"))) = 
+{
+	.head = "LIME-TAG-ST",
+	.version = 0xffffffff,
+	.app_len = 0xffffffff,
+	.app_crc = 0xffffffff,
+	.tag_crc = 0xffffffff,
+	.end = "END",
+};
 /* USER CODE END 0 */
 
 /**

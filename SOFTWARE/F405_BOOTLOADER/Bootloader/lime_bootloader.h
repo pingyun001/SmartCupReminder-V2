@@ -12,7 +12,17 @@ typedef enum
 
 lime_boot_status_e lime_detech_new_app(void);
 
-void lime_jump_app(uint32_t address);
+HAL_StatusTypeDef lime_copy_app(void);
+
+HAL_StatusTypeDef lime_confirm_flash_app(uint32_t address);
+
+HAL_StatusTypeDef lime_confirm_fatfs_app(void);
+
+HAL_StatusTypeDef lime_del_fatfs_app(void);
+
+HAL_StatusTypeDef lime_confirm_flash_signature(void);
+
+HAL_StatusTypeDef lime_jump_app(uint32_t address);
 
 
 #endif	//__LIME_BOOTLOADER__

@@ -67,7 +67,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint32_t nvic_vector_tab[256] __attribute__((section(".bss.ARM.__at_0x20010000"))) ;
 /* USER CODE END 0 */
 
 /**
@@ -78,7 +78,14 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+//  __disable_irq();
+//  uint32_t *nvic_tab_default = (uint32_t*)0x08000000;
+//  for(uint32_t i = 0; i < 256; i++)
+//  {
+//	  nvic_vector_tab[i] = nvic_tab_default[i];
+//  }
+//  SCB->VTOR = (uint32_t)nvic_vector_tab;
+//  __enable_irq();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -114,17 +121,107 @@ int main(void)
 //  MX_USB_DEVICE_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-  DEBUG_LOG("CUP_MAT Bootloader Start!\n");
-  DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
+  DEBUG_LOG(">>>CUP_MAT Bootloader Start!\n");
+  DEBUG_LOG(">>>Compile Time:%s,%s\n", __DATE__, __TIME__);
   
   /* confirm bin file */
   lime_boot_status_e boot_status = lime_detech_new_app();
+  switch(boot_status)
+  {
+	case lime_boot_status_no_file_system:
+
+	break;
+	case lime_boot_status_has_new_app:
+	{
+		DEBUG_LOG(">>>FatFs has new app\n");
+		
+		if(lime_confirm_fatfs_app() != HAL_OK)
+		{
+			DEBUG_LOG(">>>Confirm FatFs New App Failed\n");
+			
+			goto run_app;
+		}
+		DEBUG_LOG(">>>Confirm FatFs New App Success\n");
+		
+		/* copy app from FatFs to Flash */
+		if(lime_copy_app() != HAL_OK)
+		{
+			DEBUG_LOG(">>>Copy failed\n");
+			
+			goto errend;
+		}
+		DEBUG_LOG(">>>Copy New App Success\n");
+
+		/* re-confirm */
+		if(lime_confirm_flash_app(0x08010000) != HAL_OK)
+		{
+			DEBUG_LOG(">>>Confirm FatFs New App Failed\n");
+		}
+		DEBUG_LOG(">>>Confirm FatFs New App Success\n");
+		
+		/* del FatFs app */
+		if(lime_del_fatfs_app() != HAL_OK)
+		{
+			DEBUG_LOG(">>>Del update.bin Failed\n");
+		}
+		DEBUG_LOG(">>>Del update.bin Success\n");
+	}
+	break;
+	case lime_boot_status_no_need_update:
+	{
+		DEBUG_LOG(">>>No update.bin, no need update\n");
+		
+		/* confirm flash signature status */
+		if(lime_confirm_flash_signature() != HAL_OK)
+		{
+			DEBUG_LOG(">>>Confirm now app, Failed\n");
+			
+			goto errend;
+		}
+		DEBUG_LOG(">>>Confirm now app, Success\n");
+		
+		goto run_app;
+	}
+	break;
+	default:break;
+  }
+  
+  
+  ;
   
   /* copy new file */
+  HAL_Delay(100);
   
+//  
+  
+//  
+  
+  
+//  while(1)
+//  {
+//	  static uint32_t i = 0;
+//	  HAL_Delay(500);
+//	  
+//	  printf("i = %d\n", i++);
+//	  if(i == 5)
+//	  {
+//		  while(1)
+//			  ;
+//	  }
+//  }
+  
+  
+  
+
   
   /* jump to application */
-//  lime_jump_app(0x08010000);
+run_app:
+  lime_jump_app(0x08010000);
+  
+  while(1)
+	  ;
+  
+errend:
   
   while(1)
 	  ;
