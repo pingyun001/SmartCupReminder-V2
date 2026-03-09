@@ -36,6 +36,7 @@
 #include "FatFsSelfTest.h"
 #include "stm_system_io.h"
 #include "lime_bootloader.h"
+#include "stm_system_io.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -124,13 +125,44 @@ int main(void)
   DEBUG_LOG(">>>CUP_MAT Bootloader Start!\n");
   DEBUG_LOG(">>>Compile Time:%s,%s\n", __DATE__, __TIME__);
   
+  /* turn off all light */
+  ws2812_Init();
+  WS2812_Sync();
+  HAL_Delay(10);
+  
   /* confirm bin file */
   lime_boot_status_e boot_status = lime_detech_new_app();
   switch(boot_status)
   {
 	case lime_boot_status_no_file_system:
-
+	{
+		/* confirm flash signature status */
+		if(lime_confirm_flash_signature() != HAL_OK)
+		{
+			DEBUG_LOG(">>>Confirm internal app, Failed\n");
+			
+			/* new device, try to create file system */
+			if(lime_re_create_filesystem() != HAL_OK)
+			{
+				DEBUG_LOG(">>>Create File System, Failed\n");
+				
+				goto errend;
+			}
+			
+			/* create success, open USB mode */
+			lime_stm_system_enter_u_disk_mode();
+			
+			/* then, do nothing */
+			while(1)
+				;
+		}
+		DEBUG_LOG(">>>Confirm internal app, Success\n");
+		
+		/* has internal app, run it */
+		goto run_app;
+	}
 	break;
+	
 	case lime_boot_status_has_new_app:
 	{
 		DEBUG_LOG(">>>FatFs has new app\n");
@@ -142,6 +174,11 @@ int main(void)
 			goto run_app;
 		}
 		DEBUG_LOG(">>>Confirm FatFs New App Success\n");
+		
+		/* yellow light, means update */
+		WS2812_SetRGB(0, 15, 13, 0);
+		WS2812_Sync();
+		HAL_Delay(10);
 		
 		/* copy app from FatFs to Flash */
 		if(lime_copy_app() != HAL_OK)
@@ -156,6 +193,8 @@ int main(void)
 		if(lime_confirm_flash_app(0x08010000) != HAL_OK)
 		{
 			DEBUG_LOG(">>>Confirm FatFs New App Failed\n");
+			
+			goto errend;
 		}
 		DEBUG_LOG(">>>Confirm FatFs New App Success\n");
 		
@@ -167,6 +206,7 @@ int main(void)
 		DEBUG_LOG(">>>Del update.bin Success\n");
 	}
 	break;
+	
 	case lime_boot_status_no_need_update:
 	{
 		DEBUG_LOG(">>>No update.bin, no need update\n");
@@ -186,42 +226,23 @@ int main(void)
 	default:break;
   }
   
-  
-  ;
-  
-  /* copy new file */
-  HAL_Delay(100);
-  
-//  
-  
-//  
-  
-  
-//  while(1)
-//  {
-//	  static uint32_t i = 0;
-//	  HAL_Delay(500);
-//	  
-//	  printf("i = %d\n", i++);
-//	  if(i == 5)
-//	  {
-//		  while(1)
-//			  ;
-//	  }
-//  }
-  
-  
-  
-
+run_app:
+  /* green light, means app check pass */
+  WS2812_SetRGB(0, 0, 13, 0);
+  WS2812_Sync();
+  HAL_Delay(10);
   
   /* jump to application */
-run_app:
   lime_jump_app(0x08010000);
   
   while(1)
 	  ;
   
 errend:
+  DEBUG_LOG("error occurred, please re-power up\n");
+  
+  WS2812_SetRGB(0, 15, 0, 0);
+  WS2812_Sync();
   
   while(1)
 	  ;

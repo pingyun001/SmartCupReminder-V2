@@ -24,5 +24,6 @@ HAL_StatusTypeDef lime_confirm_flash_signature(void);
 
 HAL_StatusTypeDef lime_jump_app(uint32_t address);
 
+HAL_StatusTypeDef lime_re_create_filesystem(void);
 
 #endif	//__LIME_BOOTLOADER__

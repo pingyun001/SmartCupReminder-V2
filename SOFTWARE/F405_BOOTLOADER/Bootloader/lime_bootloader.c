@@ -3,7 +3,7 @@
 #include "file_system_logic.h"
 #include <string.h>
 
-#define CPY_BUFF_MAX 4096
+#define CPY_BUFF_MAX 1024 * 32
 uint8_t copy_buff[CPY_BUFF_MAX] __attribute__((aligned(32))) = {0};
 
 // 定义tag结构
@@ -565,5 +565,11 @@ HAL_StatusTypeDef lime_jump_app(uint32_t address)
 	DEBUG_LOG("%s(), failed\n", __func__);
 	
 	return HAL_OK;
+}
+
+HAL_StatusTypeDef lime_re_create_filesystem(void)
+{
+	/* re-create file system */
+	return file_system_ReInit();
 }
 

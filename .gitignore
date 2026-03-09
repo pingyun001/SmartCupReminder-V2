@@ -82,7 +82,9 @@ SOFTWARE/LvglSimulationV3_LV93/lv_conf.h
 SOFTWARE/LvglSimulationV3_LV93/manifest.json
 SOFTWARE/LvglSimulationV3_LV93/README.md
 SOFTWARE/LvglSimulationV3_LV93/simulator.*
+SOFTWARE/SIGNATURE_Tool/signature_prj/build
 DOC/UI_Design/ImgTool_DitherFmt
+
 
 # user
 *.Lime

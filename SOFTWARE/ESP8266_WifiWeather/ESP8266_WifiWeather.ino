@@ -6,7 +6,7 @@
 #include <NTPClient.h>
 
 // ============ 用户配置区 ============
-#define WEATHER_API_KEY "SlpKSOC0woAJJEMbR"  // 替换为你的实际心知天气API密钥
+#define WEATHER_API_KEY ""  // 填入你申请的心知天气API密钥
 // ===================================
 
 String wifiName = "";
