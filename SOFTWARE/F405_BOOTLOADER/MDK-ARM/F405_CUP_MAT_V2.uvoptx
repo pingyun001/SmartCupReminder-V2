@@ -22,7 +22,7 @@
   </DaveTm>
 
   <Target>
-    <TargetName>F405_CUP_MAT_V2</TargetName>
+    <TargetName>F405_Bootloader</TargetName>
     <ToolsetNumber>0x4</ToolsetNumber>
     <ToolsetName>ARM-ADS</ToolsetName>
     <TargetOption>

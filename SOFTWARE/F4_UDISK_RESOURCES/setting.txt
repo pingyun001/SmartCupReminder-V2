@@ -1,3 +1,0 @@
-wifi_name:STM32N640
-wifi_password:stm32n640
-city_name:Beijing

@@ -67,23 +67,24 @@ SOFTWARE/F405_BOOTLOADER/MDK-ARM/JLinkSettings.ini
 SOFTWARE/F405_BOOTLOADER/MDK-ARM/EventRecorderStub.scvd
 .vscode
 .codemap/main-panel.json
-SOFTWARE/LvglSimulationV3_LV93/.codemap
-SOFTWARE/LvglSimulationV3_LV93/bin
-SOFTWARE/LvglSimulationV3_LV93/build
-SOFTWARE/LvglSimulationV3_LV93/config
-SOFTWARE/LvglSimulationV3_LV93/FreeRTOS
-SOFTWARE/LvglSimulationV3_LV93/lvgl
-SOFTWARE/LvglSimulationV3_LV93/main
-SOFTWARE/LvglSimulationV3_LV93/.gitignore
-SOFTWARE/LvglSimulationV3_LV93/.gitmodules
-SOFTWARE/LvglSimulationV3_LV93/CMakeLists.txt
-SOFTWARE/LvglSimulationV3_LV93/licence.txt
-SOFTWARE/LvglSimulationV3_LV93/lv_conf.h
-SOFTWARE/LvglSimulationV3_LV93/manifest.json
-SOFTWARE/LvglSimulationV3_LV93/README.md
-SOFTWARE/LvglSimulationV3_LV93/simulator.*
+SOFTWARE/LVGL_SIMULATION/.codemap
+SOFTWARE/LVGL_SIMULATION/bin
+SOFTWARE/LVGL_SIMULATION/build
+SOFTWARE/LVGL_SIMULATION/config
+SOFTWARE/LVGL_SIMULATION/FreeRTOS
+SOFTWARE/LVGL_SIMULATION/lvgl
+SOFTWARE/LVGL_SIMULATION/main
+SOFTWARE/LVGL_SIMULATION/.gitignore
+SOFTWARE/LVGL_SIMULATION/.gitmodules
+SOFTWARE/LVGL_SIMULATION/CMakeLists.txt
+SOFTWARE/LVGL_SIMULATION/licence.txt
+SOFTWARE/LVGL_SIMULATION/lv_conf.h
+SOFTWARE/LVGL_SIMULATION/manifest.json
+SOFTWARE/LVGL_SIMULATION/README.md
+SOFTWARE/LVGL_SIMULATION/simulator.*
 SOFTWARE/SIGNATURE_Tool/signature_prj/build
 DOC/UI_Design/ImgTool_DitherFmt
+Z-PRIVATE
 
 
 # user

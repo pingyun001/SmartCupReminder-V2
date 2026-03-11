@@ -238,7 +238,7 @@
 
   <Group>
     <GroupName>ConfigFiles</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -282,7 +282,7 @@
 
   <Group>
     <GroupName>Application/MDK-ARM</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -302,7 +302,7 @@
 
   <Group>
     <GroupName>Application/User/Core</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -4609,7 +4609,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_App_Base.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_App_Base.c</PathWithFileName>
       <FilenameWithoutPath>Lime_App_Base.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4621,7 +4621,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_App_Hal.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_App_Hal.c</PathWithFileName>
       <FilenameWithoutPath>Lime_App_Hal.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4633,7 +4633,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_CountFace.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_CountFace.c</PathWithFileName>
       <FilenameWithoutPath>Lime_CountFace.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4645,7 +4645,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_LvMainFace.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_LvMainFace.c</PathWithFileName>
       <FilenameWithoutPath>Lime_LvMainFace.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4657,7 +4657,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_MessageBox.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_MessageBox.c</PathWithFileName>
       <FilenameWithoutPath>Lime_MessageBox.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4669,7 +4669,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_SimFiveKey.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_SimFiveKey.c</PathWithFileName>
       <FilenameWithoutPath>Lime_SimFiveKey.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4681,7 +4681,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_HeadBar.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_HeadBar.c</PathWithFileName>
       <FilenameWithoutPath>Lime_HeadBar.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4693,7 +4693,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_WeatherFace.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_WeatherFace.c</PathWithFileName>
       <FilenameWithoutPath>Lime_WeatherFace.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4705,7 +4705,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_SettingFace.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_SettingFace.c</PathWithFileName>
       <FilenameWithoutPath>Lime_SettingFace.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4717,7 +4717,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Interface\Lime_App_StartFace.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Interface\Lime_App_StartFace.c</PathWithFileName>
       <FilenameWithoutPath>Lime_App_StartFace.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4737,7 +4737,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_main_remain.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_font_main_remain.c</PathWithFileName>
       <FilenameWithoutPath>lime_font_main_remain.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4749,7 +4749,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_main_time.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_font_main_time.c</PathWithFileName>
       <FilenameWithoutPath>lime_font_main_time.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4761,7 +4761,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_counting.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_img_counting.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_counting.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4773,7 +4773,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_idle.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_img_idle.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_idle.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4785,7 +4785,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_timeout.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_img_timeout.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_timeout.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4797,7 +4797,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_moon.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_img_moon.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_moon.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4809,7 +4809,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_weatherlogo.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_img_weatherlogo.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_weatherlogo.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4821,7 +4821,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_wificonn.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_img_wificonn.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_wificonn.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4833,7 +4833,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_wifidisconn.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_img_wifidisconn.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_wifidisconn.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4845,7 +4845,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_img_pos.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_img_pos.c</PathWithFileName>
       <FilenameWithoutPath>lime_img_pos.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4857,7 +4857,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_mainbg.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_mainbg.c</PathWithFileName>
       <FilenameWithoutPath>lime_mainbg.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4869,7 +4869,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\Lime_MessageBox_InfoFont.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\Lime_MessageBox_InfoFont.c</PathWithFileName>
       <FilenameWithoutPath>Lime_MessageBox_InfoFont.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4881,7 +4881,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\Lime_MessageBox_TitleFont.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\Lime_MessageBox_TitleFont.c</PathWithFileName>
       <FilenameWithoutPath>Lime_MessageBox_TitleFont.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4893,7 +4893,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_headbar.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_font_headbar.c</PathWithFileName>
       <FilenameWithoutPath>lime_font_headbar.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4905,7 +4905,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_title.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_font_weather_title.c</PathWithFileName>
       <FilenameWithoutPath>lime_font_weather_title.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4917,7 +4917,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_weather_num.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_font_weather_num.c</PathWithFileName>
       <FilenameWithoutPath>lime_font_weather_num.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4929,7 +4929,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_about.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_setting_about.c</PathWithFileName>
       <FilenameWithoutPath>lime_setting_about.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4941,7 +4941,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_screen.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_setting_screen.c</PathWithFileName>
       <FilenameWithoutPath>lime_setting_screen.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4953,7 +4953,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_time.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_setting_time.c</PathWithFileName>
       <FilenameWithoutPath>lime_setting_time.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4965,7 +4965,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_voice.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_setting_voice.c</PathWithFileName>
       <FilenameWithoutPath>lime_setting_voice.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4977,7 +4977,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_setting_title.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_font_setting_title.c</PathWithFileName>
       <FilenameWithoutPath>lime_font_setting_title.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4989,7 +4989,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_font_setting_sub_text.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_font_setting_sub_text.c</PathWithFileName>
       <FilenameWithoutPath>lime_font_setting_sub_text.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -5001,7 +5001,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\lime_setting_checked.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\lime_setting_checked.c</PathWithFileName>
       <FilenameWithoutPath>lime_setting_checked.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -5013,7 +5013,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\LR_StartFace_InfoFont.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\LR_StartFace_InfoFont.c</PathWithFileName>
       <FilenameWithoutPath>LR_StartFace_InfoFont.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -5025,7 +5025,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\LvglSimulationV3_LV93\Lime_Resources\LR_StartFace_PerFont.c</PathWithFileName>
+      <PathWithFileName>..\..\LVGL_SIMULATION\Lime_Resources\LR_StartFace_PerFont.c</PathWithFileName>
       <FilenameWithoutPath>LR_StartFace_PerFont.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -5126,7 +5126,7 @@
 
   <Group>
     <GroupName>App</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

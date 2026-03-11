@@ -1,0 +1,3 @@
+wifi_name:ChinaNet2026
+wifi_password:12345678
+city_name:Beijing

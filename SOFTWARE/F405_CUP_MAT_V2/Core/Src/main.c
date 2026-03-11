@@ -37,7 +37,6 @@
 #include "FatFsSelfTest.h"
 #include "stm_system_io.h"
 
-
 #include "lvgl.h"
 /* USER CODE END Includes */
 
