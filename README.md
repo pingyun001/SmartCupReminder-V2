@@ -229,6 +229,17 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 
 保存后，从电脑端弹出U盘，为杯垫断电，重新通电，待重新开机，等待30秒左右，杯垫将成功连接wifi并更新天气信息。
 
+## 2.4、更新固件
+> 杯垫内置了bootloader，可自动识别Flash中的新固件并完成自动更新。该功能适用于定制主题固件的更新
+
+请进行如下操作：
+1. 确保杯垫软件版本号为V2.1及以后版本
+2. 通过设置使杯垫进入U盘模式
+3. 在路径 SmartCupReminder-V2\SOFTWARE\RELEASE_FIRMWARE下寻找你心仪的固件，该固件文件后缀必须为.bin格式
+4. 将心仪固件，重命名为update.bin，并放入杯垫的U盘中，等待文件传输完成（大约1分钟，较慢，请耐心等待）
+5. 杯垫断电，重新上电，待杯垫开机，杯垫将自动识别update.bin，若成功识别，左上角LED灯变为黄色，此时请等待杯垫完成固件更新
+6. 大约2分钟后，更新完成，左上角LED灯变为绿色，杯垫完成固件更新，并自动删除update.bin文件，之后将自动运行新固件
+7. 若中途失败，杯垫将亮红灯（或5分钟以上无响应），可重复上述步骤，若无效，请参考3.5章节通过BOOT按钮进行固件恢复
 
 
 # 3、复刻指南
@@ -271,7 +282,8 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 > 位于路径：\SmartCupReminder-V2\STRUCTOR\打印件
 >
 
-推荐直接打印3MF后缀的三个文件<!-- 这是一张图片，ocr 内容为： -->
+推荐直接打印3MF后缀的三个文件
+<!-- 这是一张图片，ocr 内容为： -->
 ![](./DOC/Readme_Pictures/image_22.png)
 
 完成后如下：
@@ -305,14 +317,10 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 <!-- 这是一张图片，ocr 内容为： -->
 ![](./DOC/Readme_Pictures/image_26.png)
 
-并烧录固件Hex：
+并烧录二合一固件Hex，该Hex中已经合并了Bootloader和App固件，无需单独烧录Bootloader。
 
-> 固件位于路径SmartCupReminder-V2\SOFTWARE\F405_CUP_MAT_V2\0-ReleaseHex
->
+> 固件位于路径SmartCupReminder-V2\SOFTWARE\RELEASE_FIRMWARE\V2.1\F405_Release_Merged.hex
 
-可选择V2.0或者V2.0_DEBUG两个Hex，前者为正式发行版，无调试信息，后者为调试版本，屏幕会显示帧率，内存占用，CPU使用率等，同时通过串口打印必要调试信息。
-
-无特殊情况，推荐下载发行版。
 
 <!-- 这是一张图片，ocr 内容为： -->
 ![](./DOC/Readme_Pictures/image_27.png)

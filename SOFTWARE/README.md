@@ -4,10 +4,11 @@
 - F405_BOOTLOADER：提醒喝水杯垫F405主板引导程序，使用Keil 5 MDK编写
 - F405_CUP_MAT_V2：提醒喝水杯垫F405主板应用程序，使用Keil 5 MDK编写
 - LVGL_SIMULATION：LVGL GUI界面代码以及对应的资源文件
+- RELEASE_FIRMWARE：编译好的固件文件，可用于刷机或调试
 - SIGNATURE_TOOL：应用程序签名工具，可为新编译完成的应用程序签名，以便bootloader识别
 - UDISK_RESOURCES：提醒喝水杯垫主板U盘资源文件（需要自行拷贝到文件系统根目录中）
 
-# 主板固件说明
+# MDK固件说明
 ## 主板固件阅读说明：
 - 主板固件使用Keil 5 MDK编写，需要AC6编译器，推荐Keil版本V5.38及以上！
 - 缩进为4，以方便阅读
