@@ -1059,7 +1059,7 @@ static lv_obj_t *lime_sub_setting_about_create(lv_obj_t* parent)
     LIME_LV_CREATE_DEFAULT_MENU_LABEL(description_label, sub_bj_obj, "关于杯垫", 251, 32, 65);
 
     lv_obj_t *description_sub_label = lv_label_create(sub_bj_obj);
-    lv_obj_set_size(description_sub_label, 110, 72);
+    lv_obj_set_size(description_sub_label, 118, 72);
     lv_obj_set_pos(description_sub_label, 221, 67);
     lv_obj_set_style_text_color(description_sub_label, lv_color_hex(0x7F7F7F), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(description_sub_label, &lime_font_setting_sub_text, LV_PART_MAIN | LV_STATE_DEFAULT);

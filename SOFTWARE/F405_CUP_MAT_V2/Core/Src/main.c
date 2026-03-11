@@ -137,9 +137,6 @@ int main(void)
   DEBUG_LOG("Compile Time:%s,%s\n", __DATE__, __TIME__);
   
   __enable_irq();
-  
-//  while(1)
-//	  ;
 
   /* USER CODE END 2 */
 

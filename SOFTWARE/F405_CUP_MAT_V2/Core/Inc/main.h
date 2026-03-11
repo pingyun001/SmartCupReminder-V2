@@ -86,14 +86,14 @@ void Error_Handler(void);
 #include <stdio.h>
 #include <stdbool.h>
 
-#define GLOBAL_DEVELOP_MODE		1
+#define GLOBAL_DEVELOP_MODE		0
 
 #if GLOBAL_DEVELOP_MODE
 #define DEBUG_LOG(...)	printf(__VA_ARGS__)
-#define SOFTWARE_VERSION	"V2.0 DEBUG"
+#define SOFTWARE_VERSION	"V2.1 DEBUG"
 #else
 #define DEBUG_LOG(...)
-#define SOFTWARE_VERSION	"V2.0"
+#define SOFTWARE_VERSION	"V2.1"
 #endif
 
 #define GLOBAL_SETTING_FILE_PATH		"D:/setting.txt"
