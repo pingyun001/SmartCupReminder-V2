@@ -1,0 +1,3 @@
+D:\Softwares\CMake\bin\cmake.exe -E rm -f CMakeFiles\signature.dir/objects.a
+D:\Softwares\mingw64\bin\ar.exe qc CMakeFiles\signature.dir/objects.a @CMakeFiles\signature.dir\objects1.rsp
+D:\Softwares\mingw64\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\signature.dir/objects.a -Wl,--no-whole-archive -o signature.exe -Wl,--out-implib,libsignature.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\signature.dir\linkLibs.rsp

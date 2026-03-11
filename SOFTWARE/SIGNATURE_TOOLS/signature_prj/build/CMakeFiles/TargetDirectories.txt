@@ -1,0 +1,3 @@
+D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/build/CMakeFiles/signature.dir
+D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/build/CMakeFiles/edit_cache.dir
+D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/build/CMakeFiles/rebuild_cache.dir

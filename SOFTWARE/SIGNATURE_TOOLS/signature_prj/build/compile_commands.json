@@ -1,0 +1,20 @@
+[
+{
+  "directory": "D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/build",
+  "command": "D:\\Softwares\\mingw64\\bin\\gcc.exe  @CMakeFiles/signature.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\signature.dir\\main.c.obj -c D:\\YQYPrivPrj\\SmartCupReminder-V2\\SOFTWARE\\signature_tool\\signature_exe\\main.c",
+  "file": "D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/main.c",
+  "output": "CMakeFiles/signature.dir/main.c.obj"
+},
+{
+  "directory": "D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/build",
+  "command": "D:\\Softwares\\mingw64\\bin\\gcc.exe  @CMakeFiles/signature.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\signature.dir\\App\\binSignature.c.obj -c D:\\YQYPrivPrj\\SmartCupReminder-V2\\SOFTWARE\\signature_tool\\signature_exe\\App\\binSignature.c",
+  "file": "D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/App/binSignature.c",
+  "output": "CMakeFiles/signature.dir/App/binSignature.c.obj"
+},
+{
+  "directory": "D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/build",
+  "command": "D:\\Softwares\\mingw64\\bin\\gcc.exe  @CMakeFiles/signature.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\signature.dir\\App\\winHal.c.obj -c D:\\YQYPrivPrj\\SmartCupReminder-V2\\SOFTWARE\\signature_tool\\signature_exe\\App\\winHal.c",
+  "file": "D:/YQYPrivPrj/SmartCupReminder-V2/SOFTWARE/signature_tool/signature_exe/App/winHal.c",
+  "output": "CMakeFiles/signature.dir/App/winHal.c.obj"
+}
+]
