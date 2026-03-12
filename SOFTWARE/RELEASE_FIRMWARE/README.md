@@ -32,3 +32,8 @@
 3. 打开CubeProgrammer软件，选择USB接口，点击Connect按钮连接杯垫
 4. 选择F405_Release_Merged.hex，并点击Program按钮烧录固件
 5. 等待烧录完成，断开连接，并重新上电
+
+# 版权
+bilibili 平韵の小窝 原创作品
+
+仅限个人学习使用，严禁无授权的商业用途！
