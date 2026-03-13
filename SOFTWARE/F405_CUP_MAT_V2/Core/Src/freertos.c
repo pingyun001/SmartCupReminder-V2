@@ -142,7 +142,7 @@ void MX_FREERTOS_Init(void) {
   lvgl_taskHandle = osThreadCreate(osThread(lvgl_task), NULL);
 
   /* definition and creation of sensor_task */
-  osThreadDef(sensor_task, sensor_main, osPriorityLow, 0, 512);
+  osThreadDef(sensor_task, sensor_main, osPriorityLow, 0, 1024);
   sensor_taskHandle = osThreadCreate(osThread(sensor_task), NULL);
 
   /* definition and creation of key_task */

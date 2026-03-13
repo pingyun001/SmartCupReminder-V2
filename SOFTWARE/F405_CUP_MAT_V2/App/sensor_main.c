@@ -17,6 +17,7 @@
 #include "audio_player.h"
 #include "audio_call_logic.h"
 #include "Lime_App_Hal.h"
+#include "stm_system_io.h"
 #include "audio_main.h"
 
 static void senser_task_error_handle(void);
@@ -29,6 +30,7 @@ static void cup_scan_handle(void);
 static void rgb_led_run_handle(void);
 static void sleep_mode_handle(void);
 static void audio_logic_handle(void);
+static void restore_mode_detech(void);
 
 void sensor_main(void const * argument)
 {
@@ -144,6 +146,8 @@ void sensor_main(void const * argument)
 		sleep_mode_handle();
 
 		audio_logic_handle();
+		
+		restore_mode_detech();
 		
 		osDelay(10);
 	}
@@ -467,6 +471,15 @@ static void audio_logic_handle(void)
 
 	/* audio logic handle */
 	audio_call_logic_handle();
+}
+
+static void restore_mode_detech(void)
+{
+	if( !LimeHAL_IsSetted_RestoreMode())
+		return;
+	
+	/* restore filesystem, then re-start system */
+	lime_stm_system_restore();
 }
 
 static void senser_task_error_handle(void)

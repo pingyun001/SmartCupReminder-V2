@@ -248,11 +248,11 @@ int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t bl
 	HAL_StatusTypeDef ret = spi_flash_read(buf, blk_addr * 4096, blk_len * 4096);
 	if(ret != HAL_OK)
 	{
-		printf("\tflash read: sector %d, count %d, failed\n", blk_addr, blk_len);
+		DEBUG_LOG("\tflash read: sector %d, count %d, failed\n", blk_addr, blk_len);
 		return USBD_FAIL;
 	}
 	
-	printf("\tflash read: sector %d, count %d, success\n", blk_addr, blk_len);
+	DEBUG_LOG("\tflash read: sector %d, count %d, success\n", blk_addr, blk_len);
 	
   return (USBD_OK);
   /* USER CODE END 6 */
@@ -279,7 +279,7 @@ int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t b
 		ret = spi_flash_erase_sector((blk_addr + cnt) * 4096);
 		if(ret != HAL_OK)
 		{
-		  printf("\tflash erase sector %d, count %d, failed\n", blk_addr, blk_len);
+		  DEBUG_LOG("\tflash erase sector %d, count %d, failed\n", blk_addr, blk_len);
 			return USBD_FAIL;
 		}
 	}
@@ -288,11 +288,11 @@ int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t b
 	ret = spi_flash_write(buf, blk_addr * 4096, blk_len * 4096);
 	if(ret != HAL_OK)
 	{
-		printf("\tflash write: sector %d, count %d, failed\n", blk_addr, blk_len);
+		DEBUG_LOG("\tflash write: sector %d, count %d, failed\n", blk_addr, blk_len);
 		return USBD_FAIL;
 	}
 	
-	printf("\tflash write: sector %d, count %d, success\n", blk_addr, blk_len);
+	DEBUG_LOG("\tflash write: sector %d, count %d, success\n", blk_addr, blk_len);
 	
 	return USBD_OK;
   /* USER CODE END 7 */

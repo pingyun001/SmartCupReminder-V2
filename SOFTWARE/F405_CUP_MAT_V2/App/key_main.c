@@ -10,7 +10,7 @@ key_info_t key_info = {0};
 static void key_scan_handle(void);
 static void usb_voltage_scan_handle(void);
 static void udisk_mode_deetch(void);
-static void restore_mode_detech(void);
+
 
 void key_main(void const * argument)
 {
@@ -26,8 +26,6 @@ void key_main(void const * argument)
 		usb_voltage_scan_handle();
 		
 		udisk_mode_deetch();
-		
-		restore_mode_detech();
 
 		osDelay(5);
 	}
@@ -162,10 +160,4 @@ static void udisk_mode_deetch(void)
 	}
 }
 
-static void restore_mode_detech(void)
-{
-	if( !LimeHAL_IsSetted_RestoreMode())
-		return;
-	
-	lime_stm_system_restore();
-}
+

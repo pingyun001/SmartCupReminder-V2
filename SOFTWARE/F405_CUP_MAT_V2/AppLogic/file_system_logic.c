@@ -93,29 +93,35 @@ HAL_StatusTypeDef file_system_ReInit(void)
 	
 	/* add default file */
     FRESULT res;
-    FIL file;
+//    FIL file;
+#if LIME_FATFS_DYNAMIC_MEM_MELLOC
+	FIL *file = LIME_FATFS_MELLOC(sizeof(FIL));
+	memset(file, 0, sizeof(FIL));
+#else
+	FIL *create_file = &ccreate_file;
+#endif
     UINT bytes_written;
     
     /* create setting.txt file */
-    res = f_open(&file, GLOBAL_SETTING_FILE_PATH, FA_CREATE_ALWAYS | FA_WRITE);
+    res = f_open(file, GLOBAL_SETTING_FILE_PATH, FA_CREATE_ALWAYS | FA_WRITE);
     if(res != FR_OK)
     {
         DEBUG_LOG("Create file failed: %d\n", res);
         f_unmount("D:");
-        return HAL_ERROR;
+        goto err_return;
     }
     
     DEBUG_LOG("File created successfully, start writing data...\n");
     
     /* write default settings */
     const char default_setting_file[] = "wifi_name:no_name\nwifi_password:no_password\ncity_name:beijing";
-    res = f_write(&file, default_setting_file, strlen(default_setting_file), &bytes_written);
+    res = f_write(file, default_setting_file, strlen(default_setting_file), &bytes_written);
     if(res != FR_OK)
     {
         DEBUG_LOG("Write file failed: %d\n", res);
-        f_close(&file);
+        f_close(file);
         f_unmount("D:");
-        return HAL_ERROR;
+        goto err_return;
     }
     
     /* verify the number of bytes written */
@@ -123,25 +129,36 @@ HAL_StatusTypeDef file_system_ReInit(void)
     {
         DEBUG_LOG("Byte count mismatch: expected %d, actual %d\n", 
                  strlen(default_setting_file), bytes_written);
-        f_close(&file);
+        f_close(file);
         f_unmount("D:");
-        return HAL_ERROR;
+        goto err_return;
     }
     
     DEBUG_LOG("File write completed, wrote %d bytes\n", bytes_written);
     
     /* close file and unmount file system */
-    f_close(&file);
+    f_close(file);
     
     /* remount in normal mode */
     if(f_mount(&fs_flash, "D:", 0) != FR_OK)
     {
         DEBUG_LOG("Remount failed\n");
-        return HAL_ERROR;
+        goto err_return;
     }
+	
+#if LIME_FATFS_DYNAMIC_MEM_MELLOC
+	LIME_FATFS_FREE(file);
+#endif
     
     DEBUG_LOG("Factory reset completed\n");
     return HAL_OK;
+	
+err_return:
+#if LIME_FATFS_DYNAMIC_MEM_MELLOC
+	LIME_FATFS_FREE(file);
+#endif
+	DEBUG_LOG("Factory reset error\n");
+	return HAL_ERROR;
 }
 
 

@@ -422,7 +422,7 @@ HAL_StatusTypeDef lime_del_fatfs_app(void)
 
 // 检查固件是否已签名
 #define APP_START_ADDRESS 0x08010000
-bool lime_is_app_signed(void)
+uint8_t lime_is_app_signed(void)
 {
 	DEBUG_LOG("%s()\n", __FUNCTION__);
 	
@@ -433,25 +433,25 @@ bool lime_is_app_signed(void)
 	if(memcmp(tag->head, LIME_BOOT_TAG_HEAD, 12))
 	{
 		DEBUG_LOG("Tag head error\r\n");
-		return false;
+		return 0;
 	}
 	
 	// 检查tag尾
 	if(memcmp(tag->end, LIME_BOOT_TAG_END, 4))
 	{
 		DEBUG_LOG("Tag end error\r\n");
-		return false;
+		return 0;
 	}
 	
 	// 检查version是否为初始值
 	if(tag->version == 0xffffffff && tag->app_len == 0xffffffff && 
 	   tag->app_crc == 0xffffffff && tag->tag_crc == 0xffffffff)
 	{
-		DEBUG_LOG("App not signed (initial values)\r\n");
-		return false;
+		DEBUG_LOG("App not signed (initial values),may be debug mode, let it pass!\r\n");
+		return 2;
 	}
 	
-	return true;
+	return 1;
 }
 
 // 验证Flash中的固件是否合法
@@ -460,10 +460,20 @@ HAL_StatusTypeDef lime_confirm_flash_signature(void)
 	DEBUG_LOG("%s()\n", __FUNCTION__);
 	
 	// 检查固件是否已签名
-	if(!lime_is_app_signed())
+	switch(lime_is_app_signed())
 	{
-		DEBUG_LOG("App not signed, skipping verification\r\n");
-		return HAL_OK; // 未签名，不报错
+		/* head or tail err */
+		case 0:
+			return HAL_ERROR;
+		
+		/* has tag & tag != 0 */
+		case 1:
+			break;
+		
+		/* tag == 0xffffffff, may be debug mode */
+		case 2:
+			DEBUG_LOG("App not signed, maybe debug mode, skipping verification\r\n");
+			return HAL_OK;
 	}
 	
 	// 读取tag信息

@@ -239,10 +239,24 @@ run_app:
 	  ;
   
 errend:
-  DEBUG_LOG("error occurred, please re-power up\n");
+  DEBUG_LOG(">>>error occurred, try to re-init file system and enter u-disk mode\n");
   
   WS2812_SetRGB(0, 15, 0, 0);
   WS2812_Sync();
+  HAL_Delay(10);
+  
+  /* try to re-create filesystem */
+  if(lime_re_create_filesystem() != HAL_OK)
+  {
+	  DEBUG_LOG(">>>re-create filesystem error\n");
+	  
+	  while(1)
+		  ;
+  }
+  DEBUG_LOG(">>>re-create filesystem success\n");
+  
+  /* enter u-disk mode */
+  lime_stm_system_enter_u_disk_mode();
   
   while(1)
 	  ;

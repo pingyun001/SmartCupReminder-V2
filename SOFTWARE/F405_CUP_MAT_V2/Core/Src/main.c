@@ -208,14 +208,14 @@ void SystemClock_Config(void)
 
 void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
 {
-	DEBUG_LOG("\n%s('%s')\n", __FUNCTION__, pcTaskName);
+	printf("\n%s('%s')\n", __FUNCTION__, pcTaskName);
 	
 	while(1)
 		;
 }
 void vApplicationMallocFailedHook(void)
 {
-	DEBUG_LOG("\n%s()\n", __FUNCTION__);
+	printf("\n%s()\n", __FUNCTION__);
 	
 	while(1)
 		;
