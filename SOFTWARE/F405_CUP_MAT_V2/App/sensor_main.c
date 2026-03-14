@@ -478,6 +478,9 @@ static void restore_mode_detech(void)
 	if( !LimeHAL_IsSetted_RestoreMode())
 		return;
 	
+	/* suspend audio_task */
+	audio_main_task_suspend();
+	
 	/* restore filesystem, then re-start system */
 	lime_stm_system_restore();
 }

@@ -86,8 +86,6 @@ void Error_Handler(void);
 #include <stdio.h>
 #include <stdbool.h>
 
-#define GLOBAL_DEVELOP_MODE		0
-
 #if GLOBAL_DEVELOP_MODE
 #define DEBUG_LOG(...)	printf(__VA_ARGS__)
 #define SOFTWARE_VERSION	"V2.1 DEBUG"

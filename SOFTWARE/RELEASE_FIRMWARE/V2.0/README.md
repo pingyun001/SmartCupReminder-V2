@@ -28,7 +28,7 @@
 完成连接后，将ST-Link插入电脑，打开STM32CubeProgrammer软件，选择ST-Link模式，点击Connect按钮，选择下载的固件文件，点击Program按钮，等待下载完成。
 
 ## 方案2：USB DFU
-> 该方案有概率失败（受限于USB线材质量，焊接质量，以及STM32F4系列众所周知的USB bug，有概率下载失败）
+> 该方案有概率失败（受限于USB线材质量，焊接质量，以及STM32F4系列众所周知的USB bug，有概率无法被电脑识别）
 
 按住PCB上的ST-BOOT按键 不松开，通过USB-TypeC线连接PCB板和电脑，打开STM32CubeProgrammer软件，选择USB DFU模式，点击Connect按钮，选择下载的固件文件，点击Program按钮，等待下载完成。
 

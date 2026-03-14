@@ -301,8 +301,7 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 ![](./DOC/Readme_Pictures/image_24.png)
 
 ## 3.4、ESP8266固件下载
-> 固件和源码均位于路径：SmartCupReminder-V2\SOFTWARE\ESP8266_WifiWeather
->
+> 固件和源码均位于路径：SmartCupReminder-V2\SOFTWARE\ESP8266_WIFI_WEATHER
 
 可通过传统arduino IDE下载，或通过ESP Tools下载，网上教程非常多，此次不过多介绍。
 
@@ -314,6 +313,8 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 ![](./DOC/Readme_Pictures/image_25.png)
 
 ## 3.5、STM32固件烧录
+> 固件位于路径：SmartCupReminder-V2\SOFTWARE\RELEASE_FIRMWARE
+
 推荐电脑安装STM32CubeProgrammer软件：
 
 <!-- 这是一张图片，ocr 内容为： -->
@@ -350,6 +351,19 @@ wifi信息等保存在setting.txt文件中，使用windows电脑自带的记事�
 >
 
 SWD接口位置如图，按线序连线即可，并连接板子，后续操作步骤同USB
+
+连接ST-Link SWD接口到PCB板，推荐按如下方式接线：
+
+左侧为ST-Link接口，右侧为PCB接口：
+- 3V3   <---> 3V3
+- SWCLK <---> SCK
+- GND   <---> GND
+- SWDIO <---> SDA
+- RESET <---> RST
+
+同时，建议断开USB供电，全板仅通过ST-Link提供STM32F4所需的3.3V电源
+
+完成连接后，将ST-Link插入电脑，打开STM32CubeProgrammer软件，选择ST-Link模式，点击Connect按钮，选择下载的固件文件，点击Program按钮，等待下载完成。
 
 <!-- 这是一张图片，ocr 内容为： -->
 ![](./DOC/Readme_Pictures/image_31.png)
@@ -390,7 +404,30 @@ SWD接口位置如图，按线序连线即可，并连接板子，后续操作�
 <!-- 这是一张图片，ocr 内容为： -->
 ![](./DOC/Readme_Pictures/image_35.png)
 
-同时使用热熔胶粘贴前面板，并完成制作
+同时使用热熔胶粘贴前面板，并完成制作。
+
+此时，您已经成功获取到一个成品杯垫！恭喜~
+
+## 3.8、后续固件升级
+> 杯垫内置了bootloader，可自动识别Flash中的新固件并完成固件更新。该功能适用于定制主题固件的更新，以及切换debug和release版本固件。
+
+请进行如下操作：
+> 注意！只适用于目前运行V2.1及以上版本固件的杯垫，如果您的杯垫目前运行V2.0版本，则需要手动更新固件，参考上方3.5章节烧录二合一固件。
+
+固件类型说明：
+U盘自动更新只支持后缀为.bin的文件，类型包含两种，分别为Debug版和Release版，均位于目录
+> SmartCupReminder-V2\SOFTWARE\RELEASE_FIRMWARE\
+
+- F405_CUP_MAT_V2_Debug.bin：包含调试信息（包含屏幕帧率，CPU占用率，串口日志等，可能会轻微影响性能，仅供调试使用）
+- F405_CUP_MAT_V2_Release.bin：无调试信息（日常使用版）
+
+自动更新流程：
+
+1. 寻找心仪的固件（固件列表里后缀为.bin的文件，若您的电脑未显示文件后缀，请查看本文结尾），将其改名为update.bin，并记住位置 
+2. 进入U盘模式，将需要更新的固件文件（update.bin）放入U盘根目录，待传输完成后，弹出U盘
+3. 为系统重新上电，等待左上角LED灯点亮
+4. 若LED为黄色，则成功识别到待更新固件，并开始尝试更新，
+5. 若更新成功，则LED灯变绿色，之后系统会自动运行新固件
 
 # 4、系统架构浅析
 ## 4.1、硬件架构
@@ -410,8 +447,32 @@ SWD接口位置如图，按线序连线即可，并连接板子，后续操作�
 ## 5.1、有哪些素材可以自定义修改？
 背景图片，三张表情图片，10条语音均可以进行替换。前者可用工程中附带的PS工程辅助导出相关图片，并通过LVGL Python图片工具导出对应的C数组，重新编译固件即可。后者可找任意AI配音网站，生成相应声音，并通过U盘模式替换即可。
 
+注意！生成的音频素材需要使用格式工厂或ffmpeg等工具转换为WAV格式，并保持文件名不变，同时需确保如下参数：
+
+- 采样率：22050Hz
+- 位深：16bit
+- 单声道
+- 编码：PCM
+
 ## 5.2、不小心恢复出厂设置了咋办？
 需要一台windows电脑，按上述**3.6章节**部分重新存入U盘文件即可
+
+## 5.3、如何查看当前运行的固件版本？
+在杯垫设置页面最后一页（关于页面）右侧，有软件版本，后接版本号为当前运行的版本。
+
+<!-- 这是一张图片，ocr 内容为： -->
+![](./DOC/Readme_Pictures/image_9.png)
+
+## 5.4、如何让电脑显示文件扩展名？
+> 适用于win10和win11系统
+
+<!-- 这是一张图片，ocr 内容为： -->
+![](./DOC/Readme_Pictures/show_file_tail.png)
+
+然后打开固件目录，就可以看到文件拓展名了:
+
+<!-- 这是一张图片，ocr 内容为： -->
+![](./DOC/Readme_Pictures/show_file_tail_success.png)
 
 # 6、版权
 bilibili 平韵の小窝 原创作品

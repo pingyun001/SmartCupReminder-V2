@@ -55,3 +55,11 @@ void audio_main_task_yleld_exHook(bool isISR)
 		}
 	}
 }
+
+void audio_main_task_suspend(void)
+{
+	if(audio_task_handler == NULL)
+		return;
+	
+	vTaskSuspend(audio_task_handler);
+}

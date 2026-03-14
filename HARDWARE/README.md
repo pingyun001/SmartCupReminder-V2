@@ -1,9 +1,12 @@
 # 文件夹概览
 
 - SCH：提醒喝水杯垫原理图
-- PCB：提醒喝水杯垫PCB图以及交互式焊接BOM表
+- PCB：提醒喝水杯垫PCB图以及交互式焊接BOM表、PCB Gerber文件
 
 # 原理图说明
+## 系统硬件架构
+![画板](../DOC/Readme_Pictures/image_36.png)
+
 ## 关键芯片选型
 - MCU：STM32F405RGT6（192KB SRAM， 1MB Flash）
 - 功放：FM8002A（DAC + DMA直推）

@@ -180,7 +180,7 @@ void LCD_Init(void)
     LCD_WR_REG(0x11);
     HAL_Delay(20);
 
-		LCD_WR_REG(0xff);
+	LCD_WR_REG(0xff);
     LCD_WR_Byte(0xa5);
     LCD_WR_REG(0x9a);
     LCD_WR_Byte(0x08);
@@ -456,7 +456,7 @@ void LCD_Init(void)
 	/* backlight */
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
 	
-	TIM4->CCR3 = 80;
+	TIM4->CCR3 = 100;
 }
 
 void PY_LCD_ColorFill(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t* color_p)

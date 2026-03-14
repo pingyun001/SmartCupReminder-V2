@@ -26,7 +26,7 @@ PCB板使用USB TypeC接口供电，保持按住ESP-BOOT按键，然后短按一
 
 如二次开发，推荐替换心知天气密钥为自己申请的密钥：
 ```
-#define WEATHER_API_KEY "SlpKSOC0woAJJEMbR"  // 替换为你的实际心知天气API密钥
+#define WEATHER_API_KEY "这里放密钥"  // 替换为你的实际心知天气API密钥
 ```
 程序开始运行后，需要通过串口发送三个参数到ESP8266：
 
