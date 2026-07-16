@@ -322,7 +322,6 @@ HAL_StatusTypeDef spi_flash_read(uint8_t *p_data, uint32_t addr, uint32_t len)
             .cmd = SPI_FLASH_CMD_DATA_READ,
             .is_addr_exist = true,
             .addr = addr + total_transfered_size,
-//            .rx_data = p_data + total_transfered_size,
 						.rx_data = rx_cache_buf,
             .data_len = step_size,
         };

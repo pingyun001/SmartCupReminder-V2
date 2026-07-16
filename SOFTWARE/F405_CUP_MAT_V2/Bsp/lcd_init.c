@@ -3,23 +3,18 @@
 #include "spi.h"
 #include "tim.h"
 
-//#include "bsp_dma.h"
-
 extern SPI_HandleTypeDef SPI_InitStructure;
-extern DMA_HandleTypeDef DMA_InitStructure;
 
 
 void BSP_SPI_SendByte(uint8_t dat)
 {
-//    HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_RESET);
     HAL_SPI_Transmit(&hspi1, &dat, 1, 0xFF);
-//    HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_SET);
 }
 
 /**
- * @brief       向液晶写寄存器命令
- * @param       reg: 要写的命令
- * @retval      无
+ * @brief       write register command to LCD
+ * @param       reg: register command
+ * @retval      none
  */
 void LCD_WR_REG(uint8_t reg)
 {
@@ -29,9 +24,9 @@ void LCD_WR_REG(uint8_t reg)
 }
 
 /**
- * @brief       向液晶写一个字节数据
- * @param       dat: 要写的数据
- * @retval      无
+ * @brief       write one byte data to LCD
+ * @param       dat: data to write
+ * @retval      none
  */
 void LCD_WR_Byte(uint8_t dat)
 {
@@ -41,9 +36,9 @@ void LCD_WR_Byte(uint8_t dat)
 }
 
 /**
- * @brief       向液晶写一个半字数据
- * @param       dat: 要写的数据
- * @retval      无
+ * @brief       write one half-word data to LCD
+ * @param       dat: data to write
+ * @retval      none
  */
 void LCD_WR_HalfWord(uint16_t dat)
 {
@@ -54,87 +49,67 @@ void LCD_WR_HalfWord(uint16_t dat)
 }
 
 /**
- * @brief       初始化LCD接口
- * @param       无
- * @retval      无
+ * @brief       init LCD interface
+ * @param       none
+ * @retval      none
  */
 void LCD_GPIOInit(void)
 {
-//    GPIO_InitTypeDef GPIO_InitStructure;
-//    LCD_RES_CLK_Enable(); /* 使能端口时钟 */
-//    LCD_DC_CLK_Enable();  /* 使能端口时钟 */
-//    LCD_BLK_CLK_Enable(); /* 使能端口时钟 */
-
-//    /* 配置GPIO端口 */
-//    GPIO_InitStructure.Pin = LCD_RES_PIN;
-//    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-//    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
-//    HAL_GPIO_Init(LCD_RES_PORT, &GPIO_InitStructure);
-
-//    GPIO_InitStructure.Pin = LCD_DC_PIN;
-//    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-//    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
-//    HAL_GPIO_Init(LCD_DC_PORT, &GPIO_InitStructure);
-
-//    GPIO_InitStructure.Pin = LCD_BLK_PIN;
-//    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-//    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
-//    HAL_GPIO_Init(LCD_BLK_PORT, &GPIO_InitStructure);
 }
 
 /**
- * @brief       设置显示窗口
- * @param       xs:窗口列起始地址
- * @param       ys:坐标行起始地址
- * @param       xe:窗口列结束地址
- * @param       ye:坐标行结束地址
- * @retval      无
+ * @brief       set display window
+ * @param       xs: column start
+ * @param       ys: row start
+ * @param       xe: column end
+ * @param       ye: row end
+ * @retval      none
  */
 void LCD_Address_Set(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye)
 {
     #if USE_HORIZONTIAL==0
-    LCD_WR_REG(0x2a); /* 列地址设置 */
+    LCD_WR_REG(0x2a); /* set column address */
     LCD_WR_HalfWord(xs+0x0C);
     LCD_WR_HalfWord(xe+0x0C);
-    LCD_WR_REG(0x2b); /* 行地址设置 */
+    LCD_WR_REG(0x2b); /* set row address */
     LCD_WR_HalfWord(ys);
     LCD_WR_HalfWord(ye);
-    LCD_WR_REG(0x2c); /* 储存器写 */
+    LCD_WR_REG(0x2c); /* memory write */
     #elif USE_HORIZONTIAL==1
-    LCD_WR_REG(0x2a); /* 列地址设置 */
+    LCD_WR_REG(0x2a); /* set column address */
     LCD_WR_HalfWord(xs+0x0E);
     LCD_WR_HalfWord(xe+0x0E);
-    LCD_WR_REG(0x2b); /* 行地址设置 */
+    LCD_WR_REG(0x2b); /* set row address */
     LCD_WR_HalfWord(ys);
     LCD_WR_HalfWord(ye);
-    LCD_WR_REG(0x2c); /* 储存器写 */
+    LCD_WR_REG(0x2c); /* memory write */
     #elif USE_HORIZONTIAL==2
-    LCD_WR_REG(0x2a); /* 列地址设置 */
+    LCD_WR_REG(0x2a); /* set column address */
     LCD_WR_HalfWord(xs);
     LCD_WR_HalfWord(xe);
-    LCD_WR_REG(0x2b); /* 行地址设置 */
+    LCD_WR_REG(0x2b); /* set row address */
     LCD_WR_HalfWord(ys+0x0E);
     LCD_WR_HalfWord(ye+0x0E);
-    LCD_WR_REG(0x2c); /* 储存器写 */
+    LCD_WR_REG(0x2c); /* memory write */
     #else
-    LCD_WR_REG(0x2a); /* 列地址设置 */
+    LCD_WR_REG(0x2a); /* set column address */
     LCD_WR_HalfWord(xs);
     LCD_WR_HalfWord(xe);
-    LCD_WR_REG(0x2b); /* 行地址设置 */
+    LCD_WR_REG(0x2b); /* set row address */
     LCD_WR_HalfWord(ys+0x0C);
     LCD_WR_HalfWord(ye+0x0C);
-    LCD_WR_REG(0x2c); /* 储存器写 */
+    LCD_WR_REG(0x2c); /* memory write */
     #endif
 }
 
 /**
- * @brief       指定颜色填充区域
- * @param       xs:填充区域列起始地址
- * @param       ys:填充区域行起始地址
- * @param       xe:填充区域列结束地址
- * @param       ye:填充区域行结束地址
- * @param       color:填充颜色值
- * @retval      无
+ * @brief      fill area with given color
+ * @param       xs: fill area column start
+ * @param       ys: fill area row start
+ * @param       xe: fill area column end
+ * @param       ye: fill area row end
+ * @param       color: fill color
+ * @retval      none
  */
 uint16_t oneLineBuf[428] = {0};
 void LCD_Fill(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye, uint16_t color)
@@ -156,16 +131,14 @@ void LCD_Fill(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye, uint16_t color
 	for(uint32_t i = ys; i < ye; i++)
 	{
 		LCD_DC_Set();
-//		HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_RESET); 
 		HAL_SPI_Transmit(&hspi1, (uint8_t*)oneLineBuf, (xe - xs)*2, 100);
-//		HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_SET); 
 	}
 }
 
 /**
- * @brief       初始化LCD
- * @param       无
- * @retval      无
+ * @brief       init LCD
+ * @param       none
+ * @retval      none
  */
 void LCD_Init(void)
 {
@@ -473,13 +446,7 @@ void PY_LCD_ColorFill(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t* 
 	if (HAL_SPI_Init(&hspi1) != HAL_OK)
 		Error_Handler();
 	
-//	HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_RESET);
 	while(HAL_SPI_Transmit_DMA(&hspi1, (uint8_t*)color_p, (x2-x1+1) * (y2-y1+1)) != HAL_OK);
-	
-	
-//	while(HAL_SPI_GetState(&hspi1) != HAL_SPI_STATE_READY);
-	
-//	HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_SET);
 }
 
 void PY_LCD_SetBackLight(uint8_t percent)

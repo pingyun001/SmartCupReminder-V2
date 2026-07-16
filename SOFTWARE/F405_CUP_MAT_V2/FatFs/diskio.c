@@ -18,13 +18,13 @@
 #include <string.h>
 
 #include "spi_flash.h"
-//#include "Lime_rtc_time.h"
+#include "rtc_time.h"
 
 
 #define SPI_FLASH_SECTOR_SIZE		4096
-#define SPI_FLASH_SCETOR_COUNT	spi_flash_get_sector_count()
+#define SPI_FLASH_SECTOR_COUNT	spi_flash_get_sector_count()
 #define SPI_FLASH_BLOCK_SIZE		1
-#define SPI_FLASH_FATFS_BASE		(0)		//必须SECTOR_SIZE整数倍
+#define SPI_FLASH_FATFS_BASE		(0)
 
 
 
@@ -43,7 +43,6 @@ DSTATUS disk_status (
 )
 {
 	DSTATUS stat = 0;
-	int result;
 	
 	DEBUG_PRINTF(">>%s\n", __FUNCTION__);
 
@@ -210,11 +209,10 @@ DRESULT disk_ioctl (
 				break;
 
 				case GET_SECTOR_COUNT:
-					*(DWORD * )buff = SPI_FLASH_SCETOR_COUNT;
+					*(DWORD * )buff = SPI_FLASH_SECTOR_COUNT;
 					break;
 				case CTRL_SYNC :
 					break;
-				break;
 			}
 			return RES_OK;
 		}

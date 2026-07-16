@@ -55,9 +55,6 @@ void LimeRtc_SetNowTime(uint8_t hour, uint8_t minute, uint8_t second)
 	HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
 	HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
 	UNUSED(sDate);
-	
-//	printf("Cat!\n");
-//	LimeRtc_PrintNowTime();
 }
 
 void LimeRtc_SetNowDate(uint16_t year, uint8_t month, uint8_t day)
@@ -94,8 +91,6 @@ uint8_t LimeRtc_CheckAndInitDefaultTime(void)
 	HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
 	
 	uint32_t rtcYear = sDate.Year + 2000;
-	
-//	DEBUG_LOG("rtcYear:%d, CompileYear:%d\n", rtcYear, compileYear);
 	
 	if(rtcYear != compileYear)
 	{

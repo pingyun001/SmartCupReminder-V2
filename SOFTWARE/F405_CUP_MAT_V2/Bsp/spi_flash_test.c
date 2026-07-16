@@ -59,7 +59,7 @@ static uint32_t getRandomData(uint32_t* seed)
   return x;
 }
 
-uint32_t temp4KBuf[1024];				//4K字节 BUF
+uint32_t temp4KBuf[1024];				/* 4K byte buffer */
 
 void W25QFlash_FullChipCheck(uint32_t totalSize)
 {
@@ -72,7 +72,7 @@ void W25QFlash_FullChipCheck(uint32_t totalSize)
   {
     temp4KBuf[i % 1024] = getRandomData(&seedA);
 		
-		if(i % 1024 == 1023)		//到达4K边界
+		if(i % 1024 == 1023)		/* reached 4K boundary */
 		{
 			spi_flash_erase_sector((i - 1023) * 4);
 			spi_flash_write((uint8_t*)temp4KBuf,  (i - 1023) * 4, 4096);
@@ -146,7 +146,7 @@ static float dwtSpeedTester(uint8_t cmd)
 #if	(!TOTAL_TRANS_DATA_BYTES)
                 DEBUG_LOG("Time elapsed: %.4f ms\n", time_seconds * 1000.0f);
 #else
-								float speed = (float)TOTAL_TRANS_DATA_BYTES / (time_seconds * 1000000.0f);  // 字节数转为MB，并计算每秒传输的速度
+																float speed = (float)TOTAL_TRANS_DATA_BYTES / (time_seconds * 1000000.0f);  /* convert bytes to MB, calc transfer speed */
                 DEBUG_LOG("Time elapsed: %.4f ms, totalSpeed: %.4f MBytes/s\n", time_seconds * 1000.0f, speed);
 #endif
                 return time_seconds * 1000.0f;
