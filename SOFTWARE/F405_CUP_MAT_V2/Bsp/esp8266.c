@@ -84,12 +84,9 @@ void esp8266_recv_hook(void)
     /* online, receive message */
 	if(esp8266_info.statue >= esp8266_statue_online)
 	{
-		// HAL_UART_Transmit(&huart1, &rx_byte, 1, 1000);
-
-        // return;
-
-        /*
-        一条消息长这样：---Humidity:40 以---开头，以换行结尾
+		/*
+        A message looks like: ---Humidity:40
+        Starts with "---" and ends with newline.
         */
 
         /* find the head of the message */
@@ -98,8 +95,6 @@ void esp8266_recv_hook(void)
             find_head = true;
             head_confirmed = false;
             head_count = 0;
-
-            // ESP8266_DEBUG_LOG("sss\n");
         }
         if(find_head)
         {
@@ -114,12 +109,7 @@ void esp8266_recv_hook(void)
             {
                 if(cat_message.buffer[0] == '-' && cat_message.buffer[1] == '-' && cat_message.buffer[2] == '-')
                 {
-                    // ESP8266_DEBUG_LOG("hhh\n");
                     head_confirmed = true;
-                }
-                else
-                {
-                    // ESP8266_DEBUG_LOG("fff\n");
                 }
 
                 find_head = false;
@@ -135,14 +125,12 @@ void esp8266_recv_hook(void)
             head_count++;
             if(head_count >= sizeof(cat_message.buffer) - 1)
             {
-                // ESP8266_DEBUG_LOG("ooo\n");
                 head_confirmed = false;
                 head_count = 0;
                 goto sync_end;
             }
             if(rx_byte == '\n')
             {
-                // ESP8266_DEBUG_LOG("zzz%d\n", head_count);
                 head_count -= 2;
                 cat_message.size = head_count;
                 xQueueSendFromISR(rx_queue, &cat_message, 0);
@@ -253,7 +241,6 @@ void esp8266_sync_handle(void)
         }
         else
         {
-            // ESP8266_DEBUG_LOG("no threat message\n");
         }
 
         /* scan every 5 minutes */
@@ -319,9 +306,8 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
                 break;
 
             int8_t rssi = 0;
-            sscanf(message, "---Signal strength (RSSI):%ddBm", (int*)&rssi);
+            sscanf(message, "---Signal strength (RSSI):%hhdBm", &rssi);
             ESP8266_DEBUG_LOG("decode rssi: %ddBm\n", rssi);
-            // LimeHAL_SetSignalStrength(rssi);
             break;
         }
 
@@ -329,16 +315,15 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         case 6:
         {
             uint8_t now_time[3];
-            sscanf(message, "---nowtime:%d:%d:%d", (int*)&now_time[0], (int*)&now_time[1], (int*)&now_time[2]);
+            sscanf(message, "---nowtime:%hhu:%hhu:%hhu", &now_time[0], &now_time[1], &now_time[2]);
             ESP8266_DEBUG_LOG("decode now time: %d:%d:%d\n", now_time[0], now_time[1], now_time[2]);
-//            LimeHAL_SetTime(now_time[1], now_time[2]);
 			
 			senser_main_set_now_time_hook(now_time[0], now_time[1], now_time[2]);
 			
             break;
         }
 
-        /* ---City:北京 */
+        /* ---City:Beijing */
         case 7:
         {
             char city[32];
@@ -359,7 +344,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
         case 8:
         {
             int16_t temperature = 0;
-            sscanf(message, "---Temperature:%d", (int*)&temperature);
+            sscanf(message, "---Temperature:%hd", &temperature);
             ESP8266_DEBUG_LOG("decode temperature: %d\n", temperature);
             float now_temperature = temperature;
             LimeHAL_SetNowTemper(now_temperature);
@@ -396,7 +381,7 @@ static void esp8266_decode_message(uint8_t step, const char *message, uint32_t l
             break;
         }
 
-        /* ---Day:晴 */
+        /* ---Day:Sunny */
         case 11:
         case 18:
         case 25:

@@ -119,22 +119,22 @@ static void DS18B20_Start(void)
 	DS18B20_Write_Byte(0x44);	// convert
 } 
  
-//初始化DS18B20的IO口 DQ 同时检测DS的存在
-//返回1:不存在
-//返回0:存在
+/* init DS18B20 IO pin DQ, check if it exists
+   return HAL_OK: exists
+   return HAL_ERROR: not found */
 HAL_StatusTypeDef ds18b20_Init(void)
 {
 	HAL_TIM_Base_Start(&htim14);
 	
- 	DS18B20_HIGH();    //输出1
+ 	DS18B20_HIGH();    /* output 1 */
  
 	ds18b20_rst();
  
 	return ds18b20_check();
 }  
-//从ds18b20得到温度值
-//精度：0.1C
-//返回值：温度值 （-550~1250） 
+/* get temperature from DS18B20
+   accuracy: 0.1 C
+   return: temperature (-550 ~ 1250) */ 
 int16_t ds18b20_get_temp(void)
 {
 	uint8_t temp;
