@@ -13,8 +13,12 @@ static lv_obj_t *today_weather_widget = NULL;
 static lv_obj_t *tomorrow_weather_widget = NULL;
 static lv_obj_t *day_after_tomorrow_weather_widget = NULL;
 
- bool is_soft_start = false;
+static bool is_soft_start = false;
+static lv_timer_t *weather_scan_timer = NULL;
+static uint8_t weather_reveal_step = 0;
+
 static void scan_weather_timer_cb(lv_timer_t * timer);
+static void weather_face_hide_flash_objs(void);
 
 LV_IMG_DECLARE(lime_img_pos);
 LV_FONT_DECLARE(lime_font_weather_num);
@@ -111,7 +115,12 @@ lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
     lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
 
     /* create timer to scan weather data */
-    lv_timer_create(scan_weather_timer_cb, 200, NULL);
+    weather_scan_timer = lv_timer_create(scan_weather_timer_cb, 200, NULL);
+    if(weather_scan_timer != NULL)
+    {
+        /* face is not active now, do not refresh from flash */
+        lv_timer_pause(weather_scan_timer);
+    }
 
     /* run immediately to let data update */
     scan_weather_timer_cb(NULL);
@@ -121,25 +130,13 @@ lv_obj_t *lime_weatherface_create(lv_obj_t* parent)
 
 static void scan_weather_timer_cb(lv_timer_t * timer)
 {
-    static uint8_t cnt = 0;
-    static bool last_soft_start = false;
-    if(is_soft_start && (!last_soft_start))
+    /* when face is not active, do not touch flash, wait for re-enter */
+    if((timer != NULL) && (!is_soft_start))
     {
-        cnt = 0;
-        LV_LOG_USER("soft start");
+        return;
     }
-    /* just fot debug run */
-    if((!is_soft_start) && last_soft_start)
-    {
-        lv_obj_add_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
-        LV_LOG_USER("soft hide");
-    }
-    last_soft_start = is_soft_start;
 
-    switch(cnt)
+    switch(weather_reveal_step)
     {
         case 0:
         case 1:
@@ -158,13 +155,12 @@ static void scan_weather_timer_cb(lv_timer_t * timer)
             lv_obj_remove_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
             break;
         default:
-            cnt = 99;
-            // is_soft_start = false;
+            weather_reveal_step = 99;
             break;
     }
 
-    if(is_soft_start)
-        cnt++;
+    if(is_soft_start && (weather_reveal_step < 99))
+        weather_reveal_step++;
 
 
     /* get hal data */
@@ -395,18 +391,44 @@ static void lime_weather_widget_set_humidity(lv_obj_t* weather_widget, uint8_t h
     lime_base_set_label_string(humidity_label, "%d%%", humidity);
 }
 
+static void weather_face_hide_flash_objs(void)
+{
+    /* hide all objects that load resources from external flash */
+    if(now_city_name_label != NULL)
+        lv_obj_add_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
+    if(today_weather_widget != NULL)
+        lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
+    if(tomorrow_weather_widget != NULL)
+        lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+    if(day_after_tomorrow_weather_widget != NULL)
+        lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+}
+
 void lime_weatherface_soft_start(bool is_start)
 {
     MLV_BASE_OBJ_NULL_CHECK(bj_obj);
 
-    is_soft_start = is_start;
-
     if(is_start)
-        return;
+    {
+        /* reset to hidden first, then reveal one by one to avoid flash load lag */
+        weather_face_hide_flash_objs();
+        weather_reveal_step = 0;
+        is_soft_start = true;
 
-    /* hide all child objects */
-    lv_obj_add_flag(now_city_name_label, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(today_weather_widget, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(day_after_tomorrow_weather_widget, LV_OBJ_FLAG_HIDDEN);
+        /* resume weather data refresh */
+        if(weather_scan_timer != NULL)
+            lv_timer_resume(weather_scan_timer);
+        return;
+    }
+
+    /* leave weather face: stop refresh and reset the face */
+    is_soft_start = false;
+
+    /* stop timer, no flash access while the face is hidden */
+    if(weather_scan_timer != NULL)
+        lv_timer_pause(weather_scan_timer);
+
+    weather_reveal_step = 0;
+    weather_face_hide_flash_objs();
 }
+

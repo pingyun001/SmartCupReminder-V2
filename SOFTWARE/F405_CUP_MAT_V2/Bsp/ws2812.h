@@ -7,6 +7,9 @@ void ws2812_Init(void);
 
 void WS2812_SetRGB(uint8_t id, uint8_t r, uint8_t g, uint8_t b);
 
+/* mark the whole frame ready, it will be sent by timer isr */
+void WS2812_Commit(void);
+
 void WS2812_SetBatteryPercent(uint8_t color[3], float batPercent);
 
 void WS2812_Sync(void);

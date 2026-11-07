@@ -80,8 +80,11 @@ static void key_scan_handle(void)
 static void usb_voltage_scan_handle(void)
 {
 	const float low_level = 4.12f;
+	const uint32_t low_report_gap_ms = 60 * 1000;
 	static uint8_t low_count = 0;
 	static float last_voltage = 0;
+	static bool low_reported = false;
+	static uint32_t last_low_report_time = 0;
 	float now_voltage = key_get_usb_vol();
 	
 	/* low count */
@@ -94,11 +97,17 @@ static void usb_voltage_scan_handle(void)
 		low_count = 0;
 	}
 	
-	/* out of range */
+	/* out of range, report at most once per minute */
 	if(low_count > 30)
 	{
-		LimeHAL_SetUsbLowVolErr();
 		low_count = 0;
+		
+		if((!low_reported) || (HAL_GetTick() - last_low_report_time >= low_report_gap_ms))
+		{
+			low_reported = true;
+			last_low_report_time = HAL_GetTick();
+			LimeHAL_SetUsbLowVolErr();
+		}
 	}
 	
 	/* sync now voltage */

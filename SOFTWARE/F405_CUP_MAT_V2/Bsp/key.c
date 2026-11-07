@@ -57,13 +57,31 @@ mult_key_e key_get_press_with_filter(void)
 	return return_key;
 }
 
+/* usb adc divider:
+ * old board: 5k(top) / 10k(bottom), ratio 1.5, adc pin reaches 3.3V at usb 4.95V and saturates
+ * new board: 10k / 10k,             ratio 2.0, adc pin is about 2.5V at usb 5.0V
+ */
+#define USB_DIV_RATIO_OLD	1.5f
+#define USB_DIV_RATIO_NEW	2.0f
+/* only old board can reach this raw value (usb >= 4.4V), new board needs usb >= 5.85V */
+#define USB_ADC_SAT_RAW		3600
+
 float key_get_usb_vol(void)
 {
-	const float register_up = 5.1f, register_down = 10.0f;
+	/* default: new board, switch to old board once saturated and never go back */
+	static float div_ratio = USB_DIV_RATIO_NEW;
+
+	uint16_t raw_val = HAL_ADC_GetValue(&hadc1);
+
+	if(raw_val >= USB_ADC_SAT_RAW)
+	{
+		div_ratio = USB_DIV_RATIO_OLD;
+	}
 	
-	float res_val = HAL_ADC_GetValue(&hadc1);
+	float res_val = raw_val / 4095.0f * 3.33f * div_ratio;
 	
-	res_val = res_val / 4095.0f * 3.3f * (register_down + register_up) / register_down;
+	if(res_val > 5.1f)
+		res_val = 5.1f;
 	
 	return res_val;
 }

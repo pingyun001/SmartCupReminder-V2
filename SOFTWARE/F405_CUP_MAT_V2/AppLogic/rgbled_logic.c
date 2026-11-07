@@ -136,6 +136,9 @@ void rgbled_run_handler(void)
     {
         WS2812_SetRGB(i, rgbled.led_unit[i].r, rgbled.led_unit[i].g, rgbled.led_unit[i].b);
     }
+
+    /* tell driver the whole frame is ready */
+    WS2812_Commit();
 }
 
 /*******************************************************************************
